@@ -1087,8 +1087,16 @@
   construction; no NordicBike domain knowledge assumed. Repository Map: one
   line per top-level directory (company/, products/, policies/, customers/,
   workshops/, cases/, .github/prompts/, evaluation/) stating its purpose in ≤15 words
-  each, plus presentation.md, facilitator-guide.md, and updatenumbers.md (see
-  Section 13 below). How to Run Each
+  each, plus presentation.md, facilitator-guide.md, updatenumbers.md (see
+  Section 13 below), and export-participant-repo.sh (see Section 14 below).
+  Every Repository Map bullet and paragraph describing facilitator-only or
+  maintainer-only content, and the entire Facilitator-Only Instructions
+  section, must be wrapped in a paired
+  `<!-- PARTICIPANT-EXPORT:EXCLUDE-START -->` /
+  `<!-- PARTICIPANT-EXPORT:EXCLUDE-END -->` HTML-comment marker so that
+  export-participant-repo.sh (Section 14) can mechanically derive a
+  participant-safe README from this one — see that section for the exact
+  contract. How to Run Each
   Exercise: numbered list of the 5 exercises by filename, one line each,
   pointing to workshops/exercise-N-*.md. The Facilitator-Only and
   Participant-Facing sections must use the exact pointer sentences given above
@@ -1286,5 +1294,44 @@
   stale and is out of scope. README.md's Repository Map must reference this
   file per Section 10 above.
   - (e) Target: 1,600 words (≈2,133 tokens).
+
+  ---
+  14. export-participant-repo.sh
+
+  - (b) Pedagogical function: none — maintainer-only tooling, like Section 13.
+  This exists because this repo is a single git clone containing both
+  participant-facing content and facilitator/maintainer-only content
+  (evaluation/expected-results.md, evaluation/adversarial-cases.md,
+  facilitator-guide.md, presentation.md, updatenumbers.md). Prior to this
+  script, the boundary between the two was enforced only by documentation
+  telling people not to open certain files — anyone who actually clones this
+  repo has those files on disk regardless. This script produces a genuinely
+  separate, fresh-history git repo containing only the Participant tier, so
+  there is no facilitator-only file present for a participant to find, by
+  accident or otherwise.
+  - (c) Required behavior, exact and final: copies exactly the Participant
+  tier (company/, products/, policies/, customers/, cases/, workshops/,
+  .github/, evaluation/scoring-rubric.md — nothing else from evaluation/) to
+  a target directory; derives README.md for the target by stripping every
+  span between paired `<!-- PARTICIPANT-EXPORT:EXCLUDE-START -->` /
+  `<!-- PARTICIPANT-EXPORT:EXCLUDE-END -->` HTML-comment markers in this
+  repo's own README.md, rather than hand-maintaining a second README; runs
+  `git init` at the target with no history carried over from this repo
+  (never `git clone`-then-delete, since deleted files remain fully readable
+  in git history); never touches any git remote or pushes anywhere itself.
+  Must fail loudly (not silently) if the README's EXCLUDE-START and
+  EXCLUDE-END marker counts are unbalanced, since an unpaired marker means a
+  README edit broke the export contract without anyone noticing.
+  - (d) Facts, exact and final: the participant-tier path list inside the
+  script and the marker-delimited spans inside README.md are the two places
+  that must be kept in sync whenever a new top-level file or directory is
+  added to this repo — deciding a new file's tier (Participant /
+  Facilitator-only / Maintainer-only) is a judgment call for whoever adds
+  it, not something this script can infer. Re-running this script is a
+  routine, repeatable pre-session step, not a one-time setup — the same
+  operational posture as updatenumbers.md.
+  - (e) Target: 550 words (≈733 tokens) — this is a script with a substantial
+  header comment, not prose documentation; do not pad it with additional
+  commentary purely to hit a word target.
 
 

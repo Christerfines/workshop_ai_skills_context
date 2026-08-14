@@ -10,7 +10,10 @@ NordicBike AB was chosen deliberately as the workshop's subject rather than a ge
 
 The progression from V1 to V4 is the spine of the workshop, and each exercise builds directly on the deliverable from the one before it — there is no way to skip ahead to Exercise 4 without first working through what a subagent handoff payload should and should not contain in Exercise 3. This is intentional: the point is not merely to arrive at a small, fast agent, but to understand, exercise by exercise, exactly which optimization produced which reduction in token load, and what each optimization cost or risked in terms of correctness. Teams that treat each exercise's constraint as a genuine design problem, rather than a box to check on the way to the leaderboard, tend to get the most out of the two hours.
 
-Facilitators running this workshop should read facilitator-guide.md in full before the session — it contains setup steps, the exact exercise wording, a timing schedule tied to the 5 phases, and the operational leaderboard-scoring procedure that this README deliberately does not duplicate. Participants should not need to read anything beyond this README and the workshops/ directory to get started; everything else in the repository exists to be discovered and referenced as each exercise requires it, which is itself part of what Exercise 2 (context engineering) is teaching.
+<!-- PARTICIPANT-EXPORT:EXCLUDE-START -->
+Facilitators running this workshop should read facilitator-guide.md in full before the session — it contains setup steps, the exact exercise wording, a timing schedule tied to the 5 phases, and the operational leaderboard-scoring procedure that this README deliberately does not duplicate.
+<!-- PARTICIPANT-EXPORT:EXCLUDE-END -->
+Participants should not need to read anything beyond this README and the workshops/ directory to get started; everything else in the repository exists to be discovered and referenced as each exercise requires it, which is itself part of what Exercise 2 (context engineering) is teaching.
 
 ## Prerequisites
 
@@ -21,7 +24,7 @@ Beyond these two points, no special background is required. "Basic familiarity w
 
 Domain knowledge about bicycles, e-bikes, or warranty law is deliberately not assumed and is not needed: every fact required to resolve any of the 10 cases — product specifications, coverage windows, exclusions, escalation thresholds, and customer purchase history — is written down somewhere in company/, products/, policies/, or customers/. Part of what Exercise 1's baseline measurement is designed to reveal is just how much of that material a naive agent pulls in when it has no way to know in advance which of it is actually relevant to the case at hand; participants are not expected to have that judgment themselves before the workshop starts; building it is the point of the session.
 
-One practical prerequisite worth flagging separately even though it is a facilitator setup responsibility rather than a participant one: each team will need working access to all three model tiers referenced throughout the workshop (Tier 1, Tier 2, and Tier 3) before Exercise 4, since the model-routing exercise specifically requires routing different call types to different tiers. Facilitators should confirm this access as part of session setup per facilitator-guide.md; participants do not need to arrange this themselves.
+One practical prerequisite worth flagging separately even though it is a facilitator setup responsibility rather than a participant one: each team will need working access to all three model tiers referenced throughout the workshop (Tier 1, Tier 2, and Tier 3) before Exercise 4, since the model-routing exercise specifically requires routing different call types to different tiers. Facilitators handle this as part of session setup; participants do not need to arrange this themselves.
 
 ## Repository Map
 
@@ -34,12 +37,16 @@ This repository contains everything needed to run and participate in the worksho
 - **cases/** — The 10 customer support case files participants' agents must resolve.
 - **workshops/** — The 5 exercise files that structure the workshop, in order.
 - **.github/prompts/** — Empty Copilot prompt-file scaffolds for the subagent prompts participants build in Exercise 3.
-- **evaluation/** — The scoring rubric, quality-gate definition, and (facilitator-only) answer key and adversarial-case definitions.
+- **evaluation/** — The scoring rubric and quality-gate definition your Exercise 5 output is checked against.
+<!-- PARTICIPANT-EXPORT:EXCLUDE-START -->
+- **evaluation/** (facilitator-only files) — Also contains expected-results.md (the answer key) and adversarial-cases.md (the adversarial-archetype definitions) — never shown to participants before Phase 5.
 - **presentation.md** — The instructor slide deck driving live delivery of all 5 workshop phases.
 - **facilitator-guide.md** — The standalone facilitator operating manual: setup, exact exercise prompts, timing, and leaderboard procedure.
 - **updatenumbers.md** — Maintainer runbook for re-verifying fixed token/cost figures and refreshing the tier-to-Copilot-model mapping between sessions.
+- **export-participant-repo.sh** — Maintainer script that generates the participant-facing distribution repo from this one; run before every session.
 
 Two of these directories deserve a specific note on access: evaluation/expected-results.md and evaluation/adversarial-cases.md are facilitator-only and must not be shown to participants before Phase 5, since they contain the answer key and the definitions of the adversarial patterns the leaderboard scoring checks for — see the Facilitator-Only Instructions section below for where the operational detail on this lives.
+<!-- PARTICIPANT-EXPORT:EXCLUDE-END -->
 
 ## How to Run Each Exercise
 
@@ -51,11 +58,13 @@ Work through the five exercises in order — each one's starting point is the pr
 4. `workshops/exercise-4-model-routing.md` — route by model tier and short-circuit escalations to build V4.
 5. `workshops/exercise-5-quality-gate.md` — validate V4 output against the 6-item quality gate before leaderboard submission.
 
+<!-- PARTICIPANT-EXPORT:EXCLUDE-START -->
 ## Facilitator-Only Instructions
 
 ⚠ **Facilitators only — do not share this section with participants before the workshop.**
 
 See facilitator-guide.md for setup, exact exercise wording, timing checkpoints, and the leaderboard procedure.
+<!-- PARTICIPANT-EXPORT:EXCLUDE-END -->
 
 ## Participant-Facing Instructions
 
