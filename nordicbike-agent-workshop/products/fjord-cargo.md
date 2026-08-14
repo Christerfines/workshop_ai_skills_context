@@ -23,6 +23,7 @@ NordicBike introduced the Fjord Cargo somewhat later than the Aurora X3, after o
 | Gearing | 8-speed derailleur |
 | Display / connectivity | LCD display with companion app connectivity (Bluetooth) |
 | Charger | Standard 4A charger, full charge in 4.5 hours |
+| Serial format | FJC-[YY][A\|B]-[5 digits], e.g. FJC-25B-00113 (YY = year of manufacture, A = Jan–Jun, B = Jul–Dec) |
 
 The reinforced aluminum 6061 frame and longer wheelbase give the Fjord Cargo its 100 kg rated cargo capacity across the rear rack, whether carrying panniers, a rigid cargo box, or child seating hardware fitted by a service center. The hydraulic disc brakes are sized larger than the Aurora X3's to account for the additional stopping mass of a loaded cargo bike, and the reinforced frame's weld points around the rear rack mount are a common area of interest in structural warranty claims, given the repeated load-bearing stress that area experiences over years of daily cargo use. An optional front cargo box is available as an add-on but is out of scope for this catalog — no price is listed for it, and none should be assumed or invented.
 

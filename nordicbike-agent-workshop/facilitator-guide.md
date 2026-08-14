@@ -35,7 +35,61 @@ iv. "Apply the model-routing table: triage calls run on Tier 1, resolver calls r
 
 v. "Run every one of your 10 case outputs through the 6-item quality gate in evaluation/scoring-rubric.md. Any output that fails even one item is not eligible for leaderboard submission until fixed. Fixing a quality-gate failure must not increase your token budget above the Exercise 4 targets."
 
+Reference token splits for the two exercises that involve more than one model call, in case a team asks how the target figure breaks down: Exercise 3's V3 target of ≤5,500 tokens splits as 2,500 tokens (Tier-2 retrieval/triage call) + 3,000 tokens (Tier-2 resolver call). Exercise 4's V4 target of ≤3,800 tokens for non-escalated cases splits as 1,000 tokens (Tier-1 triage call) + 2,800 tokens (Tier-2 resolver call); escalated cases stop after the ~1,000-token Tier-1 triage call, since no resolver call is made.
+
 A note on delivery: read each prompt to the room exactly as written above at the start of its phase, and keep it visible (on a slide or a shared document) for the duration of that exercise, since teams will want to re-check the exact wording of their constraint partway through rather than relying on memory. Do not answer "does X count as relevant material" questions by expanding the prompt's wording on the spot — point the team back to the exact constraint text and let them make the judgment call themselves; that judgment call is part of what each exercise is teaching, particularly for Exercise 2's "excerpt, don't omit" instruction.
+
+## Subagent Handoff Examples (reference)
+
+These are the same two fixed examples reproduced in `workshops/exercise-3-subagent-handoff.md` and `presentation.md` (slides 16–17). Keep them handy while circulating during Exercise 3 — the fastest way to tell whether a team has actually internalized the "typed payload, not a dump" instruction is to look at what they put in this JSON, not just their token count.
+
+Bad pattern — full-context dump (do not build this):
+
+```json
+{
+  "company_md": "<entire contents of company/about.md>",
+  "support_contacts_md": "<entire contents of company/support-contacts.md>",
+  "products": {
+    "aurora_x3": "<entire contents of products/aurora-x3.md>",
+    "fjord_cargo": "<entire contents of products/fjord-cargo.md>",
+    "vinter_pro": "<entire contents of products/vinter-pro.md>",
+    "powerpack_batteries": "<entire contents of products/powerpack-batteries.md>",
+    "accessories": "<entire contents of products/accessories.md>"
+  },
+  "policies": {
+    "warranty": "<entire contents of policies/warranty.md>",
+    "returns": "<entire contents of policies/returns.md>",
+    "shipping": "<entire contents of policies/shipping.md>",
+    "escalation": "<entire contents of policies/escalation.md>"
+  },
+  "customer_record_full": "<entire contents of customers/anna-karlsson.md>",
+  "case_full_text": "<entire contents of cases/case-01-anna-karlsson.md>",
+  "conversation_history": "<unbounded prior reasoning trace>"
+}
+```
+
+Good pattern — minimal typed payload (build this):
+
+```json
+{
+  "handoff_type": "typed_decision_payload",
+  "case_id": "CASE-01",
+  "customer_id": "NB-CUST-10041",
+  "product_sku": "AX3",
+  "product_name": "Aurora X3",
+  "serial_number": "AX3-25A-00417",
+  "purchase_date": "2025-03-10",
+  "warranty_window_end_standard": "2027-03-10",
+  "stated_symptom": "intermittent power loss, bike will not hold charge",
+  "candidate_archetype": "symptom_cause_confusion",
+  "applicable_policy_sections": ["warranty.md#section-5", "warranty.md#section-4"],
+  "root_cause_flags": {
+    "water_exposure_reported": false,
+    "pressure_washed_near_battery": false
+  },
+  "recommended_model_tier": "tier_2"
+}
+```
 
 ## Timing Checkpoints
 

@@ -41,6 +41,7 @@ Routine maintenance for the Aurora X3 — brake pad inspection, drivetrain lubri
 | Gearing | 8-speed derailleur |
 | Display / connectivity | LCD display with companion app connectivity (Bluetooth) |
 | Charger | Standard 4A charger, full charge in 4.5 hours |
+| Serial format | AX3-[YY][A\|B]-[5 digits], e.g. AX3-25A-00417 (YY = year of manufacture, A = Jan–Jun, B = Jul–Dec) |
 
 The mid-drive motor placement was chosen over a hub motor for better weight balance and more natural pedaling feel, particularly when climbing or carrying a loaded pannier bag. Mounting the motor low and centered, near the bottom bracket, keeps the Aurora X3's center of gravity close to where a rider would expect it on a conventional bicycle, which matters for low-speed handling in city traffic — tight turns, stop-and-go riding, and maneuvering in bike parking. The 8-speed derailleur gives enough range for both flat city streets and the occasional hill without adding the maintenance overhead of an internal gear hub, and it uses widely available, easily serviced components rather than a proprietary drivetrain, which keeps routine servicing quick at any of NordicBike's three service centers.
 

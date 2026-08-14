@@ -24,6 +24,7 @@ The Vinter Pro was launched with a dedicated marketing push timed to build early
 | Display / connectivity | LCD display with companion app connectivity (Bluetooth) |
 | Charger | Standard 4A charger, full charge in 4.5 hours |
 | Tires | Studded, standard equipment |
+| Serial format | VTP-[YY][A\|B]-[5 digits], e.g. VTP-24A-00201 (YY = year of manufacture, A = Jan–Jun, B = Jul–Dec) |
 
 The rear hub motor was chosen over a mid-drive for the Vinter Pro specifically for its simpler, more weatherproof drivetrain interface — fewer exposed moving parts near the chain and cassette reduce the chance of salt and slush intrusion during winter riding, and a rear hub motor keeps the drivetrain's more failure-prone components away from road spray thrown up by the front wheel. Studded tires come as standard equipment rather than an optional upgrade, reflecting the bike's intended year-round, all-weather use case; the studs improve traction on icy and packed-snow surfaces at some cost to rolling resistance and on-road noise compared to a standard tire, a tradeoff intentionally made in favor of winter safety.
 

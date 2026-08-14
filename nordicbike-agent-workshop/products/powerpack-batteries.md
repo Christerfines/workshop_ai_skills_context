@@ -33,7 +33,7 @@ The PowerPack 900 is the larger-capacity battery integrated into the Fjord Cargo
 | PowerPack 720 | Aurora X3, Vinter Pro | Yes — 6,900 SEK | 4.5 hours |
 | PowerPack 900 | Fjord Cargo | Yes — 8,900 SEK | 5.5 hours |
 
-PowerPack batteries are not cross-compatible between the two models — a PowerPack 900 will not fit an Aurora X3 or Vinter Pro, and a PowerPack 720 will not fit a Fjord Cargo, due to differences in physical mounting and connector design between the two packs. Standalone accessory batteries purchased separately from a bike are not individually serialized in NordicBike's catalog; only bikes carry the [MODEL]-[YY][A|B]-[5 digits] serial format described in company reference material. A standalone battery purchase is instead identified by its order ID and purchase date, which are sufficient to determine warranty status under policies/warranty.md Section 3.
+PowerPack batteries are not cross-compatible between the two models — a PowerPack 900 will not fit an Aurora X3 or Vinter Pro, and a PowerPack 720 will not fit a Fjord Cargo, due to differences in physical mounting and connector design between the two packs. Standalone accessory batteries purchased separately from a bike are not individually serialized in NordicBike's catalog; only bikes carry the [MODEL]-[YY][A|B]-[5 digits] serial format described on each bike's own product page (products/aurora-x3.md, products/fjord-cargo.md, products/vinter-pro.md). A standalone battery purchase is instead identified by its order ID and purchase date, which are sufficient to determine warranty status under policies/warranty.md Section 3.
 
 ## Related Policies
 

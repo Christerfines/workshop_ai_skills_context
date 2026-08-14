@@ -14,7 +14,7 @@ Your V2 output from Exercise 2: a single Tier-3 call at ≤9,200 tokens using tr
 
 ## Target Metric
 
-**≤5,500 tokens, 2 calls, Tier 2 + Tier 2.**
+**≤5,500 tokens, 2 calls, Tier 2 + Tier 2.** Exact split: 2,500 tokens (Tier-2 retrieval/triage call) + 3,000 tokens (Tier-2 resolver call) = 5,500.
 
 ## Deliverable
 
