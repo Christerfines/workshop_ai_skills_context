@@ -5,6 +5,20 @@
   facilitator-guide.md, at the repository root. It is NOT folded into 
   README.md.
 
+  Target tooling decision (fixed, do not contradict elsewhere in this
+  document): this workshop targets GitHub Copilot as the participant-facing
+  agent tool, not Claude or any Anthropic-specific product surface. Two
+  consequences apply everywhere else in this spec: (1) model tiers are
+  named by capability/cost class only (Fast/cheap, Balanced, Frontier) —
+  never by a specific model family, since Copilot's available models change
+  over time and by plan; (2) the reusable-subagent-capability deliverable in
+  Section 7 is a GitHub Copilot Prompt File (.github/prompts/*.prompt.md),
+  not a Claude Code Skill file — there is no skills/ directory anywhere in
+  this spec. updatenumbers.md (repository root, referenced from README.md)
+  is the fixed, authoritative runbook for periodically re-verifying the
+  token/cost figures below still hold and for mapping tiers to whichever
+  concrete Copilot models are current at delivery time.
+
   Repository root: nordicbike-agent-workshop/
   
   Global conventions used throughout this spec (apply identically everywhere a
@@ -70,15 +84,23 @@
   - Cost-weight table (used by the budget-points formula, fixed, reproduce 
   identically in presentation.md and evaluation/scoring-rubric.md):
 
-  ┌────────┬──────────────────────────┬──────────────────────────────┐
-  │  Tier  │       Model class        │ Cost weight per 1,000 tokens │
-  ├────────┼──────────────────────────┼──────────────────────────────┤
-  │ Tier 1 │ Fast/cheap (Haiku-class) │ 1                            │
-  ├────────┼──────────────────────────┼──────────────────────────────┤
-  │ Tier 2 │ Balanced (Sonnet-class)  │ 4                            │
-  ├────────┼──────────────────────────┼──────────────────────────────┤
-  │ Tier 3 │ Frontier (Opus-class)    │ 12                           │
-  └────────┴──────────────────────────┴──────────────────────────────┘
+  ┌────────┬─────────────┬──────────────────────────────┐
+  │  Tier  │    Class    │ Cost weight per 1,000 tokens │
+  ├────────┼─────────────┼──────────────────────────────┤
+  │ Tier 1 │ Fast/cheap  │ 1                            │
+  ├────────┼─────────────┼──────────────────────────────┤
+  │ Tier 2 │ Balanced    │ 4                            │
+  ├────────┼─────────────┼──────────────────────────────┤
+  │ Tier 3 │ Frontier    │ 12                           │
+  └────────┴─────────────┴──────────────────────────────┘
+
+  Deliberately model-agnostic: this workshop targets GitHub Copilot, whose
+  available model lineup changes over time and varies by plan. Tiers are
+  defined by capability/cost class only, never by naming a specific model
+  family — updatenumbers.md (repository root) is the authoritative process
+  for periodically re-verifying these figures still hold and for mapping
+  each tier to whichever concrete Copilot models are current at delivery
+  time, without that mapping leaking into any fixed, reproduced document.
 
   ---
   Company facts fixed for reuse across every section below (reference block, 
@@ -788,55 +810,63 @@
   - (e) Target: 450 words (≈600 tokens).
 
   ---
-  7. skills/
-  
-  All three files are empty starter scaffolds only — no solved content, no
+  7. .github/prompts/
+
+  This workshop targets GitHub Copilot, not a generic or Claude-specific
+  agent runtime. Copilot has no "Skill" file concept; its equivalent
+  reusable, invocable, tool-scoped unit is a Prompt File
+  (.github/prompts/*.prompt.md in VS Code) — a markdown file with a fixed
+  YAML frontmatter schema (mode, description, and optionally tools/model)
+  that is invoked via its filename as a slash command in Copilot Chat. All
+  three files below are empty starter scaffolds only — no solved content, no
   filled-in examples. Every stub section's body must contain exactly the
   literal placeholder comment shown below, verbatim, and nothing else.
 
   Fixed required frontmatter fields for all three files (YAML, top of file):
-  name (string, pre-filled with the fixed value given per file below),
-  description (string, pre-filled with the fixed one-line value given per file
-  below), version (string, pre-filled "0.1.0" in all three).
+  mode (string, fixed "agent" in all three — each of these is meant to run
+  autonomously as part of the pipeline, not as a plain ask/edit chat),
+  description (string, pre-filled with the fixed one-line value given per
+  file below). No "name" or "version" field — Copilot prompt files have no
+  such convention; the file's basename (minus .prompt.md) is its identity
+  and its slash-command name.
 
   Fixed required body section stubs, identical structure across all three 
-  files, in this order: ## Purpose, ## When to Use This Skill, ## Required 
+  files, in this order: ## Purpose, ## When to Use This Prompt, ## Required 
   Inputs, ## Steps, ## Output Format, ## Examples. Each section's body, in all
   three files, must contain exactly this placeholder line and nothing else:
-  <!-- TODO: participant fills this in during Exercise 3 (subagent handoff 
-  design) -->
+  <!-- TODO: participant fills this in during Exercise 3 (subagent design) -->
 
-  (a) skills/warranty-triage/SKILL.md
+  (a) .github/prompts/warranty-triage.prompt.md
 
   - (b) Scaffold for the triage subagent participants build in Exercise 3/4 —
   the piece that extracts structured facts from a case and produces the
   minimal typed payload (the "good pattern" JSON).
   - (c) Schema as fixed above.
-  - (d) Frontmatter values: name: warranty-triage, description: "Extracts 
+  - (d) Frontmatter values: mode: agent, description: "Extracts 
   structured case facts and produces a minimal typed handoff payload for the 
   resolver." All six body sections contain only the fixed placeholder comment
   — no other content.
   - (e) Target: 100 words (≈133 tokens) — frontmatter plus six one-line
   placeholder bodies.
   
-  (b) skills/policy-lookup/SKILL.md
+  (b) .github/prompts/policy-lookup.prompt.md
 
   - (b) Scaffold for a policy-section-retrieval helper — participants wire
   this to fetch only the specific policies/warranty.md section(s) relevant to
   a flagged archetype, rather than the whole file.
   - (c) Schema as fixed above.
-  - (d) Frontmatter values: name: policy-lookup, description: "Retrieves only 
+  - (d) Frontmatter values: mode: agent, description: "Retrieves only 
   the specific policy section(s) relevant to a case's flagged archetype." All
   six body sections contain only the fixed placeholder comment.
   - (e) Target: 100 words (≈133 tokens).
 
-  (c) skills/escalation-router/SKILL.md
+  (c) .github/prompts/escalation-router.prompt.md
   
   - (b) Scaffold for the Exercise 4 escalation short-circuit logic — decides
   whether a case routes to the Tier-2 resolver or directly to the human
   escalation queue.
   - (c) Schema as fixed above.
-  - (d) Frontmatter values: name: escalation-router, description: "Decides 
+  - (d) Frontmatter values: mode: agent, description: "Decides 
   whether a case routes to the resolver model or directly to human 
   escalation." All six body sections contain only the fixed placeholder
   comment.
@@ -1056,8 +1086,9 @@
   evaluation. Prerequisites: basic familiarity with LLM API calls and prompt
   construction; no NordicBike domain knowledge assumed. Repository Map: one
   line per top-level directory (company/, products/, policies/, customers/,
-  workshops/, cases/, skills/, evaluation/) stating its purpose in ≤15 words
-  each, plus presentation.md and facilitator-guide.md. How to Run Each
+  workshops/, cases/, .github/prompts/, evaluation/) stating its purpose in ≤15 words
+  each, plus presentation.md, facilitator-guide.md, and updatenumbers.md (see
+  Section 13 below). How to Run Each
   Exercise: numbered list of the 5 exercises by filename, one line each,
   pointing to workshops/exercise-N-*.md. The Facilitator-Only and
   Participant-Facing sections must use the exact pointer sentences given above
@@ -1215,5 +1246,45 @@
   = (Q × 70) + (M × 30) − Penalty, clamp to [0,100]; (8) rank teams
   descending by FinalScore and display live.
   - (e) Target: 2,500 words (≈3,333 tokens).
+
+  ---
+  13. updatenumbers.md
+
+  - (b) Pedagogical function: none — this is a maintainer-only runbook, not
+  participant- or facilitator-during-a-session material. It exists because
+  every fixed token/cost figure in this spec (18,400 / 9,200 / 5,500 / 3,800
+  tokens, BCP = 220.8, and everything derived from them) is deliberately
+  reproduced byte-for-byte across many files for pedagogical consistency
+  within a single session, but is not guaranteed to stay an honest
+  reflection of the actual V1 bundle's real size as content elsewhere in the
+  repository changes over time, and because this workshop's tier naming is
+  deliberately model-agnostic (see the Target tooling decision at the top of
+  this spec) — something still has to map "Tier 1/2/3" to concrete, current
+  GitHub Copilot models for each actual delivery, and that mapping must not
+  be written into any fixed, reproduced document.
+  - (c) Required sections: ## What this file is for, ## When to run this,
+  ## What this file does not cover, ## Step 1 through a final numbered step
+  covering: re-measuring the V1 baseline from the real files in a GitHub
+  Copilot session; deciding whether the drift is large enough to warrant
+  re-deriving the downstream figures; recomputing V2/BCP (which are
+  mathematical functions of V1) while treating V3's and V4's triage/resolver
+  splits as independently fixed design choices, not V1-derived; an
+  exhaustive location-by-location list of every file that must be edited in
+  the same pass for each of the 18,400 / 9,200 / 5,500 / 3,800 / 220.8
+  figures; refreshing the Tier 1/2/3 → concrete Copilot model mapping (this
+  step is run every time, independent of whether any token figure changed);
+  re-verifying cross-file consistency (Constraint-block/prompt matching,
+  Cost-Weight Table matching, Subagent Handoff Examples matching); and a
+  changelog table recording what changed and when.
+  - (d) Facts, exact and final: this file is a checklist/runbook that a
+  maintainer or agent works through by hand — it must not be framed as an
+  auto-executing script, since the fixed pedagogical constants it governs
+  are deliberately not meant to change on every content edit, only on a
+  deliberate re-baselining decision. It must state explicitly that it is
+  scoped only to token/cost/model-tier figures, not to any of NordicBike's
+  fictional business data (prices, dates, names, serials), which never goes
+  stale and is out of scope. README.md's Repository Map must reference this
+  file per Section 10 above.
+  - (e) Target: 1,600 words (≈2,133 tokens).
 
 

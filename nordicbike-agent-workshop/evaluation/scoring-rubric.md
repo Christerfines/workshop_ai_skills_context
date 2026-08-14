@@ -29,11 +29,11 @@ Every case output must be checked against all 6 of the following items. Any sing
 
 ## Cost-Weight Table
 
-| Tier | Model class | Cost weight per 1,000 tokens |
+| Tier | Class | Cost weight per 1,000 tokens |
 |---|---|---|
-| Tier 1 | Fast/cheap (Haiku-class) | 1 |
-| Tier 2 | Balanced (Sonnet-class) | 4 |
-| Tier 3 | Frontier (Opus-class) | 12 |
+| Tier 1 | Fast/cheap | 1 |
+| Tier 2 | Balanced | 4 |
+| Tier 3 | Frontier | 12 |
 
 ## Budget-Points Formula
 

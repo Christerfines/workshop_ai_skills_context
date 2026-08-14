@@ -219,11 +219,11 @@
 
 ## Model-Routing Table
 
-| Tier | Model class | Cost weight per 1,000 tokens |
+| Tier | Class | Cost weight per 1,000 tokens |
 |---|---|---|
-| Tier 1 | Fast/cheap (Haiku-class) | 1 |
-| Tier 2 | Balanced (Sonnet-class) | 4 |
-| Tier 3 | Frontier (Opus-class) | 12 |
+| Tier 1 | Fast/cheap | 1 |
+| Tier 2 | Balanced | 4 |
+| Tier 3 | Frontier | 12 |
 
 - Routing rule: triage on Tier 1, resolver on Tier 2
 - Escalation-flagged cases skip the resolver call entirely

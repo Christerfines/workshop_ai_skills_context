@@ -33,10 +33,11 @@ This repository contains everything needed to run and participate in the worksho
 - **customers/** — Customer records (contact info and purchase history) for the 10 customers whose cases appear in this workshop.
 - **cases/** — The 10 customer support case files participants' agents must resolve.
 - **workshops/** — The 5 exercise files that structure the workshop, in order.
-- **skills/** — Empty scaffold files for the subagent skills participants build in Exercise 3.
+- **.github/prompts/** — Empty Copilot prompt-file scaffolds for the subagent prompts participants build in Exercise 3.
 - **evaluation/** — The scoring rubric, quality-gate definition, and (facilitator-only) answer key and adversarial-case definitions.
 - **presentation.md** — The instructor slide deck driving live delivery of all 5 workshop phases.
 - **facilitator-guide.md** — The standalone facilitator operating manual: setup, exact exercise prompts, timing, and leaderboard procedure.
+- **updatenumbers.md** — Maintainer runbook for re-verifying fixed token/cost figures and refreshing the tier-to-Copilot-model mapping between sessions.
 
 Two of these directories deserve a specific note on access: evaluation/expected-results.md and evaluation/adversarial-cases.md are facilitator-only and must not be shown to participants before Phase 5, since they contain the answer key and the definitions of the adversarial patterns the leaderboard scoring checks for — see the Facilitator-Only Instructions section below for where the operational detail on this lives.
 
