@@ -141,3 +141,108 @@ Expanding on why this procedure is structured the way it is, and how to run it w
 - **A tie at the FinalScore level is rare but not impossible**, particularly with small numbers of teams. There is no formal tie-breaking rule defined by this workshop; facilitators should use judgment (for example, favoring the team with the higher Q, since correctness is the harder half of the score to fake) or simply present tied teams as co-ranked, whichever fits the room's tone better.
 - **Use the scored outputs as debrief material.** Once every team is ranked, the retro discussion in the remaining Phase 5 time is far more useful if it references specific patterns you noticed while scoring — for example, "several teams lost points on Case 2 by citing SB-2025-11's batch match without engaging with Erik's own account of his washing habits" is a much more actionable takeaway than a generic reminder to "read carefully." This is also the natural moment to reveal `evaluation/adversarial-cases.md`'s archetype definitions to participants, now that scoring is complete and the answer key no longer needs to stay hidden.
 - **Keep a record of each team's per-case breakdown, not just their FinalScore**, even after the session ends — a team's Q and M values broken out by case are far more useful for a written follow-up or a "what to try next time" note than the single ranked number is, and this breakdown is only easy to reconstruct if you keep it during scoring rather than trying to recompute it afterward from memory.
+
+## Team Data Collection & Fast Result-Board Generation
+
+Scoring several teams across 10 cases each, against a 5-category rubric plus a 6-item quality gate plus per-call token/tier accounting, is the single most time-constrained part of Phase 5. This section gives a roster template to track teams from Phase 1 onward, a compact per-case capture sheet to fill in while circulating during Phase 4 and scoring during Phase 5, and two copy-paste prompts that turn a filled-in capture sheet into a ranked, reveal-ready leaderboard without a manual spreadsheet pass.
+
+### Team roster (set up during Phase 1)
+
+Set this up before Phase 2 starts so every later table can just reference a team name.
+
+```markdown
+| Team | Members | Repo / Branch | Endpoint check ✓ | Ex1 | Ex2 | Ex3 | Ex4 | Ex5 submitted |
+|---|---|---|---|---|---|---|---|---|
+| Falcon | Anna, Björn | github.com/.../falcon | ✓ | | | | | |
+| Aurora | Lena, Oskar, Freja | github.com/.../aurora | ✓ | | | | | |
+```
+
+Update the Ex1–Ex5 columns at each Timing Checkpoint walk-around described above — this doubles as the "who's behind" tracker for those checkpoints and the submission tracker for Phase 5, so it's worth keeping open on a laptop or shared doc throughout rather than rebuilding it at Phase 5.
+
+### Per-case scoring capture sheet (fill in as teams submit Exercise 5)
+
+One sheet per team, one row per case. This is the "simple spreadsheet" the Leaderboard Running Procedure above recommends having ready — copy the header row once per team.
+
+```markdown
+Team: __________
+
+| Case | Elig | Root | Cite | Esc | Tone | /20 | Gate(1-6 pass?) | T1 tok | T2 tok | T3 tok | Escalated? | Critical fail? |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1  |  |  |  |  |  |  |  |  |  |  |  |  |
+| 2  |  |  |  |  |  |  |  |  |  |  |  |  |
+| … |  |  |  |  |  |  |  |  |  |  |  |  |
+| 10 |  |  |  |  |  |  |  |  |  |  |  |  |
+```
+
+- Elig/Root/Cite/Esc/Tone are the five 0–4 rubric categories from `evaluation/scoring-rubric.md`, in the order they're listed there.
+- Gate is a single pass/fail for all 6 quality-gate items combined — jot down which item(s) failed in a side note if any did, since that's useful debrief material later, but the leaderboard prompt below only needs the overall pass/fail.
+- T1/T2/T3 tok is total input tokens for that case's calls, split by the tier each call ran on — leave a tier's column blank or 0 if that case never called it.
+- Escalated? and Critical fail? are yes/no, the latter checked against `evaluation/adversarial-cases.md`'s "must not" clauses.
+
+Filling this by hand is still the correctness bottleneck (see the "requires the facilitator to read each team's actual case outputs" note above) — the prompt below only removes the arithmetic, not the reading.
+
+### Prompt: score one case output against the rubric
+
+Use this while reading a team's case output, to get a first-pass row for the capture sheet above that you then confirm or correct — it's a drafting aid, not a replacement for the facilitator's own judgment on the two categories that need it most (Root-Cause Grounding, Escalation/Scope Judgment).
+
+```
+You are scoring a workshop team's customer-support-agent output against a fixed rubric. I will give you:
+1. The case file text
+2. The expected-result reasoning for this case
+3. The applicable quality-gate items
+4. The team's actual output
+
+Score the five rubric categories 0-4 each (Eligibility Decision, Root-Cause Grounding,
+Policy Citation Accuracy, Escalation/Scope Judgment, Clarity & Tone), check all 6 quality-gate
+items pass/fail, and flag whether the output violates any "must not" clause for this case's
+archetype (if any). Return ONLY this table row, tab-separated, no explanation:
+
+case_id | elig | root | cite | esc | tone | total/20 | gate_pass(Y/N) | escalated(Y/N) | critical_fail(Y/N) | one-line reason if <16/20 or gate fail
+
+---
+CASE FILE:
+<paste cases/case-NN-....md>
+
+EXPECTED RESULT:
+<paste the matching entry from evaluation/expected-results.md>
+
+QUALITY GATE ITEMS:
+<paste the 6 items from evaluation/scoring-rubric.md>
+
+ADVERSARIAL ARCHETYPE (if applicable):
+<paste the matching archetype's Must/Must-Not from evaluation/adversarial-cases.md>
+
+TEAM OUTPUT:
+<paste the team's actual response for this case>
+```
+
+### Prompt: generate the leaderboard
+
+Once every team's capture sheet is filled in (or as far as you've gotten by 01:50), paste all of them into this single prompt to get a ranked, reveal-ready board. It reproduces the FinalScore formula from `evaluation/scoring-rubric.md` verbatim so it doesn't depend on repo access.
+
+```
+Compute a workshop leaderboard from the per-case data below, using this exact formula:
+
+- BCP = 220.8
+- CostPoints(call) = tier_weight × (tokens_in_call / 1000), tier_weight: T1=1, T2=4, T3=12
+- TotalCostPoints(case) = sum of CostPoints across that case's calls
+- CostEfficiency(case) = max(0, 1 - TotalCostPoints(case)/BCP)
+- M(team) = mean(CostEfficiency) across the team's 10 cases
+- Q(team) = (# cases with total ≥16/20 AND gate_pass=Y) / 10
+- Penalty(team) = 10 × (# cases with critical_fail=Y)
+- FinalScore(team) = round((Q×70)+(M×30)-Penalty, 1), clamped [0,100]
+
+For each team, show FinalScore, Q, M, Penalty, and a one-line "why" (their strongest and
+weakest rubric category, and whether Penalty cost them a rank). Then output a single
+markdown leaderboard table ranked descending by FinalScore, columns: Rank | Team | FinalScore
+| Q | M | Penalty. If two teams tie on FinalScore, break the tie by higher Q and note the tie.
+
+DATA (one block per team, from the capture sheet):
+<paste each team's "Team: NAME" block + full 10-row table here>
+```
+
+A few practical notes on using these prompts well:
+
+- **Both prompts are model-agnostic.** Paste into whatever assistant you have open — a spare Claude Code or claude.ai tab is enough — rather than needing anything workshop-specific installed.
+- **Run the leaderboard prompt incrementally.** Re-pasting it with one more team's block added (or asking for "just add team X's row to the existing table") as teams finish Exercise 5 during Phase 4 keeps Phase 5 itself to the reveal-and-retro that the Timing Checkpoints section assumes, rather than a scoring session — this is the same "start scoring before Phase 5's clock starts" idea from the Leaderboard Running Procedure above, just with the arithmetic delegated.
+- **Keep the pasted case files, expected results, and adversarial-case definitions out of anything participants can see mid-session** — same rule as the rest of this document. If you're using a shared or logged assistant, do this scoring in a private session or tab, not one used for anything participant-facing.
