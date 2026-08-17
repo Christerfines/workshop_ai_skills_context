@@ -41,7 +41,9 @@ This repository contains everything needed to run and participate in the worksho
 <!-- PARTICIPANT-EXPORT:EXCLUDE-START -->
 - **evaluation/** (facilitator-only files) — Also contains expected-results.md (the answer key) and adversarial-cases.md (the adversarial-archetype definitions) — never shown to participants before Phase 5.
 - **presentation.md** — The instructor slide deck driving live delivery of all 5 workshop phases.
+- **allt_pres.md** — A shorter, plain-language alternative to presentation.md, with full speaker notes under every slide (presentation.md has none) tying each slide back to the exercise it sets up. Same facilitator-only tier as presentation.md.
 - **facilitator-guide.md** — The standalone facilitator operating manual: setup, exact exercise prompts, timing, and leaderboard procedure.
+- **dummy_walk_through.md** — A first-time facilitator's cheat sheet: the mechanical run-order across setup, every phase, and each exercise's known tricky spot, all in one scannable list. Same facilitator-only tier as facilitator-guide.md — a faster on-ramp into it, not a replacement for it.
 - **updatenumbers.md** — Maintainer runbook for re-verifying fixed token/cost figures and refreshing the tier-to-Copilot-model mapping between sessions.
 - **export-participant-repo.sh** — Maintainer script that generates the participant-facing distribution repo from this one; run before every session.
 - **tests/** — Maintainer playtest harness: runs an AI agent through all 5 exercises against a real participant-tier export (Claude lane fully automated, Copilot lane semi-automated), grades the result against `evaluation/`, and reports both whether the agent succeeded and whether the workshop material itself has a wording or target problem. See `tests/README.md`.

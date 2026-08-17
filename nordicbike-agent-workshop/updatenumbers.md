@@ -56,13 +56,15 @@ Everything below is a fixed function of the V1 baseline. If you're re-baselining
 | V1 baseline | measured (Step 1) | 19,800 tokens |
 | V2 target | exactly 50% of V1 | 9,900 tokens |
 | V3 target | fixed split, independent of V1: 2,500 (triage) + 3,000 (resolver) | 5,500 tokens |
-| V4 target (non-escalated) | fixed split, independent of V1: 1,000 (triage) + 2,800 (resolver) | 3,800 tokens |
-| V4 target (escalated) | triage call only, no resolver | ~1,000 tokens |
+| V4 target (non-escalated) | fixed split, independent of V1: 1,400 (triage) + 2,400 (resolver) | 3,800 tokens |
+| V4 target (escalated) | triage call only, no resolver | ~1,400 tokens |
 | BCP (Baseline Cost Points) | Tier-3 weight (12) × V1 ÷ 1,000 | 12 × 19.8 = 237.6 |
-| Worked non-escalated V4 CostEfficiency | max(0, 1 − ((1×1.0)+(4×2.8))/BCP) | ≈ 0.949 |
-| Worked escalated V4 CostEfficiency | max(0, 1 − (1×1.0)/BCP) | ≈ 0.996 |
+| Worked non-escalated V4 CostEfficiency | max(0, 1 − ((1×1.4)+(4×2.4))/BCP) | ≈ 0.954 |
+| Worked escalated V4 CostEfficiency | max(0, 1 − (1×1.4)/BCP) | ≈ 0.994 |
 
-**Important:** the V3 and V4 splits (2,500+3,000 and 1,000+2,800) are *not* derived from V1 — they're independently fixed design choices about how a two-call pipeline should divide its budget between triage and resolver. Only the V2 target (exactly 50% of V1) and BCP (12 × V1 ÷ 1,000) actually depend on the V1 number. If you re-baseline V1, V2 and BCP (and everything BCP feeds) change; V3 and V4's splits do not, unless you deliberately choose to redesign them too.
+**Important:** the V3 and V4 splits (2,500+3,000 and 1,400+2,400) are *not* derived from V1 — they're independently fixed design choices about how a two-call pipeline should divide its budget between triage and resolver. Only the V2 target (exactly 50% of V1) and BCP (12 × V1 ÷ 1,000) actually depend on the V1 number. If you re-baseline V1, V2 and BCP (and everything BCP feeds) change; V3 and V4's splits do not, unless you deliberately choose to redesign them too.
+
+**On the V4 split specifically (updated 2026-08-17, second playtest):** the original 1,000+2,800 split was arithmetically impossible — Case 1's case file alone is ~1,006 tokens before any triage schema or instructions, so no case could ever hit the 1,000-token triage line-item honestly. Re-derived to 1,400 (triage, case-text-only per Exercise 4's Starting Point) + 2,400 (resolver), same 3,800 aggregate. Checked against all 10 case files' actual word counts, not just Case 1: Case 1 is the largest at 755 words (~1,006 tokens), every other case is smaller (311–700 words), so 1,400 leaves comfortable headroom for schema and instructions across the full case load, not just the one case teams tune against.
 
 The Reference Benchmarks (`V1 naive baseline: Q≈0.6, M≈0.0 → FinalScore≈42.0`; `Fully optimized V4: Q≈1.0, M≈0.95 → FinalScore≈98.5`) are illustrative, not exact functions of the table above — re-sanity-check them by eye after a re-baseline (M≈0.95 should still roughly match the worked non-escalated CostEfficiency above), but don't treat them as needing a precise recomputation.
 
@@ -95,7 +97,7 @@ If you changed any figure in Step 3, every location below must be updated **in t
 - `workshops/exercise-4-model-routing.md` — Starting Point
 - `spec.md` — global conventions block, Exercise 3 section
 
-### 3,800 (V4 target) and its 1,000+2,800 split, plus the ~1,000 escalated-case figure
+### 3,800 (V4 target) and its 1,400+2,400 split, plus the ~1,400 escalated-case figure
 - `presentation.md` — Phase 4 slide, V1→V4 table, V4 split line
 - `facilitator-guide.md` — Exercise Prompt iv (verbatim), "Reference token splits" note
 - `workshops/exercise-1-baseline.md` — Goal paragraph

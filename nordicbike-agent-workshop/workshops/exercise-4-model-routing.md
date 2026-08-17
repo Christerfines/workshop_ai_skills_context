@@ -10,7 +10,9 @@ That division of labor only holds, though, if triage actually stays confined to 
 
 ## Starting Point
 
-The V3 output from Exercise 3: a two-call, Tier 2 + Tier 2 pipeline totaling ≤5,500 tokens, using a minimal typed handoff payload between triage and resolver. You will run this same two-subagent structure again in this exercise — the change here is which model tier each subagent runs on, and adding the short-circuit branch that skips the resolver call entirely for escalation-flagged cases, not a change to the subagents' responsibilities themselves.
+The V3 output from Exercise 3: a two-call, Tier 2 + Tier 2 pipeline totaling ≤5,500 tokens, using a minimal typed handoff payload between triage and resolver. You will run this same two-subagent structure again in this exercise, with two changes: which model tier each subagent runs on, and adding the short-circuit branches that skip the resolver call entirely for escalation-flagged or missing-information cases. There's also a third, smaller change worth stating explicitly rather than leaving implicit: triage's own input narrows too. In Exercise 3, triage read the full case file and the full customer record. From this exercise on, triage reads the case file only — the customer record's fields it needs (purchase date, serial number, product) are the resolver's job to read directly, not triage's job to relay. This is the actual token lever behind this exercise's tighter budget; tier routing alone doesn't reduce token count, only cost per token.
+
+Also from this exercise on, run your pipeline against all 10 cases in `cases/`, not just Case 1 — the Deliverable below asks for a routing decision across the full case load, and several of the routing behaviors this exercise teaches (the two different short-circuit branches, retaining context across a short-circuit) genuinely don't show up if you're only ever looking at one clean case.
 
 ## Constraint
 
@@ -18,8 +20,8 @@ The V3 output from Exercise 3: a two-call, Tier 2 + Tier 2 pipeline totaling ≤
 
 ## Target Metric
 
-- **Non-escalated cases:** ≤3,800 total input tokens (1,000 Tier-1 triage + 2,800 Tier-2 resolver).
-- **Escalated cases:** ~1,000 tokens (Tier-1 triage only — no resolver call).
+- **Non-escalated cases:** ≤3,800 total input tokens (1,400 Tier-1 triage + 2,400 Tier-2 resolver).
+- **Escalated cases:** ~1,400 tokens (Tier-1 triage only — no resolver call).
 
 Like Exercise 3's, this figure is a fixed absolute budget for this architecture (routed tiers plus a narrower triage input), not a percentage of your own prior measurement — Exercise 2 is the one exercise in this workshop whose target scales with what you personally measured, because it's a pure trim of an otherwise-unchanged single-call architecture; Exercises 3 and 4 introduce new architectures with their own fixed engineering budgets instead.
 

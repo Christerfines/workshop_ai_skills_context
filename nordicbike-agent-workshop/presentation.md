@@ -152,7 +152,7 @@
 | V3 | 5,500 | Two-call subagent handoff (retrieval/triage → resolver), with a minimal typed handoff payload — no full-context dump between them | 2 | Tier 2 + Tier 2 |
 | V4 | 3,800 | Two-call subagent handoff with model routing (Tier 1 triage, Tier 2 resolver); triage's own input narrows further too — only the case text, not the full customer record, which the resolver reads directly | 2 (or 1 for escalation-flagged cases) | Tier 1 (triage) + Tier 2 (resolver) |
 
-- V4 exact split: 1,000 tokens (Tier-1 triage call) + 2,800 tokens (Tier-2 resolver call) = 3,800
+- V4 exact split: 1,400 tokens (Tier-1 triage call, case text only) + 2,400 tokens (Tier-2 resolver call) = 3,800
 - V3 exact split: 2,500 tokens (Tier-2 retrieval/triage call) + 3,000 tokens (Tier-2 resolver call) = 5,500
 - V2 split: a single Tier-3 call of 9,900 tokens
 - Total reduction from V1 to V4: roughly 80% fewer tokens, achieved across three distinct mechanisms, not one trick
@@ -201,6 +201,7 @@
   "serial_number": "AX3-25A-00417",
   "purchase_date": "2025-03-10",
   "warranty_window_end_standard": "2027-03-10",
+  "today_date": "2026-08-14",
   "stated_symptom": "intermittent power loss, bike will not hold charge",
   "candidate_archetype": "symptom_cause_confusion",
   "applicable_policy_sections": ["warranty.md#section-5", "warranty.md#section-4"],

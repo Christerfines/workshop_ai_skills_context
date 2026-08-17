@@ -76,8 +76,8 @@
     V3 and V4 figures are not sizes of any repository file; they are the sum
   of input tokens across the runtime LLM calls a participant's agent makes,
   computed from excerpts/typed payloads assembled from the source files. V4's
-  exact split is 1,000 tokens (Tier-1 triage call) + 2,800 tokens (Tier-2 
-  resolver call) = 3,800. V3's exact split is 2,500 tokens (Tier-2 
+  exact split is 1,400 tokens (Tier-1 triage call, case text only) + 2,400
+  tokens (Tier-2 resolver call) = 3,800. V3's exact split is 2,500 tokens (Tier-2 
   retrieval/triage call) + 3,000 tokens (Tier-2 resolver call) = 5,500. V2's
   split is a single Tier-3 call of 9,900 tokens. These splits must be
   reproduced identically in presentation.md, facilitator-guide.md, and
@@ -525,7 +525,11 @@
   used, number of model calls, and the agent's eligibility decision. This is 
   your baseline to beat." Target metric: measured baseline should read 19,800
   tokens, 1 call, Tier 3. Deliverable: a filled baseline-measurement table
-  (fields: tokens, tier, calls, decision, correct? Y/N). Hints: none (this
+  (fields: tokens, tier, calls, decision, correct? Y/N). Output-shape rule
+  (applies from this exercise on): the agent's output is a customer-facing
+  reply carrying the determination and its citations, not an internal
+  decision memo — Quality Gate item 6 grades that customer-facing text
+  directly. Hints: none (this
   exercise has no optimization step).
   - (e) Target: 500 words (≈667 tokens).
 
@@ -539,9 +543,9 @@
   Exercise 1. Constraint (verbatim): "Reduce the total input context by at 
   least 50% (target: ≤50% of your Exercise 1 measurement; the reference 
   figure is 9,900 tokens) while keeping exactly one model call and 
-  the same model tier. You may not drop any relevant source file entirely if it is 
-  relevant to the case at hand — you must excerpt, not omit, relevant 
-  material. Output quality (correctness of the eligibility decision) must not 
+  the same model tier. You may not drop a source file that is 
+  relevant to this case — excerpt it instead. Files with no bearing on this 
+  case may be dropped entirely. Output quality (correctness of the eligibility decision) must not 
   regress." Target metric: ≤9,900 tokens, 1 call, Tier 3. Deliverable: the
   trimmed prompt plus a short note on which sections were cut and why. Hints:
   only the relevant product's spec and the relevant policy sections are
@@ -573,8 +577,8 @@
   calls — a step down from Exercise 2's Tier 3." Target metric: ≤5,500 tokens, 2 calls, Tier 2 + Tier 2.
   Deliverable: both calls' actual input token counts, plus the typed payload
   JSON actually produced. Hints: the payload should carry structured fields
-  (case ID, product, purchase date, serial, stated symptom, candidate
-  archetype, applicable policy section IDs) — not prose paragraphs. The
+  (case ID, product, purchase date, serial, today's date, stated symptom,
+  candidate archetype, applicable policy section IDs) — not prose paragraphs. The
   resolver may receive the verbatim text of exactly the sections named in
   applicable_policy_sections (a deterministic lookup), but the payload must
   never carry triage's own root-cause conclusion — only observed facts/flags;
@@ -591,7 +595,7 @@
   and skip the resolver call entirely when triage detects an escalation
   trigger. Triage must emit evidence flags only (e.g. water_exposure_reported:
   false), never a root-cause conclusion (e.g. manufacturing_defect: true) —
-  weighing evidence against policy stays the resolver's job. Starting point: V3 output. Constraint (verbatim): "Apply the 
+  weighing evidence against policy stays the resolver's job. Starting point: V3 output, with triage's input narrowed to case text only (no longer the full customer record — the resolver reads that directly). Constraint (verbatim): "Apply the 
   model-routing table: triage calls run on Tier 1, resolver calls run on 
   Tier 2. If the triage subagent detects any escalation trigger from 
   policies/escalation.md, route directly to the human escalation queue and do 
@@ -599,8 +603,8 @@
   case is missing decision-critical information, route to a clarifying-question 
   response instead of calling the resolver — a distinct branch from 
   escalation, not the same outcome. Target ≤3,800 total input tokens across all
-  calls for non-escalated cases." Target metric: ≤3,800 tokens (1,000 Tier-1
-  + 2,800 Tier-2) for non-escalated cases; ~1,000 tokens (Tier-1 only) for
+  calls for non-escalated cases." Target metric: ≤3,800 tokens (1,400 Tier-1
+  + 2,400 Tier-2) for non-escalated cases; ~1,400 tokens (Tier-1 only) for
   escalated cases. Deliverable: routing decision log across all 10 cases
   showing tier used per call and which cases short-circuited to escalation.
   Hints: Cases 6, 7, and 9 are expected to short-circuit.
@@ -907,11 +911,12 @@
   "Q" input: ≥16/20 (80%).
     - Quality Gate — exactly 6 items, each pass/fail: (1) Cites the specific
   policy section number used for the decision. (2) States the eligibility
-  outcome explicitly as one of Eligible / Not Eligible / Escalate / Cannot
-  Determine — Clarify, with a
-  one-sentence justification tied to root cause, not symptom text alone. (3)
-  Confirms purchase date and product identity from the case/customer record
-  before deciding — no assumed facts. (4) Flags and escalates any request
+  outcome explicitly using one of Eligible / Not Eligible / Escalate / Cannot
+  Determine — Clarify (or wording unambiguously equivalent to one of these),
+  with a one-sentence justification tied to root cause, not symptom text alone. (3)
+  The output is grounded in purchase date and product identity extracted from
+  the case/customer record — directly, or via a triage subagent's typed
+  payload — with no facts assumed or invented at any stage. (4) Flags and escalates any request
   matching a policies/escalation.md trigger rather than resolving it directly.
   (5) If information needed for the decision is missing from the case file,
   asks a clarifying question instead of guessing. (6) Response tone is
@@ -1072,6 +1077,7 @@
     "serial_number": "AX3-25A-00417",
     "purchase_date": "2025-03-10",
     "warranty_window_end_standard": "2027-03-10",
+    "today_date": "2026-08-14",
     "stated_symptom": "intermittent power loss, bike will not hold charge",
     "candidate_archetype": "symptom_cause_confusion",
     "applicable_policy_sections": ["warranty.md#section-5",

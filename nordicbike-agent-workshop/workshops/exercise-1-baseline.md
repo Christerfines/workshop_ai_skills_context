@@ -10,6 +10,8 @@ The naive V1 agent concatenates the entire V1 naive context set into one single 
 
 This is a "dump everything" agent in the most literal sense: it does not attempt to judge which files are relevant to Case 1 before including them, it does not summarize or excerpt any file, and it makes exactly one call to a single, frontier-tier model to both read all of that context and produce a final eligibility decision. Nothing about this design is a strawman — this is a realistic, if unoptimized, way many teams' first working agent prototype actually gets built when speed to a first working version is prioritized over context discipline. Recognizing your own instinct to build something like this, and measuring what it actually costs, is the entire point of doing this exercise before touching any optimization technique.
 
+One output-shape rule worth locking in now, since it applies to every exercise from here on: the agent's output is **a customer-facing reply** — the kind of message NordicBike would actually send Anna — carrying the determination and its policy citations, not an internal decision memo. Quality Gate item 6 (tone, later exercises) grades that customer-facing text directly, so building toward the wrong output shape now costs you a rework later.
+
 ## How to Measure, and What Date to Assume
 
 Two things every later exercise depends on getting right here, neither of which the Constraint spells out on its own:

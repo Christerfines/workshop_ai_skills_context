@@ -12,7 +12,7 @@ The V1 agent output from Exercise 1: 19,800 tokens, 1 call, Tier 3, built from t
 
 ## Constraint
 
-"Reduce the total input context by at least 50% (target: ≤50% of your Exercise 1 measurement; the reference figure is 9,900 tokens) while keeping exactly one model call and the same model tier. You may not drop any relevant source file entirely if it is relevant to the case at hand — you must excerpt, not omit, relevant material. Output quality (correctness of the eligibility decision) must not regress."
+"Reduce the total input context by at least 50% (target: ≤50% of your Exercise 1 measurement; the reference figure is 9,900 tokens) while keeping exactly one model call and the same model tier. You may not drop a source file that is relevant to this case — excerpt it instead. Files with no bearing on this case may be dropped entirely. Output quality (correctness of the eligibility decision) must not regress."
 
 ## Target Metric
 

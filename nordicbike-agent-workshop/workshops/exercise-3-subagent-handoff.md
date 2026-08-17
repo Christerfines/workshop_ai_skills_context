@@ -63,6 +63,7 @@ Minimal typed decision payload — reproduced verbatim from the fixed reference 
   "serial_number": "AX3-25A-00417",
   "purchase_date": "2025-03-10",
   "warranty_window_end_standard": "2027-03-10",
+  "today_date": "2026-08-14",
   "stated_symptom": "intermittent power loss, bike will not hold charge",
   "candidate_archetype": "symptom_cause_confusion",
   "applicable_policy_sections": ["warranty.md#section-5", "warranty.md#section-4"],
@@ -78,7 +79,7 @@ Notice what is absent: no file contents, no prose paragraphs, no conversation hi
 
 ## Hints
 
-The payload should carry structured fields — case ID, product, purchase date, serial, stated symptom, candidate archetype, applicable policy section IDs — not prose paragraphs. If you find yourself putting a full sentence of unstructured text into a payload field "just in case," that's usually a sign the triage subagent didn't finish its job of extracting a specific fact.
+The payload should carry structured fields — case ID, product, purchase date, serial, today's date, stated symptom, candidate archetype, applicable policy section IDs — not prose paragraphs. If you find yourself putting a full sentence of unstructured text into a payload field "just in case," that's usually a sign the triage subagent didn't finish its job of extracting a specific fact.
 
 A useful test for whether your payload is actually minimal: could the resolver subagent make a correct, well-cited decision using only the payload, with zero access to any of the original source files? If the answer is no — if the resolver would need to go back and re-read policies/warranty.md or the customer record to fill in something the payload left out — the payload is missing a field, not too large. Conversely, if a field in your payload duplicates information the resolver doesn't actually need to make its decision, that field is a candidate for removal. Getting this balance right, field by field, is the actual skill this exercise is teaching, more so than hitting the 5,500-token number itself.
 

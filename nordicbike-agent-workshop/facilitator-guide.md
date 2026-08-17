@@ -2,9 +2,9 @@
 
 This is the standalone operating manual for whoever runs the NordicBike Agent Optimization Challenge live. It contains everything presentation.md and README.md deliberately omit: verbatim participant-facing exercise prompts, timing checkpoints, and the leaderboard mechanics as an operational procedure rather than a slide summary. This file is not folded into README.md and should not be shared with participants before the workshop, since it links directly to the answer key and adversarial-case definitions that participants must not see in advance.
 
-## Pre-Read Audio — Must Be Emailed Out Before the Session
+## Pre-Read Material — Must Be Emailed Out Before the Session
 
-`pre_read_audio/` in this repository holds seven finished MP3 episodes — a short AI-voiced podcast series that gets participants to the session with shared vocabulary and domain knowledge already in place, so Phase 1 isn't spent decoding unfamiliar terms and Phase 2 isn't the first time anyone's seen the warranty document's structure. **These files do not do their job sitting in the repo — they only work if participants actually listen before they arrive, which means they have to be emailed out, not just linked from a README they may not open.**
+`pre_read_audio/` in this repository holds seven finished MP3 episodes — a short AI-voiced podcast series that gets participants to the session with shared vocabulary and domain knowledge already in place, so Phase 1 isn't spent decoding unfamiliar terms and Phase 2 isn't the first time anyone's seen the warranty document's structure. Every episode also exists as a plain-text article, same content, no dialogue, in `preparation/articles/` — some people would rather read a five-minute page than play a five-minute file. **Send both options.** Neither format does its job sitting in the repo — participants have to actually listen or read before they arrive, which means it has to be emailed out, not just linked from a README they may not open.
 
 | # | Episode | Required? | Runs |
 |---|---|---|---|
@@ -41,7 +41,7 @@ A few additional setup details worth confirming ahead of the session rather than
 - **Model endpoint verification.** Do this well before participants arrive, not as the first live action of Phase 1 — a Tier 1 or Tier 3 endpoint that turns out to be misconfigured or rate-limited is far easier to fix with 30 minutes of buffer than with a room of participants waiting on it. A simple pre-flight check (one trivial call per tier, from a machine on the same network participants will use) catches most of these issues.
 - **Materials for in-person delivery.** If running this in person, prepare a visible countdown timer for each phase and printed or projected copies of the Timing Checkpoints below, since teams that can see the clock self-correct their pace far more often than teams that have to ask the facilitator how much time is left.
 - **A backup plan for a down model tier.** If a tier becomes unreachable mid-session, the fastest recovery is usually to let affected teams substitute the next-available tier temporarily and note the substitution rather than pausing the whole room — a team's cost numbers will be off for that run, but their correctness work and their understanding of the exercise are not lost. Decide this contingency in advance so it doesn't need to be improvised while a room is waiting.
-- **Pre-workshop communication.** Send participants the Prerequisites section of README.md, the repository link, and the pre-read audio from `pre_read_audio/` (see the Pre-Read Audio section above for which episodes and how) at least a day ahead, so no one arrives needing to set up API access, clone the repository, or hear "token" and "model tier" for the first time during Phase 1's 15-minute window. Do not send `presentation.md`'s slides 14–24 or anything from `evaluation/` ahead of time, for the same reason those are held back live.
+- **Pre-workshop communication.** Send participants the Prerequisites section of README.md, the repository link, and the pre-read material — both `pre_read_audio/` and `preparation/articles/` (see the Pre-Read Material section above for which topics and how) — at least a day ahead, so no one arrives needing to set up API access, clone the repository, or hear "token" and "model tier" for the first time during Phase 1's 15-minute window. Do not send `presentation.md`'s slides 14–24 or anything from `evaluation/` ahead of time, for the same reason those are held back live.
 
 ## The 5 Exercise Prompts (verbatim)
 
@@ -49,7 +49,7 @@ These prompts are reproduced byte-for-byte identical to the `## Constraint` text
 
 i. "Run the baseline agent exactly as provided against Case 1. Do not modify it. Record: total input tokens, model tier used, number of model calls, and the agent's eligibility decision. This is your baseline to beat."
 
-ii. "Reduce the total input context by at least 50% (target: ≤50% of your Exercise 1 measurement; the reference figure is 9,900 tokens) while keeping exactly one model call and the same model tier. You may not drop any relevant source file entirely if it is relevant to the case at hand — you must excerpt, not omit, relevant material. Output quality (correctness of the eligibility decision) must not regress."
+ii. "Reduce the total input context by at least 50% (target: ≤50% of your Exercise 1 measurement; the reference figure is 9,900 tokens) while keeping exactly one model call and the same model tier. You may not drop a source file that is relevant to this case — excerpt it instead. Files with no bearing on this case may be dropped entirely. Output quality (correctness of the eligibility decision) must not regress."
 
 iii. "Split your agent into two calls: a triage subagent that extracts structured facts from the case and customer record, and a resolver subagent that makes the eligibility decision. The triage subagent's output to the resolver must be a minimal typed JSON payload — no full-context dumps are permitted between subagents. Target ≤5,500 total input tokens across both calls, at Tier 2 for both calls — a step down from Exercise 2's Tier 3."
 
@@ -57,7 +57,7 @@ iv. "Apply the model-routing table: triage calls run on Tier 1, resolver calls r
 
 v. "Run every one of your 10 case outputs through the 6-item quality gate in evaluation/scoring-rubric.md. Any output that fails even one item is not eligible for leaderboard submission until fixed. Fixing a quality-gate failure must not increase the total input tokens you measured for that case in Exercise 4."
 
-Reference token splits for the two exercises that involve more than one model call, in case a team asks how the target figure breaks down: Exercise 3's V3 target of ≤5,500 tokens splits as 2,500 tokens (Tier-2 retrieval/triage call) + 3,000 tokens (Tier-2 resolver call). Exercise 4's V4 target of ≤3,800 tokens for non-escalated cases splits as 1,000 tokens (Tier-1 triage call) + 2,800 tokens (Tier-2 resolver call); escalated cases stop after the ~1,000-token Tier-1 triage call, since no resolver call is made.
+Reference token splits for the two exercises that involve more than one model call, in case a team asks how the target figure breaks down: Exercise 3's V3 target of ≤5,500 tokens splits as 2,500 tokens (Tier-2 retrieval/triage call) + 3,000 tokens (Tier-2 resolver call). Exercise 4's V4 target of ≤3,800 tokens for non-escalated cases splits as 1,400 tokens (Tier-1 triage call, now reading only the case text — not the full customer record, which the resolver reads directly) + 2,400 tokens (Tier-2 resolver call); escalated cases stop after the ~1,400-token Tier-1 triage call, since no resolver call is made.
 
 A note on delivery: read each prompt to the room exactly as written above at the start of its phase, and keep it visible (on a slide or a shared document) for the duration of that exercise, since teams will want to re-check the exact wording of their constraint partway through rather than relying on memory. Do not answer "does X count as relevant material" questions by expanding the prompt's wording on the spot — point the team back to the exact constraint text and let them make the judgment call themselves; that judgment call is part of what each exercise is teaching, particularly for Exercise 2's "excerpt, don't omit" instruction.
 
@@ -102,6 +102,7 @@ Good pattern — minimal typed payload (build this):
   "serial_number": "AX3-25A-00417",
   "purchase_date": "2025-03-10",
   "warranty_window_end_standard": "2027-03-10",
+  "today_date": "2026-08-14",
   "stated_symptom": "intermittent power loss, bike will not hold charge",
   "candidate_archetype": "symptom_cause_confusion",
   "applicable_policy_sections": ["warranty.md#section-5", "warranty.md#section-4"],

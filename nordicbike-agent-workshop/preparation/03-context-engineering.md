@@ -8,7 +8,7 @@
 
 **Mira Chen:** You've now got the company and the full rulebook in your head — product line, seven-section warranty policy, escalation triggers. Here's the number that should sting a little now that you know how much of that rulebook exists: 19,800 tokens, one model call, the most expensive tier available, for a single support case. Today's episode is about where that number comes from and what you actually do about it.
 
-**Marcus Webb:** Eighteen thousand four hundred tokens is what you get when an agent has no way to know in advance which of the source material is relevant, so it includes all of it. Company background, every product's full specification, every policy document, the customer's whole record, the case file — one prompt, everything in it.
+**Marcus Webb:** Nineteen thousand eight hundred tokens is what you get when an agent has no way to know in advance which of the source material is relevant, so it includes all of it. Company background, every product's full specification, every policy document, the customer's whole record, the case file — one prompt, everything in it.
 
 **Professor Iris Vance:** Let's make that concrete with an analogy, because "19,800 tokens" doesn't mean much until you feel the shape of it. Imagine someone asks you a specific question about one clause in one contract, and instead of pulling that contract off the shelf, you photocopy every folder in the filing cabinet and hand them the whole stack. Somewhere in there is the paragraph they need. You've technically given them everything required to answer — and also made the job much harder and much slower than it had to be.
 

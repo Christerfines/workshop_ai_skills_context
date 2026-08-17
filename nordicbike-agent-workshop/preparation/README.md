@@ -1,9 +1,22 @@
 # Preparation — Pre-Workshop Podcast Series
 
-Seven short podcast *manus* (scripts) meant to be rendered to audio and
-listened to before the Agent Optimization Challenge, so participants arrive
-with shared vocabulary, domain knowledge, and mental models rather than
-meeting everything cold in the room. Each file is one episode.
+Seven short pieces meant to be consumed before the Agent Optimization
+Challenge, so participants arrive with shared vocabulary, domain knowledge,
+and mental models rather than meeting everything cold in the room. Each
+topic comes in **two formats covering identical content** — listen or
+read, participants' choice:
+
+- **Podcast** — the `.md` files at this level are the podcast *manus*
+  (scripts), rendered to audio in [`../pre_read_audio/`](../pre_read_audio/).
+  Three-voice dialogue; see "The cast" below.
+- **Article** — [`articles/`](articles/) has one plain-prose write-up per
+  topic, same numbering, same information, no dialogue framing. For anyone
+  who'd rather read than listen, or wants to skim/search instead of playing
+  a 5–10 minute file.
+
+Point participants at both options in the pre-workshop email — "listen to
+these, or read the text versions, whichever you'd rather" — rather than
+defaulting to just one.
 
 ## The cast
 
@@ -48,13 +61,15 @@ own `README.md`.
 
 ## Episode order
 
-0. [`00-llm-basics-optional.md`](00-llm-basics-optional.md) — **optional.** A 5-minute vocabulary primer (model call, token, context, model tier, JSON/typed payload) for anyone attending who hasn't personally written code that calls a model API before. Skip it if the workshop's stated prerequisite — "comfortable constructing a prompt from multiple source documents, sending it to a model, and reading back a structured response" — already describes you. Send this link specifically to registrants you know are less LLM-experienced, rather than broadcasting it to everyone.
-1. [`01-meet-nordicbike.md`](01-meet-nordicbike.md) — the case, the format, what's expected of you. Required listening; start here if you skipped Episode 0.
-2. [`02-the-domain.md`](02-the-domain.md) — a repository map, not a content walkthrough: what each of the 5 top-level folders (`company/`, `products/`, `policies/`, `customers/`, `cases/`) holds and what kind of question it answers, so you're not discovering the folder structure live. Deliberately stops short of what any document actually says — reading the real content, and judging what's relevant to a case, is Exercise 2's job.
-3. [`03-context-engineering.md`](03-context-engineering.md) — why the naive baseline is so expensive, and how to cut context without cutting correctness.
-4. [`04-subagent-handoff.md`](04-subagent-handoff.md) — splitting one call into a triage/resolver pair, and why a typed payload isn't the same as a smaller dump.
-5. [`05-model-routing.md`](05-model-routing.md) — matching model tier to task difficulty, and when a pipeline should short-circuit to a human instead of a resolver call.
-6. [`06-evaluation-quality-gates.md`](06-evaluation-quality-gates.md) — why cost savings can't buy back correctness, and how the leaderboard actually scores you.
+Each line links both formats — 🎧 the podcast manus, 📄 the article.
+
+0. 🎧 [`00-llm-basics-optional.md`](00-llm-basics-optional.md) · 📄 [`articles/00-llm-basics-optional.md`](articles/00-llm-basics-optional.md) — **optional.** A vocabulary primer (model call, token, context, model tier, JSON/typed payload) for anyone attending who hasn't personally written code that calls a model API before. Skip it if the workshop's stated prerequisite — "comfortable constructing a prompt from multiple source documents, sending it to a model, and reading back a structured response" — already describes you. Send this link specifically to registrants you know are less LLM-experienced, rather than broadcasting it to everyone.
+1. 🎧 [`01-meet-nordicbike.md`](01-meet-nordicbike.md) · 📄 [`articles/01-meet-nordicbike.md`](articles/01-meet-nordicbike.md) — the case, the format, what's expected of you. Required; start here if you skipped Episode 0.
+2. 🎧 [`02-the-domain.md`](02-the-domain.md) · 📄 [`articles/02-the-domain.md`](articles/02-the-domain.md) — a repository map, not a content walkthrough: what each of the 5 top-level folders (`company/`, `products/`, `policies/`, `customers/`, `cases/`) holds and what kind of question it answers, so you're not discovering the folder structure live. Deliberately stops short of what any document actually says — reading the real content, and judging what's relevant to a case, is Exercise 2's job.
+3. 🎧 [`03-context-engineering.md`](03-context-engineering.md) · 📄 [`articles/03-context-engineering.md`](articles/03-context-engineering.md) — why the naive baseline is so expensive, and how to cut context without cutting correctness.
+4. 🎧 [`04-subagent-handoff.md`](04-subagent-handoff.md) · 📄 [`articles/04-subagent-handoff.md`](articles/04-subagent-handoff.md) — splitting one call into a triage/resolver pair, and why a typed payload isn't the same as a smaller dump.
+5. 🎧 [`05-model-routing.md`](05-model-routing.md) · 📄 [`articles/05-model-routing.md`](articles/05-model-routing.md) — matching model tier to task difficulty, and when a pipeline should short-circuit to a human instead of a resolver call.
+6. 🎧 [`06-evaluation-quality-gates.md`](06-evaluation-quality-gates.md) · 📄 [`articles/06-evaluation-quality-gates.md`](articles/06-evaluation-quality-gates.md) — why cost savings can't buy back correctness, and how the leaderboard actually scores you.
 
 ## Who needs Episode 0
 

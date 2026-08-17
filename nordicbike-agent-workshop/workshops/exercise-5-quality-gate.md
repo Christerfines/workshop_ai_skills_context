@@ -8,7 +8,7 @@ This is the first exercise that *scores* your agent against all 10 cases through
 
 ## Starting Point
 
-Your V4 agent's output for all 10 cases: routed per the Exercise 4 model-routing table, targeting ≤3,800 tokens for non-escalated cases and ~1,000 tokens for escalated cases.
+Your V4 agent's output for all 10 cases: routed per the Exercise 4 model-routing table, targeting ≤3,800 tokens for non-escalated cases and ~1,400 tokens for escalated cases.
 
 ## Constraint
 
