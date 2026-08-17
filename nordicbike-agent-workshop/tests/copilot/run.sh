@@ -11,19 +11,29 @@
 #   tests/copilot/run.sh                        # Case 1 only, smoke test
 #   tests/copilot/run.sh --cases all             # full 10-case Exercise 5
 #   tests/copilot/run.sh --target /some/path     # override the working copy location
+#   tests/copilot/run.sh --fresh                 # wipe the working copy and start over
+#                                                 (default: resume — skip any
+#                                                 exercise already captured on disk)
 
 set -euo pipefail
+
+if command -v caffeinate >/dev/null 2>&1 && [ -z "${_PLAYTEST_CAFFEINATED:-}" ]; then
+  export _PLAYTEST_CAFFEINATED=1
+  exec caffeinate -dimsu "$0" "$@"
+fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 CASE_SCOPE_FLAG="case1"
 TARGET_DIR="$REPO_ROOT/../test_workshop/copilot"
+FRESH=0
 
 while [ $# -gt 0 ]; do
   case "$1" in
     --cases) CASE_SCOPE_FLAG="$2"; shift 2 ;;
     --target) TARGET_DIR="$2"; shift 2 ;;
+    --fresh) FRESH=1; shift ;;
     *) echo "Unknown argument: $1" >&2; exit 1 ;;
   esac
 done
@@ -34,10 +44,14 @@ else
   REPORT_SCOPE="Case 1 only (smoke test)"
 fi
 
-echo "== Copying participant-tier content to $TARGET_DIR =="
-rm -rf "$TARGET_DIR"
-mkdir -p "$(dirname "$TARGET_DIR")"
-"$REPO_ROOT/export-participant-repo.sh" "$TARGET_DIR"
+if [ "$FRESH" = "1" ] || [ ! -d "$TARGET_DIR" ]; then
+  echo "== Copying participant-tier content to $TARGET_DIR =="
+  rm -rf "$TARGET_DIR"
+  mkdir -p "$(dirname "$TARGET_DIR")"
+  "$REPO_ROOT/export-participant-repo.sh" "$TARGET_DIR"
+else
+  echo "== Reusing existing working copy at $TARGET_DIR (pass --fresh to start over) =="
+fi
 mkdir -p "$TARGET_DIR/deliverables"
 
 echo
@@ -45,9 +59,13 @@ echo "Before continuing:"
 echo "  1. Open $TARGET_DIR in VS Code with GitHub Copilot Chat (agent mode)."
 echo "  2. Fill in tier -> Copilot model choices in: $SCRIPT_DIR/tier_mapping.md"
 echo "     (mirrors updatenumbers.md Step 5 — there's no fixed mapping to assume)."
-read -r -p "Press Enter once you're ready to start Exercise 1... " _
+read -r -p "Press Enter once you're ready to continue... " _
 
 for N in 1 2 3 4 5; do
+  if [ -s "$TARGET_DIR/deliverables/exercise-$N.md" ]; then
+    echo "== Exercise $N: already captured on disk — skipping (pass --fresh to redo) =="
+    continue
+  fi
   echo
   echo "############################################################"
   echo "  EXERCISE $N of 5"

@@ -6,15 +6,15 @@ Split your agent into two calls: a triage subagent that extracts structured fact
 
 ## Starting Point
 
-Your V2 output from Exercise 2: a single Tier-3 call at ≤9,200 tokens using trimmed, case-relevant excerpts.
+Your V2 output from Exercise 2: a single Tier-3 call at ≤9,900 tokens using trimmed, case-relevant excerpts.
 
 ## Constraint
 
-"Split your agent into two calls: a triage subagent that extracts structured facts from the case and customer record, and a resolver subagent that makes the eligibility decision. The triage subagent's output to the resolver must be a minimal typed JSON payload — no full-context dumps are permitted between subagents. Target ≤5,500 total input tokens across both calls, same model tier as Exercise 2."
+"Split your agent into two calls: a triage subagent that extracts structured facts from the case and customer record, and a resolver subagent that makes the eligibility decision. The triage subagent's output to the resolver must be a minimal typed JSON payload — no full-context dumps are permitted between subagents. Target ≤5,500 total input tokens across both calls, at Tier 2 for both calls — a step down from Exercise 2's Tier 3."
 
 ## Target Metric
 
-**≤5,500 tokens, 2 calls, Tier 2 + Tier 2.** Exact split: 2,500 tokens (Tier-2 retrieval/triage call) + 3,000 tokens (Tier-2 resolver call) = 5,500.
+**≤5,500 tokens, 2 calls, Tier 2 + Tier 2.** Exact split: 2,500 tokens (Tier-2 retrieval/triage call) + 3,000 tokens (Tier-2 resolver call) = 5,500. Unlike Exercise 2's target, this figure is not scaled from your own measurement — it's a fixed absolute budget for this specific architecture (a triage call plus a resolver call, each with its own typed-payload discipline), independent of what your particular V1 or V2 numbers came out to.
 
 ## Deliverable
 
@@ -81,3 +81,5 @@ Notice what is absent: no file contents, no prose paragraphs, no conversation hi
 The payload should carry structured fields — case ID, product, purchase date, serial, stated symptom, candidate archetype, applicable policy section IDs — not prose paragraphs. If you find yourself putting a full sentence of unstructured text into a payload field "just in case," that's usually a sign the triage subagent didn't finish its job of extracting a specific fact.
 
 A useful test for whether your payload is actually minimal: could the resolver subagent make a correct, well-cited decision using only the payload, with zero access to any of the original source files? If the answer is no — if the resolver would need to go back and re-read policies/warranty.md or the customer record to fill in something the payload left out — the payload is missing a field, not too large. Conversely, if a field in your payload duplicates information the resolver doesn't actually need to make its decision, that field is a candidate for removal. Getting this balance right, field by field, is the actual skill this exercise is teaching, more so than hitting the 5,500-token number itself.
+
+One clarification on "zero access to any of the original source files," since it's easy to over-apply: the resolver may still receive the verbatim text of exactly the policy sections named in the payload's `applicable_policy_sections` field — that's a deterministic lookup keyed off a field triage already produced, not a re-read of the whole document, and it's what lets the resolver actually cite and reason over real policy language instead of a summary of it. What the payload must not contain is triage's own conclusion about what those sections mean for this case — root-cause determinations, eligibility calls, or anything else that requires weighing evidence against policy is the resolver's job, not triage's. A payload field like `root_cause_flags: {water_exposure_reported: false}` is a fact triage observed; a field like `manufacturing_defect: true` is a conclusion triage isn't positioned to reach reliably — keep the payload to the former.

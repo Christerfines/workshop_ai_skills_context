@@ -32,7 +32,7 @@ Before the session begins:
 2. Confirm each team has access to Tier 1, Tier 2, and Tier 3 model endpoints — the workshop requires all three tiers to be reachable from Exercise 1 onward, since the naive baseline agent runs on Tier 3 and later exercises route across all three.
 3. Confirm each team can view `workshops/exercise-1-baseline.md` through `workshops/exercise-5-quality-gate.md`, but **NOT** `evaluation/expected-results.md` or `evaluation/adversarial-cases.md`, before Phase 5. These two files are the answer key and the adversarial-archetype definitions respectively — showing either before scoring defeats the exercise.
 4. Project `presentation.md` slides 1–13 before Phase 2 begins.
-5. Hold slides 14–24 until after Exercise 1's baseline measurement is complete, so that teams measure the 18,400-token baseline themselves before seeing the reference V1→V4 progression table and later material. Revealing the progression table early gives away the target numbers for every subsequent exercise before teams have earned them through measurement.
+5. Hold slides 14–24 until after Exercise 1's baseline measurement is complete, so that teams measure the 19,800-token baseline themselves before seeing the reference V1→V4 progression table and later material. Revealing the progression table early gives away the target numbers for every subsequent exercise before teams have earned them through measurement.
 
 A few additional setup details worth confirming ahead of the session rather than discovering live, in roughly the order they matter:
 
@@ -49,13 +49,13 @@ These prompts are reproduced byte-for-byte identical to the `## Constraint` text
 
 i. "Run the baseline agent exactly as provided against Case 1. Do not modify it. Record: total input tokens, model tier used, number of model calls, and the agent's eligibility decision. This is your baseline to beat."
 
-ii. "Reduce the total input context by at least 50% (target ≤9,200 tokens) while keeping exactly one model call and the same model tier. You may not drop any file category entirely if it is relevant to the case at hand — you must excerpt, not omit, relevant material. Output quality (correctness of the eligibility decision) must not regress."
+ii. "Reduce the total input context by at least 50% (target: ≤50% of your Exercise 1 measurement; the reference figure is 9,900 tokens) while keeping exactly one model call and the same model tier. You may not drop any relevant source file entirely if it is relevant to the case at hand — you must excerpt, not omit, relevant material. Output quality (correctness of the eligibility decision) must not regress."
 
-iii. "Split your agent into two calls: a triage subagent that extracts structured facts from the case and customer record, and a resolver subagent that makes the eligibility decision. The triage subagent's output to the resolver must be a minimal typed JSON payload — no full-context dumps are permitted between subagents. Target ≤5,500 total input tokens across both calls, same model tier as Exercise 2."
+iii. "Split your agent into two calls: a triage subagent that extracts structured facts from the case and customer record, and a resolver subagent that makes the eligibility decision. The triage subagent's output to the resolver must be a minimal typed JSON payload — no full-context dumps are permitted between subagents. Target ≤5,500 total input tokens across both calls, at Tier 2 for both calls — a step down from Exercise 2's Tier 3."
 
-iv. "Apply the model-routing table: triage calls run on Tier 1, resolver calls run on Tier 2. If the triage subagent detects any escalation trigger from policies/escalation.md, route directly to the human escalation queue and do not make a resolver call at all. Target ≤3,800 total input tokens across all calls for non-escalated cases."
+iv. "Apply the model-routing table: triage calls run on Tier 1, resolver calls run on Tier 2. If the triage subagent detects any escalation trigger from policies/escalation.md, route directly to the human escalation queue and do not make a resolver call at all. If the triage subagent instead finds the case is missing decision-critical information, route to a clarifying-question response instead of calling the resolver — a distinct branch from escalation, not the same outcome. Target ≤3,800 total input tokens across all calls for non-escalated cases."
 
-v. "Run every one of your 10 case outputs through the 6-item quality gate in evaluation/scoring-rubric.md. Any output that fails even one item is not eligible for leaderboard submission until fixed. Fixing a quality-gate failure must not increase your token budget above the Exercise 4 targets."
+v. "Run every one of your 10 case outputs through the 6-item quality gate in evaluation/scoring-rubric.md. Any output that fails even one item is not eligible for leaderboard submission until fixed. Fixing a quality-gate failure must not increase the total input tokens you measured for that case in Exercise 4."
 
 Reference token splits for the two exercises that involve more than one model call, in case a team asks how the target figure breaks down: Exercise 3's V3 target of ≤5,500 tokens splits as 2,500 tokens (Tier-2 retrieval/triage call) + 3,000 tokens (Tier-2 resolver call). Exercise 4's V4 target of ≤3,800 tokens for non-escalated cases splits as 1,000 tokens (Tier-1 triage call) + 2,800 tokens (Tier-2 resolver call); escalated cases stop after the ~1,000-token Tier-1 triage call, since no resolver call is made.
 
@@ -245,7 +245,7 @@ Once every team's capture sheet is filled in (or as far as you've gotten by 01:5
 ```
 Compute a workshop leaderboard from the per-case data below, using this exact formula:
 
-- BCP = 220.8
+- BCP = 237.6
 - CostPoints(call) = tier_weight × (tokens_in_call / 1000), tier_weight: T1=1, T2=4, T3=12
 - TotalCostPoints(case) = sum of CostPoints across that case's calls
 - CostEfficiency(case) = max(0, 1 - TotalCostPoints(case)/BCP)

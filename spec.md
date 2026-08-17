@@ -39,35 +39,37 @@
   customers/*.md file, and the one relevant cases/*.md file. Throughout this
   spec, the canonical worked example for this bundle is Case 1 (Anna 
   Karlsson). Summed at the token targets given below, this bundle is exactly
-  18,400 tokens.
+  19,800 tokens.
   - V1→V4 token-load progression (fixed, reproduce byte-for-byte everywhere it
   recurs — README, presentation.md, facilitator-guide.md, all workshops/*.md,
   evaluation/scoring-rubric.md):
 
   Version: V1
-  Tokens: 18,400
+  Tokens: 19,800
   Mechanism: Dump every KB file + full customer record + full case text into
   one call
   Calls: 1  
   Model tier(s): Tier 3 (frontier)
   ────────────────────────────────────────
   Version: V2            
-  Tokens: 9,200 (exactly 50% of V1)
+  Tokens: 9,900 (exactly 50% of V1)
   Mechanism: Same single call, but only relevant excerpts (not full files)
   Calls: 1  
   Model tier(s): Tier 3
   ────────────────────────────────────────
   Version: V3            
   Tokens: 5,500
-  Mechanism: Two-call subagent handoff (retrieval/triage → resolver), still
-  full-context handoff between them
+  Mechanism: Two-call subagent handoff (retrieval/triage → resolver), with a
+  minimal typed handoff payload — no full-context dump between them
   Calls: 2
   Model tier(s): Tier 2 + Tier 2
   ────────────────────────────────────────
   Version: V4
   Tokens: 3,800
-  Mechanism: Two-call subagent handoff with minimal typed payload + model
-  routing
+  Mechanism: Two-call subagent handoff with model routing (Tier 1 triage,
+  Tier 2 resolver); triage's own input narrows further too — it receives
+  only the case text, not the full customer record, which the resolver reads
+  directly
   Calls: 2 (or 1 for escalation-flagged cases)
   Model tier(s): Tier 1 (triage) + Tier 2 (resolver)
 
@@ -77,7 +79,7 @@
   exact split is 1,000 tokens (Tier-1 triage call) + 2,800 tokens (Tier-2 
   resolver call) = 3,800. V3's exact split is 2,500 tokens (Tier-2 
   retrieval/triage call) + 3,000 tokens (Tier-2 resolver call) = 5,500. V2's
-  split is a single Tier-3 call of 9,200 tokens. These splits must be
+  split is a single Tier-3 call of 9,900 tokens. These splits must be
   reproduced identically in presentation.md, facilitator-guide.md, and
   workshops/exercise-3-subagent-handoff.md / exercise-4-model-routing.md.
 
@@ -394,7 +396,7 @@
   +46 70 123 45 67, Malmö. Purchase: Aurora X3, order NB-ORD-20250310-001,
   purchased 2025-03-10, 34,900 SEK, serial AX3-25A-00417.
   - (e) Target: 600 words (≈800 tokens). (This is the file that must sum,
-  together with the rest of the V1 bundle, to exactly 18,400 tokens — see the
+  together with the rest of the V1 bundle, to exactly 19,800 tokens — see the
   global conventions block.)
 
   (b) customers/erik-svensson.md
@@ -509,7 +511,7 @@
 
   (a) workshops/exercise-1-baseline.md
 
-  - (b) Establishes the naive V1 agent and its measured baseline (18,400
+  - (b) Establishes the naive V1 agent and its measured baseline (19,800
   tokens, Tier 3, 1 call) as the fixed reference point every later exercise is
   scored against.
   - (c) Schema as above.
@@ -521,7 +523,7 @@
   participant-facing prompt): "Run the baseline agent exactly as provided 
   against Case 1. Do not modify it. Record: total input tokens, model tier 
   used, number of model calls, and the agent's eligibility decision. This is 
-  your baseline to beat." Target metric: measured baseline should read 18,400
+  your baseline to beat." Target metric: measured baseline should read 19,800
   tokens, 1 call, Tier 3. Deliverable: a filled baseline-measurement table
   (fields: tokens, tier, calls, decision, correct? Y/N). Hints: none (this
   exercise has no optimization step).
@@ -535,15 +537,19 @@
   - (d) Goal: reduce input tokens by 50% relative to the V1 baseline without
   changing model tier or call count. Starting point: V1 agent output from
   Exercise 1. Constraint (verbatim): "Reduce the total input context by at 
-  least 50% (target ≤9,200 tokens) while keeping exactly one model call and 
-  the same model tier. You may not drop any file category entirely if it is 
+  least 50% (target: ≤50% of your Exercise 1 measurement; the reference 
+  figure is 9,900 tokens) while keeping exactly one model call and 
+  the same model tier. You may not drop any relevant source file entirely if it is 
   relevant to the case at hand — you must excerpt, not omit, relevant 
   material. Output quality (correctness of the eligibility decision) must not 
-  regress." Target metric: ≤9,200 tokens, 1 call, Tier 3. Deliverable: the
+  regress." Target metric: ≤9,900 tokens, 1 call, Tier 3. Deliverable: the
   trimmed prompt plus a short note on which sections were cut and why. Hints:
   only the relevant product's spec and the relevant policy sections are
   needed; company/about.md and company/support-contacts.md are never
-  decision-relevant and can be dropped entirely.
+  decision-relevant and can be dropped entirely. Exception: policies/shipping.md
+  is never eligibility-relevant but two of its facts (repair turnaround,
+  NordicBike-paid warranty shipping) must still be excerpted, since a correct
+  response communicates next steps, not just the verdict.
   - (e) Target: 550 words (≈733 tokens).
 
   (c) workshops/exercise-3-subagent-handoff.md
@@ -563,12 +569,16 @@
   case and customer record, and a resolver subagent that makes the eligibility
   decision. The triage subagent's output to the resolver must be a minimal 
   typed JSON payload — no full-context dumps are permitted between subagents. 
-  Target ≤5,500 total input tokens across both calls, same model tier as 
-  Exercise 2." Target metric: ≤5,500 tokens, 2 calls, Tier 2 + Tier 2.
+  Target ≤5,500 total input tokens across both calls, at Tier 2 for both
+  calls — a step down from Exercise 2's Tier 3." Target metric: ≤5,500 tokens, 2 calls, Tier 2 + Tier 2.
   Deliverable: both calls' actual input token counts, plus the typed payload
   JSON actually produced. Hints: the payload should carry structured fields
   (case ID, product, purchase date, serial, stated symptom, candidate
-  archetype, applicable policy section IDs) — not prose paragraphs.
+  archetype, applicable policy section IDs) — not prose paragraphs. The
+  resolver may receive the verbatim text of exactly the sections named in
+  applicable_policy_sections (a deterministic lookup), but the payload must
+  never carry triage's own root-cause conclusion — only observed facts/flags;
+  weighing evidence against policy is the resolver's job.
   - (e) Target: 700 words (≈933 tokens).
 
   (d) workshops/exercise-4-model-routing.md
@@ -579,11 +589,16 @@
   - (c) Schema as above.
   - (d) Goal: route the triage call to Tier 1 and the resolver call to Tier 2,
   and skip the resolver call entirely when triage detects an escalation
-  trigger. Starting point: V3 output. Constraint (verbatim): "Apply the 
+  trigger. Triage must emit evidence flags only (e.g. water_exposure_reported:
+  false), never a root-cause conclusion (e.g. manufacturing_defect: true) —
+  weighing evidence against policy stays the resolver's job. Starting point: V3 output. Constraint (verbatim): "Apply the 
   model-routing table: triage calls run on Tier 1, resolver calls run on 
   Tier 2. If the triage subagent detects any escalation trigger from 
   policies/escalation.md, route directly to the human escalation queue and do 
-  not make a resolver call at all. Target ≤3,800 total input tokens across all
+  not make a resolver call at all. If the triage subagent instead finds the 
+  case is missing decision-critical information, route to a clarifying-question 
+  response instead of calling the resolver — a distinct branch from 
+  escalation, not the same outcome. Target ≤3,800 total input tokens across all
   calls for non-escalated cases." Target metric: ≤3,800 tokens (1,000 Tier-1
   + 2,800 Tier-2) for non-escalated cases; ~1,000 tokens (Tier-1 only) for
   escalated cases. Deliverable: routing decision log across all 10 cases
@@ -603,8 +618,8 @@
   V4 output. Constraint (verbatim): "Run every one of your 10 case outputs 
   through the 6-item quality gate in evaluation/scoring-rubric.md. Any output 
   that fails even one item is not eligible for leaderboard submission until 
-  fixed. Fixing a quality-gate failure must not increase your token budget 
-  above the Exercise 4 targets." Target metric: 10/10 cases pass all 6
+  fixed. Fixing a quality-gate failure must not increase 
+  the total input tokens you measured for that case in Exercise 4." Target metric: 10/10 cases pass all 6
   checklist items, token budget unchanged from Exercise 4. Deliverable:
   quality-gate pass/fail table for all 10 cases. Hints: none.
   - (e) Target: 500 words (≈667 tokens).
@@ -637,7 +652,7 @@
   that date; additionally in-scope under SB-2025-11 since root cause (per her
   own account) is not water ingress. Location: Malmö. Archetype encoded: A
   (Symptom-Cause Confusion — positive instance).
-  - (e) Target: 750 words (≈1,000 tokens). (Part of the fixed 18,400-token V1
+  - (e) Target: 750 words (≈1,000 tokens). (Part of the fixed 19,800-token V1
   bundle.)
 
   (b) cases/case-02-erik-svensson.md
@@ -892,19 +907,21 @@
   "Q" input: ≥16/20 (80%).
     - Quality Gate — exactly 6 items, each pass/fail: (1) Cites the specific
   policy section number used for the decision. (2) States the eligibility
-  outcome explicitly as one of Eligible / Not Eligible / Escalate, with a
+  outcome explicitly as one of Eligible / Not Eligible / Escalate / Cannot
+  Determine — Clarify, with a
   one-sentence justification tied to root cause, not symptom text alone. (3)
   Confirms purchase date and product identity from the case/customer record
   before deciding — no assumed facts. (4) Flags and escalates any request
   matching a policies/escalation.md trigger rather than resolving it directly.
   (5) If information needed for the decision is missing from the case file,
   asks a clarifying question instead of guessing. (6) Response tone is
-  professional, empathetic, concise, and in the customer's stated language.
+  professional, empathetic, concise, and in the language the customer's
+  message is primarily written in.
     - Cost-Weight Table: reproduced identically from the global conventions
   block (Tier 1 = 1, Tier 2 = 4, Tier 3 = 12 per 1,000 tokens).
     - Budget-Points Formula, exact and final:
-        - BCP (Baseline Cost Points) = 12 × 18.4 = 220.8 (Tier-3 weight × V1's
-  18,400 tokens ÷ 1,000, one call).
+        - BCP (Baseline Cost Points) = 12 × 19.8 = 237.6 (Tier-3 weight × V1's
+  19,800 tokens ÷ 1,000, one call).
       - CostPoints(call) = TierWeight × (tokens_in_call ÷ 1000).
       - TotalCostPoints(case) = Σ CostPoints(call) over every model call used
   to resolve that case.
@@ -1141,19 +1158,19 @@
     i. Phase 1 — Kickoff & Case Introduction (15 min) — bullets: intro
   NordicBike case; state learning objectives; form teams.
     j. Phase 2 — Baseline Run & Diagnosis (20 min) — Exercise 1 — bullets: run
-  naive V1 agent on Case 1; measure 18,400 tokens / 1 call / Tier 3; diagnose
+  naive V1 agent on Case 1; measure 19,800 tokens / 1 call / Tier 3; diagnose
   waste sources.
     k. Phase 3 — Context & Handoff Optimization (45 min) — Exercises 2–3 —
-  bullets: build V2 (≤9,200 tokens, context trimming); build V3 (≤5,500
+  bullets: build V2 (≤9,900 tokens, context trimming); build V3 (≤5,500
   tokens, subagent handoff with minimal payload).
     l. Phase 4 — Model Routing & Quality Gate (30 min) — Exercises 4–5 —
   bullets: build V4 (≤3,800 tokens, Tier 1 + Tier 2 routing, escalation
   short-circuit); run the 6-item quality gate on all 10 cases.
     m. Phase 5 — Leaderboard & Debrief (10 min) — bullets: final scoring run
   across all teams; leaderboard reveal; retro discussion.
-    n. Meet the Naive Agent — V1 Baseline — 18,400 tokens, 1 call, Tier 3,
+    n. Meet the Naive Agent — V1 Baseline — 19,800 tokens, 1 call, Tier 3,
   dumps every KB file + full customer record + full case text.
-    o. The V1→V4 Token-Load Progression — chart/table: V1 18,400 → V2 9,200 →
+    o. The V1→V4 Token-Load Progression — chart/table: V1 19,800 → V2 9,900 →
   V3 5,500 → V4 3,800 tokens (reproduce the full table from the global
   conventions block, including the mechanism/calls/tier columns).
     p. Subagent Handoff — The Bad Pattern — reproduce the fixed "bad pattern"
@@ -1176,7 +1193,7 @@
   evaluation/scoring-rubric.md.
   22. Scoring Rubric & Budget-Points Formula — reproduce the 5-category 0–20
   rubric and the full FinalScore = (Q × 70) + (M × 30) − Penalty formula with
-  the BCP = 220.8 constant, verbatim from evaluation/scoring-rubric.md.
+  the BCP = 237.6 constant, verbatim from evaluation/scoring-rubric.md.
   23. Leaderboard Mechanics — bullets: each team submits their V4 agent's
   output for all 10 cases; facilitator scores against
   evaluation/expected-results.md and the rubric; FinalScore computed per
@@ -1216,9 +1233,10 @@
         i. "Run the baseline agent exactly as provided against Case 1. Do not
   modify it. Record: total input tokens, model tier used, number of model
   calls, and the agent's eligibility decision. This is your baseline to beat."
-      ii. "Reduce the total input context by at least 50% (target ≤9,200
-  tokens) while keeping exactly one model call and the same model tier. You
-  may not drop any file category entirely if it is relevant to the case at
+      ii. "Reduce the total input context by at least 50% (target: ≤50% of
+  your Exercise 1 measurement; the reference figure is 9,900 tokens) while
+  keeping exactly one model call and the same model tier. You
+  may not drop any relevant source file entirely if it is relevant to the case at
   hand — you must excerpt, not omit, relevant material. Output quality
   (correctness of the eligibility decision) must not regress."
       iii. "Split your agent into two calls: a triage subagent that extracts
@@ -1260,8 +1278,8 @@
 
   - (b) Pedagogical function: none — this is a maintainer-only runbook, not
   participant- or facilitator-during-a-session material. It exists because
-  every fixed token/cost figure in this spec (18,400 / 9,200 / 5,500 / 3,800
-  tokens, BCP = 220.8, and everything derived from them) is deliberately
+  every fixed token/cost figure in this spec (19,800 / 9,900 / 5,500 / 3,800
+  tokens, BCP = 237.6, and everything derived from them) is deliberately
   reproduced byte-for-byte across many files for pedagogical consistency
   within a single session, but is not guaranteed to stay an honest
   reflection of the actual V1 bundle's real size as content elsewhere in the
@@ -1278,7 +1296,7 @@
   mathematical functions of V1) while treating V3's and V4's triage/resolver
   splits as independently fixed design choices, not V1-derived; an
   exhaustive location-by-location list of every file that must be edited in
-  the same pass for each of the 18,400 / 9,200 / 5,500 / 3,800 / 220.8
+  the same pass for each of the 19,800 / 9,900 / 5,500 / 3,800 / 237.6
   figures; refreshing the Tier 1/2/3 → concrete Copilot model mapping (this
   step is run every time, independent of whether any token figure changed);
   re-verifying cross-file consistency (Constraint-block/prompt matching,

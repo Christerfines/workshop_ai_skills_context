@@ -18,7 +18,7 @@
 
 **Mira Chen:** Next word, and it comes up constantly: "token."
 
-**Professor Iris Vance:** A token is roughly a small chunk of text — sometimes a whole word, often a piece of a word, sometimes just punctuation. You don't need to know the exact rule for how text gets split into tokens; what you need is the intuition that more text means more tokens, and models are priced and measured by token count, both for what you send in and what you get back. When this workshop talks about a prompt being "18,400 tokens," that's just a way of saying "this much text, measured in the model's own units," which happens to be a more precise and more cost-relevant measure than counting words or characters.
+**Professor Iris Vance:** A token is roughly a small chunk of text — sometimes a whole word, often a piece of a word, sometimes just punctuation. You don't need to know the exact rule for how text gets split into tokens; what you need is the intuition that more text means more tokens, and models are priced and measured by token count, both for what you send in and what you get back. When this workshop talks about a prompt being "19,800 tokens," that's just a way of saying "this much text, measured in the model's own units," which happens to be a more precise and more cost-relevant measure than counting words or characters.
 
 **Marcus Webb:** And the practical reason it matters: tokens cost money, and more tokens generally means a slower response too. So "reduce tokens" in this workshop always means the same thing — send the model less text — while "don't lose correctness" means: be careful about which text you cut.
 

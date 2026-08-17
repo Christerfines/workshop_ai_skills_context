@@ -4,11 +4,11 @@
 
 ## What this file is for
 
-Every token count, cost weight, and derived score in this workshop (18,400 / 9,200 / 5,500 / 3,800 tokens; BCP = 220.8; the worked-example CostEfficiency figures; the Q/M/FinalScore reference benchmarks) is a **fixed pedagogical constant** — spec.md is explicit that these are reproduced byte-for-byte everywhere they recur, precisely so every team is measured against the same, comparable numbers during a live session. They are not supposed to drift session to session just because someone edited a paragraph in `policies/warranty.md`.
+Every token count, cost weight, and derived score in this workshop (19,800 / 9,900 / 5,500 / 3,800 tokens; BCP = 237.6; the worked-example CostEfficiency figures; the Q/M/FinalScore reference benchmarks) is a **fixed pedagogical constant** — spec.md is explicit that these are reproduced byte-for-byte everywhere they recur, precisely so every team is measured against the same, comparable numbers during a live session. They are not supposed to drift session to session just because someone edited a paragraph in `policies/warranty.md`.
 
 But "fixed" doesn't mean "correct forever." Two things go stale on their own:
 
-1. **The numbers can quietly drift from reality.** The 18,400-token V1 baseline is supposed to represent what a real naive agent actually costs to run the full V1 context bundle against Case 1. If the underlying files grow (as happened during earlier content passes on this repo — the bundle is currently measuring closer to ~19,800 tokens by word count, roughly 8% over the fixed figure), the "fixed" number stops being an honest reference point and starts being a made-up one.
+1. **The numbers can quietly drift from reality.** The V1 baseline is supposed to represent what a real naive agent actually costs to run the full V1 context bundle against Case 1. If the underlying files grow, the "fixed" number stops being an honest reference point and starts being a made-up one — this is exactly what had happened by the time of the 2026-08-17 re-baseline logged in Step 7 below: the bundle had drifted to ~19,800 tokens by the words×1.333 fallback against a fixed figure that still read 18,400, roughly 8% over threshold.
 2. **The tier-to-model mapping is not fixed, and shouldn't be written into fixed documents.** Every participant-facing and facilitator-facing document in this repo deliberately refers only to "Tier 1 / Fast-cheap", "Tier 2 / Balanced", "Tier 3 / Frontier" — never a specific model name — because this workshop targets GitHub Copilot, whose available model lineup changes over time and by plan. Someone still has to decide, for each actual delivery of the workshop, which concrete Copilot model a team should pick when an exercise says "Tier 1." That mapping lives only in this file, not in any fixed document.
 
 This file is a **checklist and procedure, not a script.** Running it means working through the steps below — in a GitHub Copilot agent session, in this repository — and hand-verifying or hand-editing each location listed. Nothing here auto-executes; the point is that the list of "everywhere this number lives" stops being something a maintainer has to reconstruct from memory (or discover the hard way mid-session).
@@ -36,29 +36,31 @@ The V1 naive context set (fixed, defined in every copy of the global conventions
 - `customers/anna-karlsson.md`
 - `cases/case-01-anna-karlsson.md`
 
-In your GitHub Copilot agent session, concatenate these 12 files exactly as the naive V1 agent would (no excerpting) and get an actual token count from Copilot's own context/token accounting for that request — not a word-count estimate. Record that number as **N_new**.
+In your GitHub Copilot agent session, concatenate these 13 files exactly as the naive V1 agent would (no excerpting) and get an actual token count from Copilot's own context/token accounting for that request — not a word-count estimate. Record that number as **N_new**.
 
 If you don't have a way to get a real tokenizer count from the session, the fallback is `words × 1.333` (this repo's own approximation ratio, stated in spec.md's global conventions) — but treat that as a rough check, not a replacement for a real count, since it can be off by several percent in either direction depending on how token-dense the actual prose is.
 
+**A footnote on measurement methodology, worth knowing before you trust N_new:** if the "session" doing the counting is a coding agent's own headless or agentic mode (Claude Code, Copilot's agent mode, or similar) rather than a plain chat completion, its reported input-token count typically bundles in that tool's own system prompt and tool/function definitions — which can inflate the number well above what a raw API call against just the V1 bundle would show. This is a real, observed effect, not a hypothetical: `tests/claude/run.sh`'s playtest harness measured Exercise 1's baseline via headless `claude -p` and got 45,225 tokens against an (at-the-time) 18,400 reference — part of that gap was this overhead, part was the bundle's own genuine growth (the reason for this re-baseline). If your counting method is tool-based rather than a raw API call, note that explicitly next to N_new so the next maintainer doesn't mistake tool overhead for genuine content drift.
+
 ## Step 2 — Decide whether to re-baseline
 
-- If **N_new** is within roughly 5% of the current fixed figure (18,400), leave the fixed numbers alone. Minor variance is expected and already anticipated in `workshops/exercise-1-baseline.md`'s Hints section — don't chase noise.
+- If **N_new** is within roughly 5% of the current fixed figure (19,800, as of the 2026-08-17 re-baseline logged in Step 7), leave the fixed numbers alone. Minor variance is expected and already anticipated in `workshops/exercise-1-baseline.md`'s Hints section — don't chase noise.
 - If **N_new** is off by more than that, proceed to Step 3 and re-derive everything from **N_new**.
 
 ## Step 3 — Recompute the derived figures
 
 Everything below is a fixed function of the V1 baseline. If you're re-baselining, recompute all of it from **N_new** — don't hand-adjust individual downstream numbers, or you'll reintroduce exactly the kind of inconsistency this file exists to prevent.
 
-| Figure | Formula | Current value (from 18,400) |
+| Figure | Formula | Current value (from 19,800, as of the 2026-08-17 re-baseline) |
 |---|---|---|
-| V1 baseline | measured (Step 1) | 18,400 tokens |
-| V2 target | exactly 50% of V1 | 9,200 tokens |
+| V1 baseline | measured (Step 1) | 19,800 tokens |
+| V2 target | exactly 50% of V1 | 9,900 tokens |
 | V3 target | fixed split, independent of V1: 2,500 (triage) + 3,000 (resolver) | 5,500 tokens |
 | V4 target (non-escalated) | fixed split, independent of V1: 1,000 (triage) + 2,800 (resolver) | 3,800 tokens |
 | V4 target (escalated) | triage call only, no resolver | ~1,000 tokens |
-| BCP (Baseline Cost Points) | Tier-3 weight (12) × V1 ÷ 1,000 | 12 × 18.4 = 220.8 |
-| Worked non-escalated V4 CostEfficiency | max(0, 1 − ((1×1.0)+(4×2.8))/BCP) | ≈ 0.945 |
-| Worked escalated V4 CostEfficiency | max(0, 1 − (1×1.0)/BCP) | ≈ 0.995 |
+| BCP (Baseline Cost Points) | Tier-3 weight (12) × V1 ÷ 1,000 | 12 × 19.8 = 237.6 |
+| Worked non-escalated V4 CostEfficiency | max(0, 1 − ((1×1.0)+(4×2.8))/BCP) | ≈ 0.949 |
+| Worked escalated V4 CostEfficiency | max(0, 1 − (1×1.0)/BCP) | ≈ 0.996 |
 
 **Important:** the V3 and V4 splits (2,500+3,000 and 1,000+2,800) are *not* derived from V1 — they're independently fixed design choices about how a two-call pipeline should divide its budget between triage and resolver. Only the V2 target (exactly 50% of V1) and BCP (12 × V1 ÷ 1,000) actually depend on the V1 number. If you re-baseline V1, V2 and BCP (and everything BCP feeds) change; V3 and V4's splits do not, unless you deliberately choose to redesign them too.
 
@@ -68,16 +70,16 @@ The Reference Benchmarks (`V1 naive baseline: Q≈0.6, M≈0.0 → FinalScore≈
 
 If you changed any figure in Step 3, every location below must be updated **in the same pass**, or the "reproduced byte-for-byte" guarantee spec.md makes breaks and different files will disagree with each other mid-session.
 
-### 18,400 (V1 baseline)
+### V1 baseline (currently 19,800)
 - `README.md` — Overview paragraph
 - `presentation.md` — "Meet the Naive Agent" slide, "Phase 2" slide, "The V1→V4 Token-Load Progression" table + BCP formula line
 - `facilitator-guide.md` — Setup Instructions item 5, "Reference token splits" note
-- `workshops/exercise-1-baseline.md` — Goal, Target Metric, Hints
+- `workshops/exercise-1-baseline.md` — Goal, How to Measure note, Target Metric, Hints
 - `workshops/exercise-2-context-reduction.md` — Starting Point
 - `evaluation/scoring-rubric.md` — Budget-Points Formula (BCP line)
-- `spec.md` — global conventions block (also update the "exactly 18,400 tokens" claim about the V1 bundle)
+- `spec.md` — global conventions block (also update the "exactly N tokens" claim about the V1 bundle)
 
-### 9,200 (V2 target)
+### V2 target (currently 9,900)
 - `presentation.md` — Phase 3 slide, V1→V4 table, V2 split line
 - `facilitator-guide.md` — Exercise Prompt ii (verbatim — see caution below)
 - `workshops/exercise-1-baseline.md` — Goal paragraph (mentions V2's target in passing)
@@ -101,7 +103,7 @@ If you changed any figure in Step 3, every location below must be updated **in t
 - `workshops/exercise-5-quality-gate.md` — Starting Point
 - `spec.md` — global conventions block, Exercise 4 section
 
-### 220.8 (BCP) and everything computed from it
+### BCP (currently 237.6) and everything computed from it
 - `presentation.md` — Budget-Points Formula slide, Leaderboard slide's reference benchmarks
 - `evaluation/scoring-rubric.md` — Budget-Points Formula, Worked example, Reference Benchmarks, the "CostEfficiency cannot go negative" note (no number to change there, but re-read it against the new BCP for sense)
 - `spec.md` — global conventions block
@@ -135,4 +137,16 @@ Add a line below noting the date, the old and new V1 figure (if changed), and wh
 
 | Date | V1 baseline | Tier 1 model | Tier 2 model | Tier 3 model | Notes |
 |---|---|---|---|---|---|
-| _(no re-baseline run yet — 18,400 is the original fixed figure from initial content generation)_ | 18,400 | — | — | — | — |
+| _(initial content generation)_ | 18,400 | — | — | — | Original fixed figure, never re-verified |
+| 2026-08-17 | 19,800 | _(not evaluated this pass)_ | _(not evaluated this pass)_ | _(not evaluated this pass)_ | Re-baseline driven by `tests/claude/run.sh`'s playtest audit (see `tests/reports/20260817T085835Z-claude.md`, Finding #3). N_new measured via the words×1.333 fallback (14,889 words → 19,847, rounded to 19,800) — the actual V1 bundle is 13 files, not 12 (also fixed in Step 1's file list above); no live tokenizer session was run. V2/BCP recomputed per Step 3 (9,900 / 237.6); V3/V4 splits left untouched per Step 3's own "independently fixed" note. All Step 4 locations updated in this same pass, plus Decision-1 Mechanism-column fix to the V1→V4 table (V3 now correctly shows the minimal typed payload; V4's mechanism is model routing + triage narrowing to case-text-only). Next real delivery should still get a live tokenizer count per Step 1's primary method, not rely on this fallback indefinitely. |
+
+## Step 8 — Re-verify date-window boundaries (do this every time, independent of Step 1–4)
+
+`evaluation/expected-results.md` pins every warranty-window calculation to a single fixed "today" (declared once, in its opening paragraph), and `workshops/exercise-1-baseline.md`'s "How to Measure, and What Date to Assume" note mirrors that same date into participant-visible material. Both must agree, and both go stale on their own as real time passes — a case whose eligibility depends on a boundary close to the pinned date can silently flip from what the answer key says once enough real time has elapsed, even though nothing in the repository's content changed.
+
+Before every delivery:
+
+1. Decide the date to pin for this delivery (usually just today's actual date, unless you have a reason to pin something else).
+2. Update that date in both `evaluation/expected-results.md`'s opening paragraph and `workshops/exercise-1-baseline.md`'s "How to Measure, and What Date to Assume" note — these two must match.
+3. Re-check every case in `evaluation/expected-results.md` whose eligibility reasoning depends on a date-window boundary against the newly-pinned date. Case 10 (Gustav Åkesson) is the known example — a PowerPack purchased 2025-11-01, with a 12-month standalone-battery term under Section 3, is only Eligible while today is before 2026-11-01; deliver after that date without re-checking and the key will say Eligible when the honest answer is Not Eligible.
+4. If any case's outcome flips, update that case's `evaluation/expected-results.md` entry and note the flip here in Step 7's changelog table (add a column or a Notes entry) so the history shows when and why a "fixed" answer actually changed.

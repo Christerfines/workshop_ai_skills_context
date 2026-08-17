@@ -29,6 +29,8 @@ Default working copies land at `../../test_workshop/<lane>/` relative to this fi
 
 Reports land in `tests/reports/<UTC-timestamp>-<lane>.md`, committed to this repo — that's the artifact worth keeping; the working copies are scratch and safe to delete after a run (`rm -rf ../../test_workshop`).
 
+**A footnote on measurement methodology.** The Claude lane's token counts come from headless `claude -p`'s own reported `usage` — which bundles in that CLI's system prompt and tool-definition overhead, not just the content the test agent actually constructed. Treat any "Measured" figure in a report as a tool-based measurement, not a raw-API one, and don't be surprised when it runs meaningfully higher than the fixed pedagogical reference figures in `spec.md` (see `updatenumbers.md` Step 1's matching footnote) — that gap is partly this effect and partly genuine content drift; a report worth trusting should say which.
+
 ## Tier → model mapping used by the Claude lane
 
 Fixed for this tool (unlike the workshop's own Copilot mapping, which is deliberately not fixed — see `updatenumbers.md`):

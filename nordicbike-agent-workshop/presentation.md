@@ -98,15 +98,15 @@
 ## Phase 2 — Baseline Run & Diagnosis (20 min) — Exercise 1
 
 - Run naive V1 agent on Case 1
-- Measure 18,400 tokens / 1 call / Tier 3
+- Measure 19,800 tokens / 1 call / Tier 3
 - Diagnose waste sources
 - Identify which file categories the naive agent pulled in that the case didn't actually need
 - This diagnosis is what every later exercise's optimization is measured against
-- A team's own baseline number is what they beat, not the 18,400-token reference figure
+- A team's own baseline number is what they beat, not the 19,800-token reference figure
 
 ## Phase 3 — Context & Handoff Optimization (45 min) — Exercises 2–3
 
-- Build V2 (≤9,200 tokens, context trimming)
+- Build V2 (≤9,900 tokens, context trimming)
 - Build V3 (≤5,500 tokens, subagent handoff with minimal payload)
 - V2 keeps one call and excerpts rather than omits relevant material
 - V3 introduces a second call — a triage subagent handing a typed payload to a resolver
@@ -135,7 +135,7 @@
 
 ## Meet the Naive Agent — V1 Baseline
 
-- 18,400 tokens, 1 call, Tier 3
+- 19,800 tokens, 1 call, Tier 3
 - Dumps every KB file + full customer record + full case text
 - No excerpting, no triage, no routing — everything goes into a single frontier-model call
 - This is the reference point every subsequent exercise's target is defined relative to
@@ -147,14 +147,14 @@
 
 | Version | Tokens | Mechanism | Calls | Model Tier(s) |
 |---|---|---|---|---|
-| V1 | 18,400 | Dump every KB file + full customer record + full case text into one call | 1 | Tier 3 (frontier) |
-| V2 | 9,200 (exactly 50% of V1) | Same single call, but only relevant excerpts (not full files) | 1 | Tier 3 |
-| V3 | 5,500 | Two-call subagent handoff (retrieval/triage → resolver), still full-context handoff between them | 2 | Tier 2 + Tier 2 |
-| V4 | 3,800 | Two-call subagent handoff with minimal typed payload + model routing | 2 (or 1 for escalation-flagged cases) | Tier 1 (triage) + Tier 2 (resolver) |
+| V1 | 19,800 | Dump every KB file + full customer record + full case text into one call | 1 | Tier 3 (frontier) |
+| V2 | 9,900 (exactly 50% of V1) | Same single call, but only relevant excerpts (not full files) | 1 | Tier 3 |
+| V3 | 5,500 | Two-call subagent handoff (retrieval/triage → resolver), with a minimal typed handoff payload — no full-context dump between them | 2 | Tier 2 + Tier 2 |
+| V4 | 3,800 | Two-call subagent handoff with model routing (Tier 1 triage, Tier 2 resolver); triage's own input narrows further too — only the case text, not the full customer record, which the resolver reads directly | 2 (or 1 for escalation-flagged cases) | Tier 1 (triage) + Tier 2 (resolver) |
 
 - V4 exact split: 1,000 tokens (Tier-1 triage call) + 2,800 tokens (Tier-2 resolver call) = 3,800
 - V3 exact split: 2,500 tokens (Tier-2 retrieval/triage call) + 3,000 tokens (Tier-2 resolver call) = 5,500
-- V2 split: a single Tier-3 call of 9,200 tokens
+- V2 split: a single Tier-3 call of 9,900 tokens
 - Total reduction from V1 to V4: roughly 80% fewer tokens, achieved across three distinct mechanisms, not one trick
 - Each mechanism (excerpting, handoff discipline, model routing) is introduced by exactly one exercise, in order
 
@@ -261,13 +261,13 @@
 - (5) If information needed for the decision is missing from the case file, asks a clarifying question instead of guessing
 - (6) Response tone is professional, empathetic, concise, and in the customer's stated language
 - Any single failed item makes that case ineligible for leaderboard submission until fixed
-- Fixing a failed item must not push token usage back above the Exercise 4 targets
+- Fixing a failed item must not push token usage back above what the team itself measured in Exercise 4
 - Item 4 (escalation) trips up more teams than any other item — a dropped compensation demand fails it even if the eligibility reasoning is sound
 
 ## Scoring Rubric & Budget-Points Formula
 
 - Per-Case Rubric (0–20 points), five categories scored 0–4 each: Correct Eligibility Decision; Root-Cause Grounding; Policy Citation Accuracy; Escalation/Scope Judgment; Clarity & Tone
-- BCP (Baseline Cost Points) = 12 × 18.4 = 220.8
+- BCP (Baseline Cost Points) = 12 × 19.8 = 237.6
 - CostPoints(call) = TierWeight × (tokens_in_call ÷ 1000)
 - TotalCostPoints(case) = Σ CostPoints(call) over every model call used to resolve that case
 - CostEfficiency(case) = max(0, 1 − TotalCostPoints(case) / BCP)

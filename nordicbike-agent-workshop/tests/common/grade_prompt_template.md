@@ -7,7 +7,7 @@ You are auditing a playtest of the "Agent Optimization Challenge" workshop. An A
 - A Target Metric that looks unreachable (or trivially loose) given what the Constraint actually requires.
 - A Deliverable format that doesn't match what the Constraint asks for.
 - Anything in the test agent's own "Notes & Friction" sections that points at a real wording problem rather than the agent's own mistake — distinguish these explicitly, since a friction note can be either.
-- Anything about the fixed token figures (18,400 / 9,200 / 5,500 / 3,800) that the measured numbers below call into question — including measurement-methodology effects (e.g. headless-CLI overhead vs. a raw API call) worth a footnote in `updatenumbers.md`, as distinct from the workshop's actual instructions being wrong.
+- Anything about the fixed token figures (19,800 / 9,900 / 5,500 / 3,800) that the measured numbers below call into question — including measurement-methodology effects (e.g. headless-CLI overhead vs. a raw API call) worth a footnote in `updatenumbers.md`, as distinct from the workshop's actual instructions being wrong.
 
 Produce a single markdown report with this structure:
 1. One-paragraph verdict: does the workshop work end-to-end as written, for a competent agent given nothing but the participant materials?

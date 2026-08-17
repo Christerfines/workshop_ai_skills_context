@@ -2,7 +2,7 @@
 
 ## Goal
 
-Run the provided naive V1 agent against Case 1 (Anna Karlsson) and record its token count, model tier, call count, and whether it reaches the correct eligibility outcome. This establishes the fixed reference point — 18,400 tokens, Tier 3, 1 call — that every later exercise in this workshop is measured against. Every subsequent exercise's target (V2's ≤9,200 tokens, V3's ≤5,500, V4's ≤3,800) is defined as a reduction relative to whatever number you record here, so getting an accurate, honest baseline measurement in this exercise matters more than it might first appear — a sloppy or inflated baseline makes every later exercise look like a bigger win than it actually is, and a deflated one makes later exercises unfairly hard to hit.
+Run the provided naive V1 agent against Case 1 (Anna Karlsson) and record its token count, model tier, call count, and whether it reaches the correct eligibility outcome. This establishes the fixed reference point — 19,800 tokens, Tier 3, 1 call — that every later exercise in this workshop is measured against. Every subsequent exercise's target (V2's ≤9,900 tokens, V3's ≤5,500, V4's ≤3,800) is defined as a reduction relative to whatever number you record here, so getting an accurate, honest baseline measurement in this exercise matters more than it might first appear — a sloppy or inflated baseline makes every later exercise look like a bigger win than it actually is, and a deflated one makes later exercises unfairly hard to hit.
 
 ## Starting Point
 
@@ -10,13 +10,21 @@ The naive V1 agent concatenates the entire V1 naive context set into one single 
 
 This is a "dump everything" agent in the most literal sense: it does not attempt to judge which files are relevant to Case 1 before including them, it does not summarize or excerpt any file, and it makes exactly one call to a single, frontier-tier model to both read all of that context and produce a final eligibility decision. Nothing about this design is a strawman — this is a realistic, if unoptimized, way many teams' first working agent prototype actually gets built when speed to a first working version is prioritized over context discipline. Recognizing your own instinct to build something like this, and measuring what it actually costs, is the entire point of doing this exercise before touching any optimization technique.
 
+## How to Measure, and What Date to Assume
+
+Two things every later exercise depends on getting right here, neither of which the Constraint spells out on its own:
+
+**Measuring tokens.** Use your tool's own reported input-token count for the request, if it exposes one — that is the number to record. If it doesn't, fall back to the words × 1.333 approximation (this repo's own standard ratio). Either way, apply one inclusion rule consistently: **count only the context you constructed** — the concatenated V1 file set — **and exclude your own tool's system prompt, tool or function definitions, and any scaffolding it injects automatically.** A coding agent's own headless or agentic mode will often report a total that bundles in that overhead; that inflated number is not what 19,800 refers to, and comparing it directly against the fixed reference will make your baseline look far worse than it is. If you can't isolate your constructed context from your tool's own overhead, say so plainly next to your recorded number rather than reporting the inflated figure unqualified — a documented uncertainty is more useful to your team than a wrong-looking win or a wrong-looking loss.
+
+**Assumed date.** Where a case's eligibility depends on elapsed time (a warranty window, a promotional date range), assume today's date is **2026-08-14** for every calculation in this workshop, regardless of the actual calendar date you're running this on. Every date-window figure in this repository was authored against that fixed date; using the real date instead can silently change which cases are eligible.
+
 ## Constraint
 
 "Run the baseline agent exactly as provided against Case 1. Do not modify it. Record: total input tokens, model tier used, number of model calls, and the agent's eligibility decision. This is your baseline to beat."
 
 ## Target Metric
 
-Measured baseline should read **18,400 tokens, 1 call, Tier 3**.
+Measured baseline should read **19,800 tokens, 1 call, Tier 3**.
 
 ## Deliverable
 
@@ -28,4 +36,4 @@ A filled baseline-measurement table with the following fields: tokens, tier, cal
 
 ## Hints
 
-None — this exercise has no optimization step. Your job here is purely to measure and record, not to improve anything yet. Resist the urge to start trimming context; that begins in Exercise 2. If your measured token count comes out noticeably different from 18,400, double-check that you have included every file in the V1 naive context set exactly once, in full, with nothing excerpted or summarized — a mismatch is more often a bundling mistake than a meaningful difference in how your particular model or tokenizer counts tokens, though minor tokenizer-level variation of a few percent either way is expected and not a cause for concern.
+None — this exercise has no optimization step. Your job here is purely to measure and record, not to improve anything yet. Resist the urge to start trimming context; that begins in Exercise 2. If your measured token count comes out noticeably different from 19,800, double-check that you have included every file in the V1 naive context set exactly once, in full, with nothing excerpted or summarized — a mismatch is more often a bundling mistake than a meaningful difference in how your particular model or tokenizer counts tokens, though minor tokenizer-level variation of a few percent either way is expected and not a cause for concern.

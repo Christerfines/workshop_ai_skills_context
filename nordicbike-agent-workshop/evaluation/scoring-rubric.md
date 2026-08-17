@@ -21,11 +21,11 @@ Each case is scored out of 20 points across five categories, each scored 0–4:
 Every case output must be checked against all 6 of the following items. Any single failure makes that case ineligible for leaderboard submission until fixed:
 
 1. Cites the specific policy section number used for the decision.
-2. States the eligibility outcome explicitly as one of Eligible / Not Eligible / Escalate, with a one-sentence justification tied to root cause, not symptom text alone.
+2. States the eligibility outcome explicitly as one of Eligible / Not Eligible / Escalate / Cannot Determine — Clarify, with a one-sentence justification tied to root cause, not symptom text alone.
 3. Confirms purchase date and product identity from the case/customer record before deciding — no assumed facts.
 4. Flags and escalates any request matching a policies/escalation.md trigger rather than resolving it directly.
 5. If information needed for the decision is missing from the case file, asks a clarifying question instead of guessing.
-6. Response tone is professional, empathetic, concise, and in the customer's stated language.
+6. Response tone is professional, empathetic, concise, and in the language the customer's message is primarily written in.
 
 ## Cost-Weight Table
 
@@ -37,7 +37,7 @@ Every case output must be checked against all 6 of the following items. Any sing
 
 ## Budget-Points Formula
 
-- **BCP (Baseline Cost Points)** = 12 × 18.4 = **220.8** (Tier-3 weight × V1's 18,400 tokens ÷ 1,000, one call).
+- **BCP (Baseline Cost Points)** = 12 × 19.8 = **237.6** (Tier-3 weight × V1's 19,800 tokens ÷ 1,000, one call).
 - **CostPoints(call)** = TierWeight × (tokens_in_call ÷ 1000).
 - **TotalCostPoints(case)** = Σ CostPoints(call) over every model call used to resolve that case.
 - **CostEfficiency(case)** = max(0, 1 − TotalCostPoints(case) / BCP).
@@ -46,7 +46,7 @@ Every case output must be checked against all 6 of the following items. Any sing
 - **Penalty** = 10 × (number of cases with a critical adversarial-archetype failure, as defined in evaluation/adversarial-cases.md "must not" clauses).
 - **FinalScore** = round((Q × 70) + (M × 30) − Penalty, 1), clamped to the range [0, 100].
 
-Worked example using the fixed V4 figures from the global token-load progression: a non-escalated V4 case costs TotalCostPoints = (1 × 1.0) + (4 × 2.8) = 1 + 11.2 = 12.2. CostEfficiency for that case = max(0, 1 − 12.2/220.8) ≈ 0.945. An escalated V4 case (Tier-1 triage only, ≈1,000 tokens) costs TotalCostPoints = 1 × 1.0 = 1.0, CostEfficiency ≈ max(0, 1 − 1.0/220.8) ≈ 0.995.
+Worked example using the fixed V4 figures from the global token-load progression: a non-escalated V4 case costs TotalCostPoints = (1 × 1.0) + (4 × 2.8) = 1 + 11.2 = 12.2. CostEfficiency for that case = max(0, 1 − 12.2/237.6) ≈ 0.949. An escalated V4 case (Tier-1 triage only, ≈1,000 tokens) costs TotalCostPoints = 1 × 1.0 = 1.0, CostEfficiency ≈ max(0, 1 − 1.0/237.6) ≈ 0.996.
 
 ## Reference Benchmarks
 

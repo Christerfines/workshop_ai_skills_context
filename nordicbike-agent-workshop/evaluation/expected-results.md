@@ -70,7 +70,7 @@ Reasoning: purchased 2026-05-01, well within the 24-month window — the sensor 
 
 ## Case 07 — Ingrid Dahl
 
-- **Eligibility Outcome:** Cannot Determine
+- **Eligibility Outcome:** Cannot Determine — Clarify
 - **Policy Section(s) Cited:** none (insufficient information to cite a section)
 - **Root-Cause Determination:** Cannot be determined — no product, purchase date, or serial on file or provided
 - **Escalation Flag:** N
@@ -81,7 +81,7 @@ Reasoning: no product model, purchase date, or serial number given in the messag
 
 ## Case 08 — Oskar Bergman
 
-- **Eligibility Outcome:** Cannot Determine without clarification
+- **Eligibility Outcome:** Cannot Determine — Clarify
 - **Policy Section(s) Cited:** none stated as final (Section 2 and Section 1 are the two candidate branches, not yet resolved)
 - **Root-Cause Determination:** Ambiguous — could be normal brake-pad wear (Section 2) or a hydraulic/caliper defect (Section 1)
 - **Escalation Flag:** N

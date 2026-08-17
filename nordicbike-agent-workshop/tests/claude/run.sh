@@ -10,12 +10,24 @@
 #   tests/claude/run.sh                        # Case 1 only, smoke test
 #   tests/claude/run.sh --cases all             # full 10-case Exercise 5
 #   tests/claude/run.sh --target /some/path     # override the working copy location
+#   tests/claude/run.sh --fresh                 # wipe the working copy and start over
+#                                                 (default: resume — skip any
+#                                                 exercise whose deliverable
+#                                                 already exists on disk)
 #
 # Real Anthropic API spend happens here — five (or more) headless `claude -p`
 # calls playing the participant, plus nested per-tier calls the test agent
-# makes itself, plus one grading call at the end.
+# makes itself, plus one grading call at the end. This can run 20-40+
+# minutes unattended, so it re-execs itself under `caffeinate` (if available)
+# to stop the machine sleeping mid-run and silently truncating a response —
+# that's the #1 way an unattended run actually fails.
 
 set -euo pipefail
+
+if command -v caffeinate >/dev/null 2>&1 && [ -z "${_PLAYTEST_CAFFEINATED:-}" ]; then
+  export _PLAYTEST_CAFFEINATED=1
+  exec caffeinate -dimsu "$0" "$@"
+fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
@@ -23,11 +35,13 @@ DRIVER_MODEL="claude-sonnet-5"
 
 CASE_SCOPE_FLAG="case1"
 TARGET_DIR="$REPO_ROOT/../test_workshop/claude"
+FRESH=0
 
 while [ $# -gt 0 ]; do
   case "$1" in
     --cases) CASE_SCOPE_FLAG="$2"; shift 2 ;;
     --target) TARGET_DIR="$2"; shift 2 ;;
+    --fresh) FRESH=1; shift ;;
     *) echo "Unknown argument: $1" >&2; exit 1 ;;
   esac
 done
@@ -42,14 +56,22 @@ else
   REPORT_SCOPE="Case 1 only (smoke test)"
 fi
 
-echo "== Copying participant-tier content to $TARGET_DIR ==" >&2
-rm -rf "$TARGET_DIR"
-mkdir -p "$(dirname "$TARGET_DIR")"
-"$REPO_ROOT/export-participant-repo.sh" "$TARGET_DIR" >&2
+if [ "$FRESH" = "1" ] || [ ! -d "$TARGET_DIR" ]; then
+  echo "== Copying participant-tier content to $TARGET_DIR ==" >&2
+  rm -rf "$TARGET_DIR"
+  mkdir -p "$(dirname "$TARGET_DIR")"
+  "$REPO_ROOT/export-participant-repo.sh" "$TARGET_DIR" >&2
+else
+  echo "== Reusing existing working copy at $TARGET_DIR (pass --fresh to start over) ==" >&2
+fi
 
 mkdir -p "$TARGET_DIR/deliverables"
 
 for N in 1 2 3 4 5; do
+  if [ -s "$TARGET_DIR/deliverables/exercise-$N.md" ]; then
+    echo "== Exercise $N: already have a deliverable on disk — skipping (pass --fresh to redo) ==" >&2
+    continue
+  fi
   echo "== Exercise $N: running headless $DRIVER_MODEL session in $TARGET_DIR ==" >&2
 
   if [ "$N" = "1" ]; then
