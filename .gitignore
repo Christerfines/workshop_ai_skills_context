@@ -1,0 +1,5 @@
+## Ephemeral working copies produced by nordicbike-agent-workshop/tests/*/run.sh
+## (playtest scratch space — the report in tests/reports/ is the artifact
+## worth keeping, not this).
+/test_workshop/
+.DS_Store

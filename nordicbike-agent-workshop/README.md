@@ -44,6 +44,7 @@ This repository contains everything needed to run and participate in the worksho
 - **facilitator-guide.md** — The standalone facilitator operating manual: setup, exact exercise prompts, timing, and leaderboard procedure.
 - **updatenumbers.md** — Maintainer runbook for re-verifying fixed token/cost figures and refreshing the tier-to-Copilot-model mapping between sessions.
 - **export-participant-repo.sh** — Maintainer script that generates the participant-facing distribution repo from this one; run before every session.
+- **tests/** — Maintainer playtest harness: runs an AI agent through all 5 exercises against a real participant-tier export (Claude lane fully automated, Copilot lane semi-automated), grades the result against `evaluation/`, and reports both whether the agent succeeded and whether the workshop material itself has a wording or target problem. See `tests/README.md`.
 
 Two of these directories deserve a specific note on access: evaluation/expected-results.md and evaluation/adversarial-cases.md are facilitator-only and must not be shown to participants before Phase 5, since they contain the answer key and the definitions of the adversarial patterns the leaderboard scoring checks for — see the Facilitator-Only Instructions section below for where the operational detail on this lives.
 <!-- PARTICIPANT-EXPORT:EXCLUDE-END -->

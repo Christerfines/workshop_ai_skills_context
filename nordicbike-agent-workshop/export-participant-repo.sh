@@ -25,7 +25,10 @@
 #
 # What is deliberately NOT copied (facilitator-only / maintainer-only):
 #   evaluation/expected-results.md, evaluation/adversarial-cases.md,
-#   facilitator-guide.md, presentation.md, updatenumbers.md,
+#   facilitator-guide.md, presentation.md, updatenumbers.md, tests/ (the
+#   playtest harness — it reads the answer key to grade runs, and this
+#   script is itself the "copy" step tests/claude/run.sh and
+#   tests/copilot/run.sh call, so it can't very well ship itself),
 #   export-participant-repo.sh (this script itself), spec.md (lives outside
 #   this repo already), .git, .DS_Store.
 #
@@ -50,6 +53,8 @@ PARTICIPANT_PATHS=(
   "workshops"
   ".github"
   "evaluation/scoring-rubric.md"
+  "preparation"
+  "pre_read_audio"
 )
 
 if [ -e "$TARGET_DIR" ]; then
@@ -114,5 +119,6 @@ echo "  evaluation/adversarial-cases.md"
 echo "  facilitator-guide.md"
 echo "  presentation.md"
 echo "  updatenumbers.md"
+echo "  tests/"
 echo ""
 echo "Review the output before handing it to anyone or pushing it anywhere — this script never pushes to a remote itself."
