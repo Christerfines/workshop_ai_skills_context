@@ -1,0 +1,51 @@
+{
+  "generated_from": "maintainer_repo",
+  "purpose": "hidden_customer_index",
+  "customers": [
+    {
+      "customer_id": "NB-CUST-10042",
+      "name": "Erik Svensson",
+      "source": "erik-svensson.md"
+    },
+    {
+      "customer_id": "NB-CUST-10043",
+      "name": "Lena Björk",
+      "source": "lena-bjork.md"
+    },
+    {
+      "customer_id": "NB-CUST-10044",
+      "name": "Johan Lindqvist",
+      "source": "johan-lindqvist.md"
+    },
+    {
+      "customer_id": "NB-CUST-10045",
+      "name": "Sara Nilsson",
+      "source": "sara-nilsson.md"
+    },
+    {
+      "customer_id": "NB-CUST-10046",
+      "name": "Mikael Ström",
+      "source": "mikael-strom.md"
+    },
+    {
+      "customer_id": "NB-CUST-10047",
+      "name": "Ingrid Dahl",
+      "source": "ingrid-dahl.md"
+    },
+    {
+      "customer_id": "NB-CUST-10048",
+      "name": "Oskar Bergman",
+      "source": "oskar-bergman.md"
+    },
+    {
+      "customer_id": "NB-CUST-10049",
+      "name": "Freja Holm",
+      "source": "freja-holm.md"
+    },
+    {
+      "customer_id": "NB-CUST-10050",
+      "name": "Gustav Åkesson",
+      "source": "gustav-akesson.md"
+    }
+  ]
+}

@@ -91,6 +91,12 @@ for path in "${PARTICIPANT_PATHS[@]}"; do
   cp -R "$src" "$dest"
 done
 
+# Keep any maintainer-only customer JSON indices out of the participant export.
+# The participant-facing workshop should only expose the Markdown customer
+# records, even if this repo also carries a hidden JSON aggregation for
+# maintainer/testing use.
+find "$TARGET_DIR/customers" -maxdepth 1 -type f -name '*.json' -delete
+
 echo "Deriving participant README.md (stripping facilitator/maintainer-only spans) ..."
 awk '
   /<!-- PARTICIPANT-EXPORT:EXCLUDE-START -->/ { skip=1; next }

@@ -34,6 +34,9 @@ This repository contains everything needed to run and participate in the worksho
 - **products/** — Full specifications for all NordicBike products: Aurora X3, Fjord Cargo, Vinter Pro, PowerPack batteries, and accessories.
 - **policies/** — Warranty, returns, shipping, and escalation policy documents; the ground truth for every eligibility decision.
 - **customers/** — Customer records (contact info and purchase history) for the 10 customers whose cases appear in this workshop.
+<!-- PARTICIPANT-EXPORT:EXCLUDE-START -->
+- **customers/hidden-customers*.json** — Maintainer-only JSON index of the customer list; used for internal tooling and hidden from participants.
+<!-- PARTICIPANT-EXPORT:EXCLUDE-END -->
 - **cases/** — The 10 customer support case files participants' agents must resolve.
 - **workshops/** — The 5 exercise files that structure the workshop, in order.
 - **.github/prompts/** — Empty Copilot prompt-file scaffolds for the subagent prompts participants build in Exercise 3.

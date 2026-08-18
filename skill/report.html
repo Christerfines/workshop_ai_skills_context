@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>NordicBike Agent Optimization Challenge — Participant Report</title>
+<style>
+  body { font-family: Segoe UI, Arial, sans-serif; margin: 24px; color: #1a1a1a; background: #fafafa; }
+  h1 { font-size: 1.4em; margin-bottom: 4px; }
+  h2 { font-size: 1.05em; margin: 22px 0 6px; border-bottom: 2px solid #2b6cb0; padding-bottom: 2px; }
+  .sub { color: #555; margin-bottom: 18px; font-size: 0.9em; }
+  table { border-collapse: collapse; width: 100%; margin-bottom: 10px; font-size: 0.82em; }
+  th, td { border: 1px solid #ccc; padding: 4px 6px; text-align: left; }
+  th { background: #2b6cb0; color: #fff; }
+  tr:nth-child(even) { background: #f0f4f9; }
+  .pass { color: #1a7f37; font-weight: bold; }
+  .fail { color: #c0392b; font-weight: bold; }
+  .tiers { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+  .tier-card { flex: 1; min-width: 200px; border: 1px solid #ccc; border-radius: 6px; padding: 8px 10px; background: #fff; font-size: 0.85em; }
+  .tier-card b { color: #2b6cb0; }
+  .metrics { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 6px; }
+  .metric { background: #fff; border: 1px solid #ccc; border-radius: 6px; padding: 6px 10px; font-size: 0.85em; }
+  code { background: #eef; padding: 1px 4px; border-radius: 3px; }
+  footer { margin-top: 20px; font-size: 0.75em; color: #777; }
+</style>
+</head>
+<body>
+
+<h1>NordicBike Agent Optimization Challenge — Participant Report</h1>
+<div class="sub">Case load: 10 cases · Baseline reference: 19,800 tokens, 1 call, Tier 3 · Assumed date: 2026-08-14</div>
+
+<h2>Model Tiers</h2>
+<div class="tiers">
+  <div class="tier-card"><b>Tier 1 — Fast/cheap</b><br>Cost weight: 1 / 1,000 tokens.<br>Used for: cheap, high-volume, low-complexity tasks — e.g. triage/fact-extraction from a case file. Doesn't need to weigh evidence or reach conclusions.</div>
+  <div class="tier-card"><b>Tier 2 — Balanced</b><br>Cost weight: 4 / 1,000 tokens.<br>Used for: the resolver call — applying policy, weighing root-cause evidence, and reaching the eligibility decision. Needs stronger reasoning than triage.</div>
+  <div class="tier-card"><b>Tier 3 — Frontier</b><br>Cost weight: 12 / 1,000 tokens.<br>Used only in the V1 naive baseline and V2 (single-call, unsplit architecture) — the most capable and most expensive tier, used because the whole task (read everything + decide) is dumped on one call.</div>
+</div>
+
+<h2>Exercise Progression (Case 1 — Anna Karlsson)</h2>
+<table>
+<tr><th>Version</th><th>Exercise</th><th>Tokens</th><th>Calls</th><th>Tier(s)</th><th>Decision</th></tr>
+<tr><td>V1</td><td>1 — Baseline</td><td>≈19,847</td><td>1</td><td>Tier 3</td><td>Eligible (§1 + §5)</td></tr>
+<tr><td>V2</td><td>2 — Context Reduction</td><td>≈1,562 (−92%)</td><td>1</td><td>Tier 3</td><td>Eligible (§1 + §5)</td></tr>
+<tr><td>V3</td><td>3 — Subagent Handoff</td><td>≈1,470</td><td>2</td><td>Tier 2 + Tier 2</td><td>Eligible (§1 + §5)</td></tr>
+<tr><td>V4</td><td>4 — Model Routing</td><td>≈3,800</td><td>2</td><td>Tier 1 (triage) + Tier 2 (resolver)</td><td>Eligible (§1 + §5)</td></tr>
+</table>
+
+<h2>Why the Token Count Drops V1 → V4</h2>
+<table>
+<tr><th>Step</th><th>Tokens</th><th>What actually changed</th></tr>
+<tr><td>V1 → V2</td><td>19,847 → 1,562 (−92%)</td><td>Same 1 call, same Tier 3 — only the <b>input content</b> changed. V1 dumps every KB file in full (all 5 products, all 4 policies, full customer record, company pages). V2 keeps only the excerpts the decision actually depends on (relevant product facts, 3 warranty sections, 2 shipping facts, ID-only customer facts) and drops files with no bearing on the case (company/about.md, other products, returns.md) entirely. This is pure context curation — no architecture change.</td></tr>
+<tr><td>V2 → V3</td><td>1,562 → 1,470 (≈ flat)</td><td>The call count changes (1 → 2) but total tokens barely move, because the <b>same curated facts</b> are now split across a triage call and a resolver call instead of one call — no new content is added, and the handoff between them is a small typed JSON payload (facts only), not a second copy of the source files. The token count is flat here because V2 was already lean; the real gain in this step is architectural (separable, reusable subagents), not a token cut.</td></tr>
+<tr><td>V3 → V4</td><td>1,470 → ≈3,800 budget (case-by-case), but <b>cost</b> drops sharply</td><td>Two things move in opposite directions: (1) triage's own input <b>narrows further</b> — it now reads only the case text, not the full customer record (the resolver reads that directly instead), which is a genuine token cut; (2) the fixed architecture budget in the exercise (2,500+3,000=5,500 for V3 vs 1,400+2,400=3,800 for V4) is a larger allowance than what this particular clean case needed, so raw token totals aren't directly comparable case-by-case — the real lever in this step is <b>tier routing</b>: triage moves from Tier 2 (weight 4) to Tier 1 (weight 1), so the same-sized triage call now costs roughly a quarter as much, even where token counts are similar. V4 also adds the escalate/clarify short-circuits, which skip the resolver call entirely for 4 of the 10 cases — cutting cost to near-zero for those cases.</td></tr>
+</table>
+<p class="sub"><b>Summary of the four levers, one per exercise:</b> V1→V2 = <i>less content</i> (context curation). V2→V3 = <i>same content, split into reusable calls</i> (subagent handoff). V3→V4 = <i>cheaper model per call</i> (tier routing) <i>+ skip calls entirely when possible</i> (short-circuiting). Token count alone under-tells the V3→V4 story — the cost-weight table above is what actually explains most of that step's savings.</p>
+
+<h2>Exercise 4 — Routing Log (all 10 cases)</h2>
+<table>
+<tr><th>Case</th><th>Triage Tier</th><th>Triage Tok</th><th>Resolver?</th><th>Resolver Tier</th><th>Resolver Tok</th><th>Total</th><th>Escalated?</th><th>Decision</th></tr>
+<tr><td>01 Anna</td><td>T1</td><td>1,400</td><td>Yes</td><td>T2</td><td>2,400</td><td>3,800</td><td>No</td><td>Eligible</td></tr>
+<tr><td>02 Erik</td><td>T1</td><td>1,400</td><td>Yes</td><td>T2</td><td>2,400</td><td>3,800</td><td>No</td><td>Not Eligible (§4i)</td></tr>
+<tr><td>03 Lena</td><td>T1</td><td>1,400</td><td>Yes</td><td>T2</td><td>2,400</td><td>3,800</td><td>No</td><td>Eligible</td></tr>
+<tr><td>04 Johan</td><td>T1</td><td>1,400</td><td>Yes</td><td>T2</td><td>2,400</td><td>3,800</td><td>No</td><td>Not Eligible (expired)</td></tr>
+<tr><td>05 Sara</td><td>T1</td><td>1,400</td><td>Yes</td><td>T2</td><td>2,400</td><td>3,800</td><td>No</td><td>Eligible (§6 promo)</td></tr>
+<tr><td>06 Mikael</td><td>T1</td><td>1,400</td><td>No</td><td>—</td><td>—</td><td>1,400</td><td><b>Yes</b></td><td>Repair eligible; compensation+legal escalated</td></tr>
+<tr><td>07 Ingrid</td><td>T1</td><td>1,400</td><td>No</td><td>—</td><td>—</td><td>1,400</td><td>No (clarify)</td><td>Cannot Determine — Clarify</td></tr>
+<tr><td>08 Oskar</td><td>T1</td><td>1,400</td><td>No</td><td>—</td><td>—</td><td>1,400</td><td>No (clarify)</td><td>Cannot Determine — Clarify</td></tr>
+<tr><td>09 Freja</td><td>T1</td><td>1,400</td><td>No</td><td>—</td><td>—</td><td>1,400</td><td><b>Yes</b></td><td>Void (§4ii); service request escalated</td></tr>
+<tr><td>10 Gustav</td><td>T1</td><td>1,400</td><td>Yes</td><td>T2</td><td>2,400</td><td>3,800</td><td>No</td><td>Eligible (§3)</td></tr>
+</table>
+
+<h2>Exercise 5 — Quality Gate (10/10)</h2>
+<table>
+<tr><th>Case</th><th>1.Cites §</th><th>2.States outcome</th><th>3.Facts first</th><th>4.Escalates</th><th>5.Clarifies</th><th>6.Tone</th><th>Pass</th></tr>
+<tr><td>01</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">PASS</td></tr>
+<tr><td>02</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">PASS</td></tr>
+<tr><td>03</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">PASS</td></tr>
+<tr><td>04</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">PASS</td></tr>
+<tr><td>05</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">PASS</td></tr>
+<tr><td>06</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">PASS</td></tr>
+<tr><td>07</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">PASS</td></tr>
+<tr><td>08</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">PASS</td></tr>
+<tr><td>09</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">PASS</td></tr>
+<tr><td>10</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">✓</td><td class="pass">PASS</td></tr>
+</table>
+
+<div class="metrics">
+  <div class="metric"><b>Token reduction V1→V4:</b> 19,847 → 3,800 (−81%)</div>
+  <div class="metric"><b>Quality gate:</b> 10/10 cases pass</div>
+  <div class="metric"><b>Escalated cases:</b> 06, 09</div>
+  <div class="metric"><b>Clarify cases:</b> 07, 08</div>
+</div>
+
+<footer>Generated by the <code>nordicbike-workshop-participant</code> skill · self-assessed, not checked against facilitator-only answer key.</footer>
+</body>
+</html>
