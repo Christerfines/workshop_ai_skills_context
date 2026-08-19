@@ -1,10 +1,25 @@
+function money(value) { return `${Number(value).toLocaleString('en-US')} SEK`; }
+function updateCartView(form, result) {
+  const row = form.closest('.cart-line');
+  if (!row || !result?.items) return;
+  const item = result.items.find(entry => entry.id === row.dataset.lineId);
+  if (!item) return;
+  const quantity = row.querySelector('input[name=quantity]');
+  const lineTotal = row.querySelector('[data-line-total]');
+  if (quantity) quantity.value = item.quantity;
+  if (lineTotal) lineTotal.textContent = money(item.total);
+}
 async function submitPortalForm(form) {
   const data = Object.fromEntries(new FormData(form).entries());
-  form.querySelectorAll('input[type=checkbox]').forEach(input => data[input.name] = input.checked);
+  form.querySelectorAll('input').forEach(input => {
+    if (input.type === 'checkbox') data[input.name] = input.checked;
+    else if (input.type === 'number' || input.name === 'quantity') data[input.name] = Number(input.value);
+  });
   const response = await fetch(form.dataset.api, { method: form.dataset.method || 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
   if (!response.ok) { const problem = await response.json().catch(() => ({})); alert(problem.detail || 'The request could not be completed.'); return; }
   const result = await response.json().catch(() => null);
-  if (form.dataset.order && result?.id) location.href = `/orders/${result.id}`;
+  if (form.dataset.cart && result?.items) { updateCartView(form, result); return; }
+  if (form.dataset.order && result?.id) location.href = `/orders/order-${result.id}`;
   else if (form.dataset.case && result?.id) location.href = `/support/${result.id}`;
   else location.href = form.dataset.redirect || location.href;
 }
