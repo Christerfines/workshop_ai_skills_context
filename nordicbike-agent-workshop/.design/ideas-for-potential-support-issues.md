@@ -61,3 +61,7 @@ These candidates are deliberately not present in the baseline. Introduce one bou
 - Keep the baseline correct and make each incident causally narrow.
 - Preserve enough logs, audit records, correlation IDs, and reproduction evidence for a defensible diagnosis.
 - Grade evidence use, root-cause isolation, impact assessment, and narrowly scoped repair proposal.
+
+## Implementation Plan
+
+See [implementation-plan-for-support-issues.md](implementation-plan-for-support-issues.md) for the full per-issue build plan, file targets, evidence notes, and acceptance criteria.
