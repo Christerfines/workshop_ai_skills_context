@@ -36,6 +36,8 @@ A filled baseline-measurement table with the following fields: tokens, tier, cal
 |---|---|---|---|---|
 | | | | | |
 
+Save this table as `deliverables/exercise-1.md` in your team's repository. Every exercise from here on follows the same pattern — `deliverables/exercise-N.md` — and collectively these files are your submission: there is no separate hand-in step beyond your repository (or branch, or fork, whichever your facilitator specified at Phase 1 kickoff) being reachable the way arranged there. See README.md's "How to Run Each Exercise" for the full convention.
+
 ## Hints
 
 None — this exercise has no optimization step. Your job here is purely to measure and record, not to improve anything yet. Resist the urge to start trimming context; that begins in Exercise 2. If your measured token count comes out noticeably different from 19,800, double-check that you have included every file in the V1 naive context set exactly once, in full, with nothing excerpted or summarized — a mismatch is more often a bundling mistake than a meaningful difference in how your particular model or tokenizer counts tokens, though minor tokenizer-level variation of a few percent either way is expected and not a cause for concern.

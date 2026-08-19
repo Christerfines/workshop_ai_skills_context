@@ -42,6 +42,8 @@ A routing decision log across all 10 cases, showing which model tier was used fo
 | CASE-09 | | | | | | | |
 | CASE-10 | | | | | | | |
 
+Save this as `deliverables/exercise-4.md`.
+
 ## Hints
 
 Cases 6, 7, and 9 are expected to short-circuit — but for different reasons, so don't route on a single pattern-matched signal. Case 6 and Case 9 short-circuit because triage detects an actual escalation trigger from policies/escalation.md (compensation demand / legal threat for Case 6; out-of-catalog service request for Case 9). Case 7 does not contain an escalation trigger at all — it short-circuits because it's missing decision-critical information, which is a different kind of "don't call the resolver yet" than an escalation. Make sure your routing logic distinguishes "escalate to a human" from "ask the customer a clarifying question" — they are not the same outcome and should not share the same routing branch, and conflating them is a common mistake at this stage.

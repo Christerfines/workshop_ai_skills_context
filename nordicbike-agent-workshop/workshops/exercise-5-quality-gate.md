@@ -37,6 +37,8 @@ A quality-gate pass/fail table for all 10 cases, one row per case, one column pe
 | CASE-09 | | | | | | | |
 | CASE-10 | | | | | | | |
 
+Save this as `deliverables/exercise-5.md` — once all 10 rows pass, this file (together with exercise-4.md's routing log) is what a facilitator reads to score your team on the leaderboard.
+
 ## Hints
 
 None. If you find a failure, fix the prompt or the agent's instructions rather than hand-editing the output — a fix that only patches the visible output for one case, without changing the underlying logic, will likely resurface on a similar case elsewhere in a real deployment. Pay particular attention to items 4 and 5 of the checklist across Cases 6 through 9 specifically, since those are the cases most likely to expose a routing or clarification gap that Case 1 alone would never have surfaced.

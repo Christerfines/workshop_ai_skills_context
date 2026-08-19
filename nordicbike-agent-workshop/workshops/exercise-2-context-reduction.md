@@ -22,6 +22,8 @@ The V1 agent output from Exercise 1: 19,800 tokens, 1 call, Tier 3, built from t
 
 The trimmed prompt you actually send to the model, plus a short note listing which sections were cut from each file and why they were judged not decision-relevant for Case 1.
 
+Save this as `deliverables/exercise-2.md`.
+
 ## Hints
 
 Only the relevant product's full specification section and the relevant policy sections are needed in full — most other content can be excerpted down to a sentence or dropped from the excerpt entirely if it plays no role in the eligibility decision. company/about.md and company/support-contacts.md are never decision-relevant to a warranty eligibility call and can be dropped entirely, not merely trimmed. Be careful, though: "irrelevant" is case-specific — a file that is noise for Case 1 (for example, most of policies/returns.md) may still need to stay in scope if a different case actually turns on it.

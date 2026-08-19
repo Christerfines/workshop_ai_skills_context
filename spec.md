@@ -509,6 +509,19 @@
   prompt text — must be byte-for-byte identical to the corresponding prompt
   quoted in facilitator-guide.md), ## Target Metric, ## Deliverable, ## Hints.
 
+  Fixed submission convention (applies to every file's ## Deliverable
+  section, added because narrating a full participant walkthrough surfaced
+  that nothing previously stated where a deliverable is saved or how it
+  reaches a facilitator): every exercise's Deliverable section states its
+  output is saved as deliverables/exercise-N.md in the team's own
+  repository. Exercise 1's Deliverable section states this once, in full —
+  that this is the pattern for every later exercise too, and that there is
+  no separate hand-in step beyond the team's repository being reachable the
+  way arranged during Phase 1 setup (see README.md's How to Run Each
+  Exercise, Section 10 below, and facilitator-guide.md's Setup
+  Instructions, Section 12 below). Exercises 2 through 5 each state only
+  the one-line path for that exercise, not the full explanation again.
+
   (a) workshops/exercise-1-baseline.md
 
   - (b) Establishes the naive V1 agent and its measured baseline (19,800
@@ -1121,7 +1134,11 @@
   participant-safe README from this one — see that section for the exact
   contract. How to Run Each
   Exercise: numbered list of the 5 exercises by filename, one line each,
-  pointing to workshops/exercise-N-*.md. The Facilitator-Only and
+  pointing to workshops/exercise-N-*.md, followed by one paragraph (fixed,
+  not facilitator-only, not wrapped in an EXCLUDE marker) stating the
+  deliverables/exercise-N.md save convention and that a team's repository
+  (or branch, or fork, whichever their facilitator specified during Phase 1
+  setup) is itself the submission — no separate hand-in step. The Facilitator-Only and
   Participant-Facing sections must use the exact pointer sentences given above
   — no additional content duplicated from facilitator-guide.md.
   - (e) Target: 1,200 words (≈1,600 tokens).
@@ -1162,7 +1179,10 @@
   timing (Phase 1: 15 min, Phase 2: 20 min, Phase 3: 45 min, Phase 4: 30 min,
   Phase 5: 10 min).
     i. Phase 1 — Kickoff & Case Introduction (15 min) — bullets: intro
-  NordicBike case; state learning objectives; form teams.
+  NordicBike case; state learning objectives; form teams; confirm each
+  team's repo/branch/fork is set up and that they know the
+  deliverables/exercise-N.md save convention from README.md — that's also
+  their submission, no separate hand-in step.
     j. Phase 2 — Baseline Run & Diagnosis (20 min) — Exercise 1 — bullets: run
   naive V1 agent on Case 1; measure 19,800 tokens / 1 call / Tier 3; diagnose
   waste sources.
@@ -1200,8 +1220,9 @@
   22. Scoring Rubric & Budget-Points Formula — reproduce the 5-category 0–20
   rubric and the full FinalScore = (Q × 70) + (M × 30) − Penalty formula with
   the BCP = 237.6 constant, verbatim from evaluation/scoring-rubric.md.
-  23. Leaderboard Mechanics — bullets: each team submits their V4 agent's
-  output for all 10 cases; facilitator scores against
+  23. Leaderboard Mechanics — bullets: each team's deliverables/exercise-4.md
+  and exercise-5.md, saved in their own repository, are their submission —
+  no separate hand-in step; facilitator scores against
   evaluation/expected-results.md and the rubric; FinalScore computed per
   formula; ranked leaderboard displayed live.
   24. What You Learned — bullets restating the 5 learning objectives from
@@ -1232,7 +1253,13 @@
   evaluation/expected-results.md or evaluation/adversarial-cases.md before
   Phase 5; project presentation.md slides 1–13 before Phase 2 begins; hold
   slides 14–24 until after Exercise 1's baseline measurement is complete (so
-  teams measure the baseline themselves before seeing the reference figures).
+  teams measure the baseline themselves before seeing the reference figures);
+  when communicating the team repo/branch/fork decision (see the existing
+  Repository access note), explicitly tell teams the
+  deliverables/exercise-N.md save convention too — the Team Data Collection
+  roster and Leaderboard Running Procedure both assume the facilitator can
+  read it directly, so a team that never learns the convention exists may
+  save its work somewhere nobody thinks to look.
     - The 5 Exercise Prompts (verbatim) — reproduce, byte-for-byte identical
   to the ## Constraint text in each corresponding workshops/exercise-N-*.md
   file, all 5 prompts in full:

@@ -61,6 +61,8 @@ Work through the five exercises in order — each one's starting point is the pr
 4. `workshops/exercise-4-model-routing.md` — route by model tier and short-circuit escalations to build V4.
 5. `workshops/exercise-5-quality-gate.md` — validate V4 output against the 6-item quality gate before leaderboard submission.
 
+Each exercise's Deliverable gets saved as `deliverables/exercise-N.md` in your team's repository, committed as you go — Exercise 1's Deliverable section says this in full the first time; every exercise after that just gives the one-line path for that exercise. There is no separate hand-in step beyond that: your repository — or branch, or fork, whichever your facilitator specified at Phase 1 kickoff — is your submission, and it's what gets read directly when scoring the Phase 5 leaderboard.
+
 <!-- PARTICIPANT-EXPORT:EXCLUDE-START -->
 ## Facilitator-Only Instructions
 

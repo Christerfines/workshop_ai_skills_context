@@ -93,6 +93,7 @@
 - Walk through the repository map so every team knows where each fact category lives
 - Do not reveal the V1→V4 token progression table yet — teams measure their own baseline first
 - Confirm every team can reach all three model tiers before the clock starts on Phase 2
+- Confirm each team's repo/branch/fork is set up and that they know the `deliverables/exercise-N.md` save convention — that's also their submission, no separate hand-in step
 - Only project slides 1–13 at this point — hold the V1→V4 reference table (slides 14–24) until after the baseline is measured
 
 ## Phase 2 — Baseline Run & Diagnosis (20 min) — Exercise 1
@@ -282,7 +283,7 @@
 
 ## Leaderboard Mechanics
 
-- Each team submits their V4 agent's output for all 10 cases
+- Each team's `deliverables/exercise-4.md` and `exercise-5.md`, saved in their own repository, are their submission — no separate hand-in step
 - Facilitator scores against evaluation/expected-results.md and the rubric
 - FinalScore computed per formula
 - Ranked leaderboard displayed live

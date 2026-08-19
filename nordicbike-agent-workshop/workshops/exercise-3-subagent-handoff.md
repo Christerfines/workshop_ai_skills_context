@@ -20,6 +20,8 @@ Your V2 output from Exercise 2: a single Tier-3 call at ≤9,900 tokens using tr
 
 Both calls' actual input token counts, plus the typed payload JSON your triage subagent actually produced when handing off to the resolver.
 
+Save this as `deliverables/exercise-3.md`.
+
 ## Bad Pattern (do not do this)
 
 Full-context dump — reproduced verbatim from the fixed reference examples:
