@@ -1,0 +1,56 @@
+[
+  {
+    "customer_id": "NB-CUST-10042",
+    "name": "Erik Svensson",
+    "file": "erik-svensson.md",
+    "hidden": true
+  },
+  {
+    "customer_id": "NB-CUST-10043",
+    "name": "Lena Björk",
+    "file": "lena-bjork.md",
+    "hidden": true
+  },
+  {
+    "customer_id": "NB-CUST-10044",
+    "name": "Johan Lindqvist",
+    "file": "johan-lindqvist.md",
+    "hidden": true
+  },
+  {
+    "customer_id": "NB-CUST-10045",
+    "name": "Sara Nilsson",
+    "file": "sara-nilsson.md",
+    "hidden": true
+  },
+  {
+    "customer_id": "NB-CUST-10046",
+    "name": "Mikael Ström",
+    "file": "mikael-strom.md",
+    "hidden": true
+  },
+  {
+    "customer_id": "NB-CUST-10047",
+    "name": "Ingrid Dahl",
+    "file": "ingrid-dahl.md",
+    "hidden": true
+  },
+  {
+    "customer_id": "NB-CUST-10048",
+    "name": "Oskar Bergman",
+    "file": "oskar-bergman.md",
+    "hidden": true
+  },
+  {
+    "customer_id": "NB-CUST-10049",
+    "name": "Freja Holm",
+    "file": "freja-holm.md",
+    "hidden": true
+  },
+  {
+    "customer_id": "NB-CUST-10050",
+    "name": "Gustav Åkesson",
+    "file": "gustav-akesson.md",
+    "hidden": true
+  }
+]

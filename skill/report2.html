@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NordicBike Workshop Report 2</title>
+<style>
+  body{font-family:Segoe UI,Arial,sans-serif;margin:20px;color:#1f2937;background:#f8fafc}
+  h1{margin:0 0 4px;font-size:1.35rem}
+  .sub{color:#6b7280;font-size:.9rem;margin-bottom:14px}
+  table{border-collapse:collapse;width:100%;background:#fff;margin:12px 0}
+  th,td{border:1px solid #d1d5db;padding:7px 8px;font-size:.88rem;text-align:left;vertical-align:top}
+  th{background:#1f4e79;color:#fff}
+  tr:nth-child(even) td{background:#f9fbfd}
+  .ok{color:#166534;font-weight:700}
+  .warn{color:#b45309;font-weight:700}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:12px 0}
+  .card{background:#fff;border:1px solid #d1d5db;border-radius:8px;padding:10px}
+  .card b{display:block;color:#1f4e79;margin-bottom:4px}
+  code{background:#eef2ff;padding:1px 4px;border-radius:4px}
+  footer{color:#6b7280;font-size:.78rem;margin-top:14px}
+</style>
+</head>
+<body>
+  <h1>NordicBike Agent Optimization Challenge — Compact Report</h1>
+  <div class="sub">Skill folder report · Assumed date: 2026-08-14 · Case load: 10 cases</div>
+
+  <div class="grid">
+    <div class="card"><b>Exercise 1 — Baseline</b>19,847 tokens · 1 call · Tier 3 · Eligible · Correct: Yes</div>
+    <div class="card"><b>Exercise 2 — Context Reduction</b>≈1,562 tokens · 1 call · Tier 3 · Eligible · Target met</div>
+    <div class="card"><b>Exercise 3 — Subagent Handoff</b>≈1,470 tokens · 2 calls · Tier 2 + Tier 2 · Eligible · Target met</div>
+    <div class="card"><b>Exercise 4 — Model Routing</b>≈3,800 tokens · 2 calls · T1 + T2 · Short-circuits: 6, 7, 9</div>
+  </div>
+
+  <div class="card" style="margin:12px 0"><b>Full Workshop Total</b>≈30,479 tokens across Exercises 1–5<br><span class="sub">Exercise 5 reuses Exercise 4’s token budget for the quality gate, so the cumulative workshop total includes that budget once more.</span></div>
+
+  <table>
+    <tr><th>Exercise</th><th>What changed</th><th>Result</th></tr>
+    <tr><td>1</td><td>Full naive V1 context set sent in one Tier 3 call.</td><td>Baseline established.</td></tr>
+    <tr><td>2</td><td>Trimmed context to decision-relevant excerpts only.</td><td>Token reduction > 50%.</td></tr>
+    <tr><td>3</td><td>Split into triage + resolver with typed JSON handoff.</td><td>Two-call pipeline working.</td></tr>
+    <tr><td>4</td><td>Routed triage to Tier 1 and resolver to Tier 2; added escalation / clarification short-circuits.</td><td>All 10 cases routed.</td></tr>
+    <tr><td>5</td><td>Checked all outputs against the 6-item quality gate.</td><td><span class="ok">10/10 pass</span></td></tr>
+  </table>
+
+  <table>
+    <tr><th>Quality Gate Summary</th><th>Status</th></tr>
+    <tr><td>Case 01–10 all cite policy sections, state outcomes, ground facts, and use customer-appropriate tone.</td><td class="ok">Pass</td></tr>
+    <tr><td>Escalation cases flagged correctly; clarification cases did not route to resolution.</td><td class="ok">Pass</td></tr>
+    <tr><td>Token budgets remained within target for every exercise.</td><td class="ok">Pass</td></tr>
+  </table>
+
+  <div class="card">
+    <b>Compact takeaway</b>
+    V1 → V4 reduced prompt cost by combining relevance filtering, typed handoff payloads, tier routing, and short-circuit branches. The main lesson is that cost reduction came from removing unnecessary context and unnecessary calls, not from sacrificing the policy-driven decision shape.
+  </div>
+
+  <footer>Generated from the workshop participant workflow. Baseline count shown as estimated from context-only word count × 1.333.</footer>
+
+  <table>
+    <tr><th>Exercise</th><th>Tokens Used</th><th>Calls</th><th>Tier</th><th>Notes</th></tr>
+    <tr><td>Exercise 1</td><td>19,847</td><td>1</td><td>Tier 3</td><td>Baseline V1 full-context call</td></tr>
+    <tr><td>Exercise 2</td><td>≈1,562</td><td>1</td><td>Tier 3</td><td>Trimmed context, same model tier</td></tr>
+    <tr><td>Exercise 3</td><td>≈1,470</td><td>2</td><td>Tier 2 + Tier 2</td><td>Triage + resolver with typed JSON handoff</td></tr>
+    <tr><td>Exercise 4</td><td>≈3,800</td><td>2</td><td>Tier 1 + Tier 2</td><td>Routing + short-circuit branches</td></tr>
+    <tr><td>Exercise 5</td><td>Same as Exercise 4</td><td>Same as Exercise 4</td><td>Same as Exercise 4</td><td>Quality gate on V4 outputs; token budget unchanged</td></tr>
+    <tr><td><b>Workshop total</b></td><td><b>≈30,479</b></td><td><b>8</b></td><td><b>Mixed</b></td><td><b>Sum of Exercises 1–5, counting Exercise 5’s reused V4 budget once</b></td></tr>
+  </table>
+</body>
+</html>
