@@ -1,3 +1,3 @@
 <Solution>
-  <Project Path="NordicBike.Portal.csproj" />
+  <Project Path="web/NordicBike.Portal.csproj" />
 </Solution>
