@@ -1,0 +1,5 @@
+function formatLabel(value) {
+  return value.trim().toUpperCase();
+}
+
+This example has no reported failure, failing test, or unexpected result. The requested work is a naming refactor only.

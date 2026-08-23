@@ -72,3 +72,7 @@ Review in two passes: first hunt for unnecessary context, then for unsupported c
 - `customer_communication` is facts-only — no technical terms, no promises, no compensation, matches the customer's language
 - `alternatives_ruled_out` has at least one entry for any non-trivial case
 - `next_actions` must be executable from the brief alone — no "investigate further"
+
+## Reference Skills
+
+The repository also includes six completed, generic engineering skills for local demonstrations: debugging, test-driven development, verification, security review, release-note drafting, and structured pull-request review. See [Reference Agent Skills](./reference-skills.md) for external sources, local-only run instructions, optional MCP guidance, and evaluation tasks. The starter `support-diagnosis` skill and prompt-file scaffolds remain intentionally incomplete for the workshop.

@@ -1,0 +1,15 @@
+name: systematic-debugging-eval
+description: |
+  Evaluate systematic debugging against local reproduction evidence, competing
+  hypotheses, and a pressure case that tempts a premature fix.
+skill: systematic-debugging
+schemaVersion: "1.2"
+version: "1.0"
+config:
+  trials_per_task: 1
+  timeout_seconds: 300
+  parallel: false
+  executor: copilot-sdk
+  model: gpt-4.1
+tasks:
+  - "tasks/*.yaml"

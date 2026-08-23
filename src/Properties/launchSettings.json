@@ -2,11 +2,11 @@
   "profiles": {
     "NordicBike.Portal": {
       "commandName": "Project",
-      "launchBrowser": true,
+      "launchBrowser": false,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "https://localhost:57145;http://localhost:57146"
+      "applicationUrl": "http://localhost:57146"
     }
   }
 }

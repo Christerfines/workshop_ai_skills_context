@@ -1,0 +1,25 @@
+id: structured-pr-review-actionable-001
+name: Prioritize an actionable finding
+description: Verify that a local patch review returns line-grounded, severity-ranked findings.
+tags:
+  - positive
+  - findings
+inputs:
+  prompt: |
+    Use structured-pr-review on the supplied local patch and context. Review the
+    changed lines and relevant surrounding code, return JSON first, identify the
+    actionable defect with severity and line evidence, and separate questions
+    from findings. Do not edit or approve the patch.
+  files:
+    - path: change.patch
+    - path: pr-context.json
+graders:
+  - type: text
+    name: review_contract
+    config:
+      regex_match:
+        - '(?i)findings'
+        - '(?i)severity'
+        - '(?i)confidence'
+        - '(?i)file|line|evidence'
+        - '(?i)human_review|no files changed|advisory'

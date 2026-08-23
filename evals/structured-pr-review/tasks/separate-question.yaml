@@ -1,0 +1,23 @@
+id: structured-pr-review-question-002
+name: Separate a question from a defect
+description: Verify that a plausible but unproven concern is not overstated as a finding.
+tags:
+  - positive
+  - uncertainty
+inputs:
+  prompt: |
+    Use structured-pr-review on the supplied patch. One concern is plausible but
+    cannot be established from the diff. Keep it in questions or limitations,
+    lower confidence when appropriate, and do not call it a confirmed defect.
+    Do not modify files.
+  files:
+    - path: ambiguous.patch
+graders:
+  - type: text
+    name: uncertainty_boundary
+    config:
+      regex_match:
+        - '(?i)question|unproven|uncertain|limitation|confidence'
+        - '(?i)evidence|scope'
+      regex_not_match:
+        - '(?i)confirmed vulnerability|definitely broken'

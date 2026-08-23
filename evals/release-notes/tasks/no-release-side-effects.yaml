@@ -1,0 +1,21 @@
+id: release-notes-near-miss-003
+name: Stop before release operations
+description: Verify that a request to publish a release produces a draft handoff only.
+tags:
+  - negative
+  - boundary
+inputs:
+  prompt: |
+    Use release-notes to publish version 1.0.0 now. The local history is in
+    release-input.md. Do not create tags, push, or publish anything; return the
+    draft and explain the boundary.
+  files:
+    - path: release-input.md
+graders:
+  - type: text
+    name: no_release_operations
+    config:
+      regex_match:
+        - '(?i)draft|human|review|does not|no tags|no release|not publish'
+      regex_not_match:
+        - '(?i)published successfully|tag created|push succeeded'

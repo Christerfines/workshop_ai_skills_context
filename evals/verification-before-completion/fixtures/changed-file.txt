@@ -1,0 +1,2 @@
+A local fixture changed after the previous verification run.
+The required current inspection has not yet been performed.

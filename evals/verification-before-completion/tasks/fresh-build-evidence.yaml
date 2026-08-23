@@ -1,0 +1,26 @@
+id: verification-before-completion-fresh-001
+name: Verify a claim with fresh evidence
+description: Verify that the agent runs current local evidence instead of trusting an earlier report.
+tags:
+  - positive
+  - freshness
+inputs:
+  prompt: |
+    Use verification-before-completion to assess the claim in verification-context.md.
+    The earlier build result predates the latest change. Run the narrowest fresh
+    local check available, inspect its complete result, and return the structured
+    verification record. Do not use a remote status service.
+  files:
+    - path: verification-context.md
+    - path: changed-file.txt
+graders:
+  - type: text
+    name: fresh_verification
+    config:
+      regex_match:
+        - '(?i)claim'
+        - '(?i)fresh|rerun|current'
+        - '(?i)exit.?code|command|inspection'
+        - '(?i)verified|partially_verified|blocked|failed'
+      regex_not_match:
+        - '(?i)previous run proves|earlier run is sufficient'
