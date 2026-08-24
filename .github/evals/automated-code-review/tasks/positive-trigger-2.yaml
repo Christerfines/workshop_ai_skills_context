@@ -1,24 +1,28 @@
-id: automated-code-review-standards-002
-name: Report a deterministic clock violation
-description: Verify that the reviewer identifies an NB001 violation with source-grounded evidence.
+id: automated-code-review-standards-002 # Stable identifier for this evaluation scenario.
+name: Report a deterministic clock violation # Human-readable scenario name.
+description: Verify that the reviewer identifies an NB001 violation with source-grounded evidence. # Scenario purpose.
+# Labels used to categorize and filter this task.
 tags:
-  - positive
-  - standards
-  - static-candidate
+  - positive # The skill should activate.
+  - standards # Evaluates coding-standard enforcement.
+  - static-candidate # Uses a deterministic static-analysis candidate.
+# User request and optional fixture files supplied to the evaluator.
 inputs:
   prompt: |
     Use automated-code-review on clock-violation.cs. Treat the file as a changed
     web-project source file. Report only evidence-backed findings in the required
     JSON shape; do not edit the file.
-  files:
-    - path: clock-violation.cs
+  files: # Fixtures available to the skill during evaluation.
+    - path: clock-violation.cs # Source file that contains the candidate violation.
+# Expected skill-routing outcome.
 expected:
-  should_trigger: true
+  should_trigger: true # An explicit review request must invoke the skill.
+# Response-content assertions for this task.
 graders:
-  - type: text
-    name: nb001-finding
+  - type: text # Evaluates the model's returned text.
+    name: nb001-finding # Requires source-grounded evidence for rule NB001.
     config:
-      regex_match:
+      regex_match: # Every pattern that must appear in the response.
         - '(?i)NB001'
         - '(?i)DateTime\.UtcNow|DemoClock'
         - '(?i)clock-violation\.cs'

@@ -1,21 +1,25 @@
-id: automated-code-review-trigger-001
-name: Trigger for a local endpoint review
-description: Verify that an explicit NordicBike endpoint review activates the skill and returns its review contract.
+id: automated-code-review-trigger-001 # Stable identifier for this evaluation scenario.
+name: Trigger for a local endpoint review # Human-readable scenario name.
+description: Verify that an explicit NordicBike endpoint review activates the skill and returns its review contract. # Scenario purpose.
+# Labels used to categorize and filter this task.
 tags:
-  - positive
-  - trigger
+  - positive # The skill should activate.
+  - trigger # Explicitly tests an activation condition.
+# User request and optional fixture files supplied to the evaluator.
 inputs:
   prompt: |
     Review my current NordicBike Portal API endpoint changes for coding-standard,
     audit, ownership, and focused-test risks. Use automated-code-review, keep the
     work read-only, and return its JSON review report.
+# Expected skill-routing outcome.
 expected:
-  should_trigger: true
+  should_trigger: true # An explicit review request must invoke the skill.
+# Response-content assertions for this task.
 graders:
-  - type: text
-    name: review-contract
+  - type: text # Evaluates the model's returned text.
+    name: review-contract # Requires the expected advisory review report fields.
     config:
-      regex_match:
+      regex_match: # Every pattern that must appear in the response.
         - '(?i)scope'
         - '(?i)checks_run'
         - '(?i)findings'

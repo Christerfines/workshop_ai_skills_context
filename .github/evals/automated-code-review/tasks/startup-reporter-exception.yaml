@@ -1,25 +1,29 @@
-id: automated-code-review-exception-005
-name: Respect the startup reporter exception
-description: Verify that the bounded NB003 exception is not reported as an actionable finding.
+id: automated-code-review-exception-005 # Stable identifier for this evaluation scenario.
+name: Respect the startup reporter exception # Human-readable scenario name.
+description: Verify that the bounded NB003 exception is not reported as an actionable finding. # Scenario purpose.
+# Labels used to categorize and filter this task.
 tags:
-  - positive
-  - false-positive
-  - exception
+  - positive # The skill should activate.
+  - false-positive # Evaluates suppression of an invalid finding.
+  - exception # Evaluates a documented standards exception.
+# User request and optional fixture files supplied to the evaluator.
 inputs:
   prompt: |
     Use automated-code-review on StartupReporter.cs. It is the complete review
     scope. Apply the NordicBike standards, verify any scanner-like candidate in
     context, and return a read-only JSON report. Do not report a finding that is
     covered by a documented exception.
-  files:
-    - path: StartupReporter.cs
+  files: # Fixtures available to the skill during evaluation.
+    - path: StartupReporter.cs # Source file that exercises the bounded exception.
+# Expected skill-routing outcome.
 expected:
-  should_trigger: true
+  should_trigger: true # An explicit review request must invoke the skill.
+# Response-content assertions for this task.
 graders:
-  - type: text
-    name: documented-exception
+  - type: text # Evaluates the model's returned text.
+    name: documented-exception # Requires recognition of the documented exception.
     config:
-      regex_match:
+      regex_match: # Every pattern that must appear in the response.
         - '(?i)StartupReporter\.cs'
         - '(?i)exception|startup banner'
         - '(?i)no actionable|no findings|findings"\s*:\s*\[\s*\]'

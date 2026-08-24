@@ -1,29 +1,38 @@
-name: automated-code-review-eval
+name: automated-code-review-eval # Human-readable identifier for this evaluation suite.
 description: |
+  # Behavior and constraints this benchmark is intended to verify.
   Evaluate NordicBike automated code-review activation, evidence-backed standards
   findings, documented exceptions, and the read-only review boundary.
-skill: automated-code-review
-schemaVersion: "1.2"
-version: "1.0"
+skill: automated-code-review # Name of the VS Code skill under test.
+schemaVersion: "1.2" # Evaluation-file schema version understood by the evaluator.
+version: "1.0" # Revision of this evaluation suite, independent of the schema version.
+
+# Controls how individual evaluation tasks are executed.
 config:
-  trials_per_task: 1
-  timeout_seconds: 300
-  parallel: false
-  executor: copilot-sdk
-  model: gpt-5.6-luna
+  trials_per_task: 1 # Independent runs per task; more runs reduce model-variance risk.
+  timeout_seconds: 300 # Maximum duration, in seconds, for one task execution.
+  parallel: false # Run tasks one at a time to avoid shared-workspace conflicts.
+  executor: copilot-sdk # Backend used to invoke the skill during evaluation.
+  model: gpt-5.6-luna # Model used by the configured executor.
+
+# Defines reported scoring dimensions and their relative importance.
 metrics:
-  - name: task_completion
-    weight: 0.7
-    threshold: 0.8
+  - name: task_completion # Measures whether task expectations were met.
+    weight: 0.7 # Contributes 70% of the composite score.
+    threshold: 0.8 # Minimum acceptable score for this metric.
     description: Did the skill complete trigger and anti-trigger checks?
-  - name: efficiency
-    weight: 0.3
-    threshold: 0.7
+  - name: efficiency # Measures whether the skill stayed within behavior limits.
+    weight: 0.3 # Contributes 30% of the composite score.
+    threshold: 0.7 # Minimum acceptable score for this metric.
     description: Did the skill stay within behavior limits?
+
+# Evaluation-wide checks that supplement the task-specific response graders.
 graders:
-  - type: behavior
-    name: token-budget
+  - type: behavior # Checks execution behavior rather than response text.
+    name: token-budget # Fails a run that exceeds the configured token limit.
     config:
-      max_tokens: 1200
+      max_tokens: 1200 # Maximum permitted total token usage for one task run.
+
+# Glob patterns locating the individual evaluation task definitions.
 tasks:
-  - "tasks/*.yaml"
+  - "tasks/*.yaml" # Includes every YAML task file in the tasks directory.

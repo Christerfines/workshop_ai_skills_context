@@ -1,24 +1,28 @@
-id: automated-code-review-tests-004
-name: Identify missing focused route coverage
-description: Verify that a changed observable API route without a test is reported as NB301.
+id: automated-code-review-tests-004 # Stable identifier for this evaluation scenario.
+name: Identify missing focused route coverage # Human-readable scenario name.
+description: Verify that a changed observable API route without a test is reported as NB301. # Scenario purpose.
+# Labels used to categorize and filter this task.
 tags:
-  - positive
-  - tests
-  - regression-risk
+  - positive # The skill should activate.
+  - tests # Evaluates focused test-coverage behavior.
+  - regression-risk # Evaluates a potential regression risk.
+# User request and optional fixture files supplied to the evaluator.
 inputs:
   prompt: |
     Use automated-code-review on uncovered-route.patch. The patch is the complete
     review scope and intentionally has no test-file changes. Return JSON findings
     only; do not add a test or edit the patch.
-  files:
-    - path: uncovered-route.patch
+  files: # Fixtures available to the skill during evaluation.
+    - path: uncovered-route.patch # Patch that defines the complete review scope.
+# Expected skill-routing outcome.
 expected:
-  should_trigger: true
+  should_trigger: true # An explicit review request must invoke the skill.
+# Response-content assertions for this task.
 graders:
-  - type: text
-    name: focused-test-finding
+  - type: text # Evaluates the model's returned text.
+    name: focused-test-finding # Requires evidence of the missing-focused-test finding.
     config:
-      regex_match:
+      regex_match: # Every pattern that must appear in the response.
         - '(?i)NB301'
         - '(?i)NUnit|test'
         - '(?i)route|status|validation'

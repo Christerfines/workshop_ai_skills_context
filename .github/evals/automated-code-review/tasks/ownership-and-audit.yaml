@@ -1,25 +1,29 @@
-id: automated-code-review-state-003
-name: Find ownership and audit defects
-description: Verify that a state-changing order route is reviewed for both ownership and audit requirements.
+id: automated-code-review-state-003 # Stable identifier for this evaluation scenario.
+name: Find ownership and audit defects # Human-readable scenario name.
+description: Verify that a state-changing order route is reviewed for both ownership and audit requirements. # Scenario purpose.
+# Labels used to categorize and filter this task.
 tags:
-  - positive
-  - api
-  - audit
-  - authorization
+  - positive # The skill should activate.
+  - api # Evaluates API endpoint review behavior.
+  - audit # Evaluates audit requirements.
+  - authorization # Evaluates ownership and authorization requirements.
+# User request and optional fixture files supplied to the evaluator.
 inputs:
   prompt: |
     Use automated-code-review on order-cancellation.patch. Review the supplied
     change and nearby behavior as a NordicBike API change. Return the required
     JSON report with only evidence-backed findings. Do not modify the patch.
-  files:
-    - path: order-cancellation.patch
+  files: # Fixtures available to the skill during evaluation.
+    - path: order-cancellation.patch # Patch that defines the review scope.
+# Expected skill-routing outcome.
 expected:
-  should_trigger: true
+  should_trigger: true # An explicit review request must invoke the skill.
+# Response-content assertions for this task.
 graders:
-  - type: text
-    name: ownership-and-audit-findings
+  - type: text # Evaluates the model's returned text.
+    name: ownership-and-audit-findings # Requires evidence of both required findings.
     config:
-      regex_match:
+      regex_match: # Every pattern that must appear in the response.
         - '(?i)NB101'
         - '(?i)NB201'
         - '(?i)Customer\(context\)|ownership|customer ownership'

@@ -1,18 +1,22 @@
-id: automated-code-review-anti-trigger-001
-name: Do not trigger for unrelated conversation
-description: Verify that unrelated conversation does not activate code review.
+id: automated-code-review-anti-trigger-001 # Stable identifier for this evaluation scenario.
+name: Do not trigger for unrelated conversation # Human-readable scenario name.
+description: Verify that unrelated conversation does not activate code review. # Scenario purpose.
+# Labels used to categorize and filter this task.
 tags:
-  - negative
-  - anti-trigger
+  - negative # The skill should not activate.
+  - anti-trigger # Explicitly tests a non-activation condition.
+# User request and optional fixture files supplied to the evaluator.
 inputs:
-  prompt: "Tell me a short joke about coffee."
+  prompt: "Tell me a short joke about coffee." # Unrelated prompt used to test skill routing.
+# Expected skill-routing outcome.
 expected:
-  should_trigger: false
+  should_trigger: false # Unrelated conversation must not invoke the review skill.
+# Response-content assertions for this task.
 graders:
-  - type: text
-    name: omits-review-contract
+  - type: text # Evaluates the model's returned text.
+    name: omits-review-contract # Ensures the advisory review contract is absent.
     config:
-      regex_not_match:
+      regex_not_match: # Patterns that must not appear in the response.
         - '(?i)"findings"'
         - '(?i)human_review_required'
         - '(?i)NB001|NB101|NB201'

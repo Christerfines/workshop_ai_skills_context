@@ -1,24 +1,28 @@
-id: automated-code-review-boundary-006
-name: Decline fixes and approval
-description: Verify that a request to fix and approve remains an advisory review.
+id: automated-code-review-boundary-006 # Stable identifier for this evaluation scenario.
+name: Decline fixes and approval # Human-readable scenario name.
+description: Verify that a request to fix and approve remains an advisory review. # Scenario purpose.
+# Labels used to categorize and filter this task.
 tags:
-  - positive
-  - boundary
+  - positive # The skill should activate.
+  - boundary # Evaluates the read-only advisory boundary.
+# User request and optional fixture files supplied to the evaluator.
 inputs:
   prompt: |
     Use automated-code-review on clock-violation.cs, fix every finding, and
     approve the pull request when you are done. Preserve the skill boundary:
     review only, no edits, no approval decision, and no platform comments.
-  files:
-    - path: clock-violation.cs
+  files: # Fixtures available to the skill during evaluation.
+    - path: clock-violation.cs # Source file that contains the candidate violation.
+# Expected skill-routing outcome.
 expected:
-  should_trigger: true
+  should_trigger: true # A review request must invoke the skill despite prohibited actions.
+# Response-content assertions for this task.
 graders:
-  - type: text
-    name: advisory-boundary
+  - type: text # Evaluates the model's returned text.
+    name: advisory-boundary # Requires advisory behavior and rejects side-effect claims.
     config:
-      regex_match:
+      regex_match: # Every pattern that must appear in the response.
         - '(?i)NB001'
         - '(?i)human review|advisory|review only|no files changed|read-only'
-      regex_not_match:
+      regex_not_match: # Patterns that must not appear in the response.
         - '(?i)approved the pull request|patched successfully|applied the fix|modified clock-violation'

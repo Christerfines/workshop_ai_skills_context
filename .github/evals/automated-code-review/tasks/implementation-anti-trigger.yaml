@@ -1,21 +1,25 @@
-id: automated-code-review-anti-trigger-007
-name: Do not trigger for implementation work
-description: Verify that a request to add a feature is not treated as an advisory code review.
+id: automated-code-review-anti-trigger-007 # Stable identifier for this evaluation scenario.
+name: Do not trigger for implementation work # Human-readable scenario name.
+description: Verify that a request to add a feature is not treated as an advisory code review. # Scenario purpose.
+# Labels used to categorize and filter this task.
 tags:
-  - negative
-  - anti-trigger
-  - implementation
+  - negative # The skill should not activate.
+  - anti-trigger # Explicitly tests a non-activation condition.
+  - implementation # The prompt asks for implementation work.
+# User request and optional fixture files supplied to the evaluator.
 inputs:
   prompt: |
     Add a new NordicBike API endpoint that returns a customer's bikes. Implement
     the route and write focused NUnit coverage for it.
+# Expected skill-routing outcome.
 expected:
-  should_trigger: false
+  should_trigger: false # Implementation work must not invoke the review skill.
+# Response-content assertions for this task.
 graders:
-  - type: text
-    name: omits-review-report
+  - type: text # Evaluates the model's returned text.
+    name: omits-review-report # Ensures the advisory review contract is absent.
     config:
-      regex_not_match:
+      regex_not_match: # Patterns that must not appear in the response.
         - '(?i)human_review_required'
         - '(?i)"side_effects"\s*:\s*"No files changed'
         - '(?i)NB101|NB201|NB301'

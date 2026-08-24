@@ -1,6 +1,0 @@
-{
-  "title": "Prevent duplicate checkout submission",
-  "description": "Return the existing order when a customer repeats the checkout request.",
-  "linked_work_items": ["WI-1001"],
-  "review_priorities": ["correctness", "data integrity", "test coverage"]
-}
