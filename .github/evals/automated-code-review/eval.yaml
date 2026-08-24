@@ -10,7 +10,7 @@ config:
   timeout_seconds: 300
   parallel: false
   executor: copilot-sdk
-  model: gpt-5.6-
+  model: gpt-5.6-luna
 metrics:
   - name: task_completion
     weight: 0.7
