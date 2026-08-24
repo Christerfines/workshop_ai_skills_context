@@ -1,0 +1,47 @@
+{
+  "brief_id": "DIAG-YYYYMMDD-NNN",
+  "case_reference": "ISSUE-NNN",
+  "generated_at": "ISO-8601 timestamp",
+  "scope": {
+    "investigated": "Reported symptom and system area examined.",
+    "not_investigated": "Explicitly out-of-scope area."
+  },
+  "customer_impact": "Plain-language observable effect with no technical cause.",
+  "root_cause": {
+    "statement": "Cause, or the specific question requiring more evidence.",
+    "confidence": "confirmed | likely | possible | insufficient_evidence",
+    "confidence_rationale": "Evidence supporting the assigned confidence.",
+    "area": "System area or layer."
+  },
+  "evidence_chain": [
+    {
+      "question": "Investigation question.",
+      "artifact": "Evidence source opened.",
+      "excerpt": "Relevant value, line, or payload.",
+      "implication": "What the evidence establishes."
+    }
+  ],
+  "alternatives_ruled_out": [
+    {
+      "hypothesis": "Competing explanation.",
+      "ruling_evidence": "Observation that rules it out."
+    }
+  ],
+  "remaining_uncertainty": "Unknown facts that could change the diagnosis.",
+  "scope_boundary": [
+    "This brief does not propose or implement a fix."
+  ],
+  "next_actions": [
+    {
+      "role": "Developer | QA | Support agent | Product owner | Support lead | Architect",
+      "action": "Specific verb-first instruction executable from this brief.",
+      "priority": "High | Normal | Low",
+      "blocks_release": false
+    }
+  ],
+  "customer_communication": {
+    "language": "ISO 639-1 code matching the original report",
+    "facts_only": true,
+    "text": "Two to four factual sentences with the next concrete step; no technical cause, timeline, or compensation promise."
+  }
+}
