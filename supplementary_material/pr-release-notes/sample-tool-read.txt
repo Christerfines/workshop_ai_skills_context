@@ -1,0 +1,40 @@
+commit c8f12ab4e543b5596d72c1ec6781f54efb4c826a
+Author: Robin Dahl <robin.dahl@nordicbike.example>
+Date:   Mon Aug 17 14:22:09 2026 +0200
+
+    checkout: stop dupes on double-click / retry
+
+    Persist idem key + request hash and hand previous order back if it is the
+    same request. Conflict if the key is reused with different payload.
+
+commit a34de10bd6e9a5d9ac6c332bbd413d1e7ff0ab12
+Author: Mei Lin <mei.lin@nordicbike.example>
+Date:   Sun Aug 16 10:05:41 2026 +0200
+
+    cart: make total repaint after qty patch
+
+    UI was holding stale state after PATCH. Wire up refresh; boring but fixes it.
+
+commit 7bb941e16e03e9a7ce4dc9f4a9869584d26422a7
+Author: Elias Berg <elias.berg@nordicbike.example>
+Date:   Fri Aug 14 16:31:00 2026 +0200
+
+    svc: malmo is no longer bricked
+
+    Normalise centre values before checking them. The bad whitespace path is gone.
+
+commit eb6429c9a5ce0e8a7afc6873f64d0b4a27d8d517
+Author: Noor Ahmed <noor.ahmed@nordicbike.example>
+Date:   Thu Aug 13 09:44:18 2026 +0200
+
+    support: don't let regular agents nuke escalations
+
+    Gate clear-escalation on lead role and log it with the correlation id.
+
+commit 3cd810fd510c72c9c51f90e4934a4363ee7be0c9
+Author: Robin Dahl <robin.dahl@nordicbike.example>
+Date:   Wed Aug 12 11:20:03 2026 +0200
+
+    refactor: pull order view thing into helper
+
+    No behaviour change. Just deleted repeated mapping code.

@@ -25,8 +25,8 @@ Hands-on Development (Participants select and build one of the five challenge op
 * **Automated Code Review Skill:** A fully implemented reference skill that executes a linter script and dynamically loads external security guidelines on demand to run Evals.
 
 ## Participant Challenge Options
-1. **[Support Case Triage](supplementary_material/support-case-triage/README.md):** Analyze raw customer emails/logs from Nordic Bikes to output standardized bug or warranty reports.
-2. **[Documentation Generation](supplementary_material/documentation-generation/README.md):** Scan C# controllers and API endpoints to auto-generate Markdown documentation.
-3. **[PR Release Notes](supplementary_material/pr-release-notes/README.md):** Process git commit logs to draft human-readable release notes.
-4. **[ADO Planning](supplementary_material/ado-planning/README.md):** Break down product backlog requirements into epics, features, and user stories within Azure DevOps.
-5. **[Controller Creation](supplementary_material/controller-creation/README.md):** Scaffold new C# API controllers following project-specific architectural standards.
+1. **[Support Case Triage](supplementary_material/support-case-triage/sample-output.md):** Analyze raw customer emails/logs from Nordic Bikes to output standardized bug or warranty reports.
+2. **[Documentation Generation](supplementary_material/doc-generator/sample-output.md):** Scan C# controllers and API endpoints to auto-generate Markdown documentation.
+3. **[PR Release Notes](supplementary_material/pr-release-notes/sample-tool-read.txt):** Process git commit logs to draft human-readable release notes.
+4. **[ADO Planning](supplementary_material/ado-planning/warranty-service-routing-backlog.md):** Break down product backlog requirements into epics, features, and user stories within Azure DevOps.
+5. **[Controller Creation](supplementary_material/controller-generator/sample-input.md):** Scaffold new C# API controllers following project-specific architectural standards.
