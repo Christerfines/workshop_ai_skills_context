@@ -1,0 +1,26 @@
+id: automated-code-review-tests-004
+name: Identify missing focused route coverage
+description: Verify that a changed observable API route without a test is reported as NB301.
+tags:
+  - positive
+  - tests
+  - regression-risk
+inputs:
+  prompt: |
+    Use automated-code-review on uncovered-route.patch. The patch is the complete
+    review scope and intentionally has no test-file changes. Return JSON findings
+    only; do not add a test or edit the patch.
+  files:
+    - path: uncovered-route.patch
+expected:
+  should_trigger: true
+graders:
+  - type: text
+    name: focused-test-finding
+    config:
+      regex_match:
+        - '(?i)NB301'
+        - '(?i)NUnit|test'
+        - '(?i)route|status|validation'
+        - '(?i)uncovered-route\.patch'
+        - '(?i)minor|major|note'

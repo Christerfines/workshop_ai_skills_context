@@ -7,7 +7,13 @@ Self-contained .NET 10 demo portal for NordicBike customer, support, business, a
 From the repository root:
 
 ```powershell
-dotnet run --project .\src\NordicBike.Portal.csproj --no-launch-profile --urls http://localhost:57146
+dotnet run --project .\src\web\NordicBike.Portal.csproj --no-launch-profile --urls http://localhost:57146
+```
+
+When the terminal is already in `src`, use:
+
+```powershell
+dotnet run --project .\web\NordicBike.Portal.csproj --no-launch-profile --urls http://localhost:57146
 ```
 
 The application prints only the contents of `startup-banner.txt` followed by one `Open:` URL. `--no-launch-profile` keeps the .NET CLI from adding launch-profile chatter; the first run may show normal build output. Use `--no-build` for a quiet restart after a successful build. The development launch profile is configured with one URL and no automatic browser launch.

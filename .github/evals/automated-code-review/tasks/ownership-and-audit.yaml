@@ -1,0 +1,28 @@
+id: automated-code-review-state-003
+name: Find ownership and audit defects
+description: Verify that a state-changing order route is reviewed for both ownership and audit requirements.
+tags:
+  - positive
+  - api
+  - audit
+  - authorization
+inputs:
+  prompt: |
+    Use automated-code-review on order-cancellation.patch. Review the supplied
+    change and nearby behavior as a NordicBike API change. Return the required
+    JSON report with only evidence-backed findings. Do not modify the patch.
+  files:
+    - path: order-cancellation.patch
+expected:
+  should_trigger: true
+graders:
+  - type: text
+    name: ownership-and-audit-findings
+    config:
+      regex_match:
+        - '(?i)NB101'
+        - '(?i)NB201'
+        - '(?i)Customer\(context\)|ownership|customer ownership'
+        - '(?i)PortalAudit\.Record|audit'
+        - '(?i)order-cancellation\.patch'
+        - '(?i)no files changed|read-only'

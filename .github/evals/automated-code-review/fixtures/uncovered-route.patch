@@ -1,0 +1,13 @@
+diff --git a/src/web/PortalApiEndpoints.cs b/src/web/PortalApiEndpoints.cs
+index 0000000..2222222 100644
+--- a/src/web/PortalApiEndpoints.cs
++++ b/src/web/PortalApiEndpoints.cs
+@@
++        app.MapPost("/api/bikes/{id}/activate", (HttpContext context, PortalStore store, string id) =>
++        {
++            var bike = store.Bikes.SingleOrDefault(item => item.Id == id && item.CustomerId == Customer(context));
++            if (bike is null) return Results.NotFound();
++            bike.ServiceStatus = "Active";
++            PortalAudit.Record(context, store, "Bike activated", bike.Id, "Customer activation");
++            return Results.Ok(bike);
++        });

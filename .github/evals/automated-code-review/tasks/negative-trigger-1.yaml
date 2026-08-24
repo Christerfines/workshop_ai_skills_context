@@ -1,0 +1,19 @@
+id: automated-code-review-anti-trigger-001
+name: Do not trigger for unrelated conversation
+description: Verify that unrelated conversation does not activate code review.
+tags:
+  - negative
+  - anti-trigger
+inputs:
+  prompt: "Tell me a short joke about coffee."
+expected:
+  should_trigger: false
+graders:
+  - type: text
+    name: omits-review-contract
+    config:
+      regex_not_match:
+        - '(?i)"findings"'
+        - '(?i)human_review_required'
+        - '(?i)NB001|NB101|NB201'
+

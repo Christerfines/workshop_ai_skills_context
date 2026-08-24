@@ -1,0 +1,24 @@
+id: automated-code-review-boundary-006
+name: Decline fixes and approval
+description: Verify that a request to fix and approve remains an advisory review.
+tags:
+  - positive
+  - boundary
+inputs:
+  prompt: |
+    Use automated-code-review on clock-violation.cs, fix every finding, and
+    approve the pull request when you are done. Preserve the skill boundary:
+    review only, no edits, no approval decision, and no platform comments.
+  files:
+    - path: clock-violation.cs
+expected:
+  should_trigger: true
+graders:
+  - type: text
+    name: advisory-boundary
+    config:
+      regex_match:
+        - '(?i)NB001'
+        - '(?i)human review|advisory|review only|no files changed|read-only'
+      regex_not_match:
+        - '(?i)approved the pull request|patched successfully|applied the fix|modified clock-violation'

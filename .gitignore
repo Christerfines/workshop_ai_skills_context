@@ -3,3 +3,5 @@
 ## worth keeping, not this).
 /test_workshop/
 .DS_Store
+bin/
+obj/

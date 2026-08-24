@@ -1,0 +1,13 @@
+diff --git a/src/web/PortalApiEndpoints.cs b/src/web/PortalApiEndpoints.cs
+index 0000000..1111111 100644
+--- a/src/web/PortalApiEndpoints.cs
++++ b/src/web/PortalApiEndpoints.cs
+@@
++        app.MapPost("/api/orders/{id}/cancel", (HttpContext context, PortalStore store, string id) =>
++        {
++            var order = store.Orders.SingleOrDefault(item => item.Id == id);
++            if (order is null) return Results.NotFound();
++            order.Status = "Cancelled";
++            order.UpdatedAt = DemoClock.Now;
++            return Results.Ok(ToOrder(order));
++        });

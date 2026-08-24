@@ -1,0 +1,21 @@
+id: automated-code-review-anti-trigger-007
+name: Do not trigger for implementation work
+description: Verify that a request to add a feature is not treated as an advisory code review.
+tags:
+  - negative
+  - anti-trigger
+  - implementation
+inputs:
+  prompt: |
+    Add a new NordicBike API endpoint that returns a customer's bikes. Implement
+    the route and write focused NUnit coverage for it.
+expected:
+  should_trigger: false
+graders:
+  - type: text
+    name: omits-review-report
+    config:
+      regex_not_match:
+        - '(?i)human_review_required'
+        - '(?i)"side_effects"\s*:\s*"No files changed'
+        - '(?i)NB101|NB201|NB301'

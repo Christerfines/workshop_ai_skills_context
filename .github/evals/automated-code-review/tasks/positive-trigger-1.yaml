@@ -1,0 +1,24 @@
+id: automated-code-review-trigger-001
+name: Trigger for a local endpoint review
+description: Verify that an explicit NordicBike endpoint review activates the skill and returns its review contract.
+tags:
+  - positive
+  - trigger
+inputs:
+  prompt: |
+    Review my current NordicBike Portal API endpoint changes for coding-standard,
+    audit, ownership, and focused-test risks. Use automated-code-review, keep the
+    work read-only, and return its JSON review report.
+expected:
+  should_trigger: true
+graders:
+  - type: text
+    name: review-contract
+    config:
+      regex_match:
+        - '(?i)scope'
+        - '(?i)checks_run'
+        - '(?i)findings'
+        - '(?i)human_review_required|human review'
+        - '(?i)no files changed|read-only'
+

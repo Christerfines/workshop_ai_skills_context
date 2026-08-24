@@ -1,0 +1,26 @@
+id: automated-code-review-exception-005
+name: Respect the startup reporter exception
+description: Verify that the bounded NB003 exception is not reported as an actionable finding.
+tags:
+  - positive
+  - false-positive
+  - exception
+inputs:
+  prompt: |
+    Use automated-code-review on StartupReporter.cs. It is the complete review
+    scope. Apply the NordicBike standards, verify any scanner-like candidate in
+    context, and return a read-only JSON report. Do not report a finding that is
+    covered by a documented exception.
+  files:
+    - path: StartupReporter.cs
+expected:
+  should_trigger: true
+graders:
+  - type: text
+    name: documented-exception
+    config:
+      regex_match:
+        - '(?i)StartupReporter\.cs'
+        - '(?i)exception|startup banner'
+        - '(?i)no actionable|no findings|findings"\s*:\s*\[\s*\]'
+        - '(?i)NB003'

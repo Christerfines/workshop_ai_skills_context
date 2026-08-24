@@ -23,15 +23,32 @@ Establish:
 - the threat or compliance question, if one was supplied;
 - local fixtures or test commands that can validate a suspected issue safely.
 
-When no scope is supplied, ask whether to review the current diff, a named directory, or the entire checkout. Exclude generated and build output unless it is itself part of the risk.
+When no scope is supplied, ask whether to review the current diff, a named directory, or the entire checkout. Exclude generated and build output unless it is itself part of the risk. If generated or build output is identified as a risk source (e.g., a committed artifact containing credentials), include it in scope, note it explicitly in the `excluded` override field, and explain why it was included.
+
+### Review Category Reference
+
+| Category |
+| --- |
+| Injection |
+| Broken object-level authorization |
+| Privilege escalation |
+| Secrets exposure |
+| Unsafe deserialization |
+| Path traversal |
+| Cross-site scripting |
+| Request forgery |
+| Weak cryptography |
+| Dependency risk |
+| Sensitive data leakage |
+| Business-logic abuse |
 
 ## Workflow
 
 1. **Resolve scope.** Record the files, revision, and environment reviewed. Check the current diff and repository layout before reading unrelated code.
-2. **Inventory exposure.** Locate authentication and authorization boundaries, input sources, output sinks, file and process operations, dependency manifests, configuration, logs, and likely secret material. Redact values in notes and output.
+2. **Inventory exposure.** Locate authentication and authorization boundaries, input sources, output sinks, file and process operations, dependency manifests, configuration, logs, and likely secret material. Redact values in notes and output. If a finding contains what appears to be a live secret, set the evidence field to "[REDACTED — possible live credential at <location>]" and add a limitations entry warning the reviewer to treat the report as sensitive before sharing.
 3. **Trace flows.** Follow untrusted input to storage, queries, commands, templates, redirects, logs, network requests, and privileged actions across file boundaries. Check both the validation and the authorization decision at each sensitive boundary.
-4. **Check categories.** Consider injection, broken object-level authorization, privilege escalation, secrets exposure, unsafe deserialization, path traversal, cross-site scripting, request forgery, weak cryptography, dependency risk, sensitive data leakage, and business-logic abuse only when the local code provides a relevant signal.
-5. **Self-verify each finding.** Re-read the source, identify sanitization or framework protections, reproduce only with a safe local fixture when useful, and distinguish confirmed evidence from a plausible concern. Discard findings that rely only on naming or correlation.
+4. **Check categories.** Check each category in the reference table if and only if the code reviewed in step 3 contains a direct signal for that category (e.g., user-controlled input reaching the relevant sink).
+5. **Self-verify each finding.** Re-read the source, identify sanitization or framework protections, reproduce only with a safe local fixture when the finding's confidence is medium or low and a fixture already exists in the repository, and distinguish confirmed evidence from a plausible concern. Discard findings that rely only on naming or correlation.
 6. **Prioritize.** Assign severity based on reachable impact and exploit conditions, and confidence based on evidence quality. Group duplicate symptoms into one finding and include the strongest counterevidence.
 7. **Hand off safely.** Provide a focused remediation direction, validation idea, and human review requirement. Do not apply the patch or send the report externally.
 
