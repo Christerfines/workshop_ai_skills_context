@@ -41,6 +41,7 @@ Ask for the target when none is supplied. Record the exact files and revision or
    ```
 
    To check compilation and automated tests as part of the same run, add `-RunTests`. The script emits JSON, exits `0` when it finds no candidates, and exits `1` when candidates or a requested verification command fails.
+  If the scanner cannot be executed, record the result as `not_run` in `checks_run` with the reason, proceed with a manual review against the loaded standards, and note in `limitations` that scanner candidates are unavailable.
 3. Load [references/project-context.md](references/project-context.md) for every review. It describes the solution structure and established implementation patterns.
 4. Load only the relevant sections of [references/nordicbike-coding-standards.md](references/nordicbike-coding-standards.md): baseline C# rules for all changes, API rules for endpoint changes, state/audit rules for mutations, and test rules for behavior changes.
 5. Verify each scanner candidate by reading the changed line and nearby code. Remove candidates covered by an equivalent abstraction or an intentional, documented exception. Inspect changed endpoint handlers for validation, ownership or role checks, status codes, and `PortalAudit.Record` where the change mutates customer, order, case, bike, or service-request state.
